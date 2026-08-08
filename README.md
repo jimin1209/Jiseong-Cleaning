@@ -51,7 +51,7 @@
 | 파일 | 내용 |
 |---|---|
 | `seed/service-areas.json` | 경주시 23개 읍면동 + 권역(1/2/3) + 운영요일 |
-| `seed/service-items.json` | 세탁 품목 46종 + 단가 |
+| `seed/service-items.json` | 세탁 품목 77종 + 단가 |
 | `seed/subscription-plans.json` | 구독 플랜 4종 |
 | `seed/time-slots.json` | 수거·배송 시간대 |
 | `seed/accounts.json` | 관리자·공장·기사 초기 계정 |

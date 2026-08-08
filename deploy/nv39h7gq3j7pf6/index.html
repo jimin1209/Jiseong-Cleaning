@@ -151,6 +151,7 @@ button{font:inherit; color:inherit; cursor:pointer; border:0; background:none}
 }
 .tbtn:hover{border-color:var(--accent); color:var(--accent)}
 .tbtn[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+#toggleFit{display:none}   /* 모바일에서만 노출 */
 
 /* ── 3단 본문 ─────────────────────────────────────────── */
 .body{display:grid; grid-template-columns:236px minmax(0,1fr) 320px; flex:1; align-items:start}
@@ -365,6 +366,26 @@ button{font:inherit; color:inherit; cursor:pointer; border:0; background:none}
 .tl-item.now .t{color:var(--accent)}
 .tl-item:not(.done):not(.now) .t{color:var(--ink-3); font-weight:500}
 
+/* 품목 선택 */
+.catrow{display:flex; gap:5px; overflow-x:auto; padding-bottom:2px}
+.catrow::-webkit-scrollbar{display:none}
+.catrow .chip{white-space:nowrap; flex:none}
+.itemrow{
+  display:flex; align-items:center; gap:10px; padding:8px 10px;
+  border:1px solid var(--line); border-radius:8px; background:var(--surface);
+}
+.itemrow.picked{border-color:var(--accent); background:var(--accent-soft)}
+.iname{flex:1; min-width:0; font-size:13px; display:flex; flex-direction:column; gap:1px}
+.iprice{font-size:11.5px; color:var(--ink-3)}
+.itemrow.picked .iprice{color:var(--accent)}
+.stepper{display:flex; align-items:center; gap:11px; flex:none}
+.sbtn{
+  width:26px; height:26px; border-radius:7px; display:grid; place-items:center;
+  border:1px solid var(--line-2); color:var(--ink-3); font-size:14px; line-height:1;
+}
+.sbtn.plus{border-color:var(--accent); color:var(--accent)}
+.sqty{min-width:14px; text-align:center; font-size:14px; font-weight:650}
+
 /* 단계 표시 */
 .steps{display:flex; align-items:center; gap:6px}
 .steps i{height:3px; flex:1; border-radius:2px; background:var(--line); display:block}
@@ -472,6 +493,7 @@ tr.hl td{background:var(--warn-soft)}
   .tbtn{padding:5px 9px; font-size:11.5px}
   #togglePanel, #toggleTheme{display:none}
   .prog{display:none}
+  #toggleFit{display:inline-block}
 
   .body, .body.no-panel{grid-template-columns:1fr}
 
@@ -487,11 +509,33 @@ tr.hl td{background:var(--warn-soft)}
   .step .n{display:none}
   .step .dot{margin-left:0}
 
-  .stage{padding:12px 10px 22px; gap:10px}
+  .stage{padding:10px 10px 20px; gap:8px}
   .stage-head{text-align:left}
-  .stage-head h1{font-size:16px; margin-bottom:2px}
+  .stage-head h1{font-size:15.5px; margin-bottom:1px}
   .stage-head p{font-size:12.5px; line-height:1.5}
-  .note{padding:10px 13px; font-size:12.5px}
+  .note{padding:9px 13px; font-size:12.5px}
+  .ndesc{margin:0 0 8px; padding-bottom:8px; border-bottom:1px solid var(--line); color:var(--ink-2)}
+
+  /* [한 화면 맞춤] 모드 — 시안을 뷰포트 높이에 맞추고 내부에서 스크롤 */
+  body.fit .stage{
+    padding:10px 10px 10px; gap:7px;
+    height:calc(100vh - 94px);
+    height:calc(100dvh - 94px);
+    min-height:380px;
+    overflow:hidden;
+  }
+  body.fit .stage-head{flex:none}
+  body.fit .stage-head p{display:none}
+  body.fit #scMount{flex:1 1 auto; min-height:0; width:100%; display:flex}
+  body.fit .device{height:100%; display:flex; flex-direction:column; min-height:0}
+  body.fit .device .vp{flex:1 1 auto; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch}
+  body.fit .device .appbar,
+  body.fit .device .tabbar,
+  body.fit .device .chrome,
+  body.fit .device .statusbar{flex:none}
+  body.fit .admin{height:100%; min-height:0}
+  body.fit .admain{overflow:auto; min-height:0}
+  body.fit .note{flex:none}
 
   /* 폰 안에서 폰 프레임을 또 그리지 않는다 — 공간 낭비 */
   .device.phone{
@@ -613,6 +657,7 @@ tr.hl td{background:var(--warn-soft)}
         <span class="bar"><i id="progBar" style="width:0%"></i></span>
         <span class="num" id="progText">0 / 15</span>
       </span>
+      <button class="tbtn" id="toggleFit" aria-pressed="true" title="시안을 한 화면에 맞출지 선택">한 화면</button>
       <button class="tbtn" id="openResult">결과 보기</button>
       <button class="tbtn" id="togglePanel" aria-pressed="true">결정 패널</button>
       <button class="tbtn" id="toggleTheme">다크</button>
@@ -791,7 +836,7 @@ const D = {
   factoryStaff:{crit:false, tag:'결정 12', h:'검수는 누가 담당할까요?',
     p:'하루 120건이면 검수에만 약 5시간이 듭니다. 이 담당자가 서비스 전체의 병목이 됩니다.',
     o:[['검수 전담 직원 1명을 둔다',1],['세탁 담당 직원이 겸임한다',0],['수거·배송 직원이 입고 시 함께 처리한다',0]]},
-  prices:{crit:true, tag:'결정 13 · 중요', h:'세탁 요금 46종을 확정해 주시겠습니까?',
+  prices:{crit:true, tag:'결정 13 · 중요', h:'세탁 요금 77종을 확정해 주시겠습니까?',
     p:'타사 공개 요금을 참고해 작성한 초안입니다. 실제 원가를 아시는 분의 검토가 필요합니다.',
     o:[['초안대로 시작한다',0],['품목별로 검토한 뒤 수정한다',1],['취급 품목 수를 줄인다',0]]},
   comp:{crit:true, tag:'결정 14 · 법적', h:'분실·손상 시 배상 기준을 어떻게 정할까요?',
@@ -887,6 +932,72 @@ customer:[
     tabbar('홈'))
 },
 {
+  id:'items', nav:'품목 선택', warn:true,
+  title:'품목 선택 (3단계)',
+  desc:'맡기실 품목과 수량을 고릅니다. 카테고리로 나뉘어 있고 검색으로도 찾을 수 있습니다.',
+  note:'현재 <b>77종</b>을 등록해 두었습니다. 이불만 해도 싱글·더블·퀸/킹·극세사·차렵·오리털·양모로 나눠 두께와 손이 가는 정도에 따라 값을 달리 받을 수 있게 했습니다. 인형·카시트·유모차 시트처럼 <b>일반 세탁소에서 잘 안 받는 품목</b>도 넣어 두었는데, 실제로 처리 가능한지는 확인이 필요합니다.',
+  d:[D.prices, D.premium],
+  html: m => phone(
+    appbar('품목 선택','<span class="sm dim">3 / 4</span>'),
+    `<div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+
+     <div class="field ph sm">🔍 품목 이름으로 찾기</div>
+
+     <div class="catrow">
+       ${[['전체',1],['일반세탁',0],['드라이',0],['침구',0],['신발',0],['기타',0],['프리미엄',0]]
+         .map(([t,on])=>`<span class="chip ${on?'acc':''}">${t}</span>`).join('')}
+     </div>
+
+     ${[
+       ['일반세탁', [
+         ['와이셔츠 / 블라우스','2,000',5],['티셔츠 / 반팔','2,500',0],
+         ['니트 / 스웨터','3,000',0],['바지 / 슬랙스','3,000',0],
+         ['후리스 / 플리스','4,000',0],['잠옷 (상하)','4,000',0],
+         ['작업복 (상하)','6,000',0]
+       ]],
+       ['침구', [
+         ['이불 (싱글)','9,000',1],['이불 (더블)','11,000',0],
+         ['이불 (퀸 / 킹)','13,000',0],['극세사 이불','13,000',0],
+         ['차렵이불','12,000',0],['오리털 / 거위털 이불','18,000',0],
+         ['양모 이불','20,000',0],['이불 커버 (홑청)','6,000',0],
+         ['침대 시트','5,000',0],['매트리스 토퍼 / 요','16,000',0],
+         ['베개','3,000',0],['방석 / 쿠션','4,000',0],
+         ['러그 / 발매트','7,000',0],['소파 커버','12,000',0]
+       ]],
+       ['드라이', [
+         ['코트 (하프)','10,000',1],['코트 (롱)','13,000',0],
+         ['패딩 (숏)','12,000',0],['패딩 (롱)','16,000',0],
+         ['정장 상하','12,000',0],['교복 (상하)','8,000',0]
+       ]],
+       ['신발 · 기타', [
+         ['운동화 (일반)','9,000',0],['구두','12,000',0],
+         ['인형 (소형)','6,000',0],['인형 (대형)','14,000',0],
+         ['백팩 / 책가방','12,000',0],['카시트 커버','20,000',0],
+         ['유모차 시트','25,000',0]
+       ]]
+     ].map(([cat, rows])=>`
+       <div class="stack s">
+         <span class="eyebrow">${cat}</span>
+         ${rows.map(([n,p,q])=>`
+           <div class="itemrow ${q?'picked':''}">
+             <div class="iname">${n}<span class="iprice num">${p}원</span></div>
+             <div class="stepper">
+               <span class="sbtn">−</span><span class="num sqty">${q}</span><span class="sbtn plus">＋</span>
+             </div>
+           </div>`).join('')}
+       </div>`).join('')}
+
+     <div class="card flat xs">
+       ⓘ 목록에 없는 품목은 <b>요청사항</b>에 적어 주시면 세탁소에서 확인 후 안내드립니다.
+     </div>
+
+     <div class="card accent rowb">
+       <span class="bold">선택 7점</span><span class="lg num">29,000원</span>
+     </div>
+     <button class="btn">다음</button>`,
+    tabbar('홈'))
+},
+{
   id:'confirm', nav:'신청 확인',
   title:'신청 확인',
   desc:'예상 금액과 구독 차감, 배송 예정일을 한 화면에서 확인한 뒤 접수합니다.',
@@ -906,11 +1017,12 @@ customer:[
        <span class="eyebrow">맡기실 품목</span>
        <div class="rowb sm"><span>와이셔츠 × 5</span><span class="num">10,000</span></div>
        <div class="rowb sm"><span>코트(하프) × 1</span><span class="num">10,000</span></div>
+       <div class="rowb sm"><span>이불(싱글) × 1</span><span class="num">9,000</span></div>
        <div class="divider"></div>
-       <div class="rowb sm"><span class="muted">예상 금액</span><span class="num">20,000</span></div>
+       <div class="rowb sm"><span class="muted">예상 금액</span><span class="num">29,000</span></div>
        ${m==='sub' ? `<div class="rowb sm"><span class="muted">구독 차감 <span class="chip acc">3회 남음</span></span><span class="num" style="color:var(--accent)">−15,000</span></div>` : ''}
        <div class="divider"></div>
-       <div class="rowb"><span class="bold">예상 결제</span><span class="lg num">${m==='sub'?'5,000':'20,000'}원</span></div>
+       <div class="rowb"><span class="bold">예상 결제</span><span class="lg num">${m==='sub'?'14,000':'29,000'}원</span></div>
      </div>
 
      ${m==='sub' ? '' : `
@@ -957,10 +1069,11 @@ customer:[
        <span class="eyebrow">확정 금액</span>
        <div class="rowb sm"><span>와이셔츠 × 6</span><span class="num">12,000</span></div>
        <div class="rowb sm"><span>코트(하프) × 1</span><span class="num">10,000</span></div>
+       <div class="rowb sm"><span>이불(싱글) × 1</span><span class="num">9,000</span></div>
        <div class="divider"></div>
-       <div class="rowb sm"><span class="muted">검수 확정</span><span class="num">22,000</span></div>
+       <div class="rowb sm"><span class="muted">검수 확정</span><span class="num">31,000</span></div>
        ${m==='sub' ? `<div class="rowb sm"><span class="muted">구독 차감</span><span class="num" style="color:var(--accent)">−15,000</span></div>` : ''}
-       <div class="rowb"><span class="bold">결제 예정</span><span class="lg num">${m==='sub'?'7,000':'22,000'}원</span></div>
+       <div class="rowb"><span class="bold">결제 예정</span><span class="lg num">${m==='sub'?'16,000':'31,000'}원</span></div>
      </div>
 
      <div class="card warnc stack s">
@@ -981,7 +1094,7 @@ customer:[
   desc:'검수 결과 금액이 예상보다 늘었을 때만 나타납니다. 승인 전에는 세탁을 시작하지 않습니다.',
   note:'세탁은 봉투를 열어봐야 최종 금액을 알 수 있습니다. 그래서 선결제가 아니라 <b>검수 후 청구</b> 구조로 설계했습니다. 이 화면이 서비스 전체 설계의 중심입니다.',
   d:[D.threshold, D.noResponse],
-  html: phone(
+  html: m => phone(
     appbar('확인이 필요합니다'),
     `<div class="card dangerc sm">
        세탁소 검수 결과, 신청하신 내용과 차이가 있어 확인을 요청드립니다.
@@ -992,15 +1105,16 @@ customer:[
        <div class="divider"></div>
        <div class="rowb sm"><span>와이셔츠</span><span class="num">5 → 6 <span style="color:var(--danger)">+2,000</span></span></div>
        <div class="rowb sm"><span>코트(하프)</span><span class="num dim">1 → 1</span></div>
+       <div class="rowb sm"><span>이불(싱글)</span><span class="num dim">1 → 1</span></div>
        <div class="rowb sm"><span>니트 <span class="chip danger">추가</span></span><span class="num">– → 1 <span style="color:var(--danger)">+4,000</span></span></div>
      </div>
 
      <div class="card stack s">
-       <div class="rowb sm"><span class="muted">기존 예상</span><span class="num muted">20,000</span></div>
-       <div class="rowb sm"><span class="bold">변경 금액</span><span class="num bold">26,000</span></div>
-       <div class="rowb sm"><span class="muted">구독 차감</span><span class="num" style="color:var(--accent)">−15,000</span></div>
+       <div class="rowb sm"><span class="muted">기존 예상</span><span class="num muted">29,000</span></div>
+       <div class="rowb sm"><span class="bold">변경 금액</span><span class="num bold">35,000</span></div>
+       ${m==='sub' ? `<div class="rowb sm"><span class="muted">구독 차감</span><span class="num" style="color:var(--accent)">−15,000</span></div>` : ''}
        <div class="divider"></div>
-       <div class="rowb"><span class="bold">결제 예정</span><span class="lg num">11,000원</span></div>
+       <div class="rowb"><span class="bold">결제 예정</span><span class="lg num">${m==='sub'?'20,000':'35,000'}원</span></div>
      </div>
 
      <div class="card flat sm">⏰ 48시간 안에 응답이 없으면 담당자가 전화드립니다.</div>
@@ -1171,6 +1285,7 @@ factory:[
        <tbody>
          <tr class="hl"><td>와이셔츠</td><td class="n dim">5</td><td class="n bold">6</td><td class="n">2,000</td><td class="n">12,000</td></tr>
          <tr><td>코트(하프)</td><td class="n dim">1</td><td class="n bold">1</td><td class="n">10,000</td><td class="n">10,000</td></tr>
+         <tr><td>이불(싱글)</td><td class="n dim">1</td><td class="n bold">1</td><td class="n">9,000</td><td class="n">9,000</td></tr>
          <tr class="hl"><td>니트 <span class="chip danger">추가</span></td><td class="n dim">–</td><td class="n bold">1</td><td class="n">4,000</td><td class="n">4,000</td></tr>
        </tbody>
      </table></div>
@@ -1187,9 +1302,9 @@ factory:[
      </div>
 
      <div class="card stack s">
-       <div class="rowb sm"><span class="muted">신청 예상</span><span class="num muted">20,000원</span></div>
-       <div class="rowb"><span class="bold">검수 확정</span><span class="lg num">26,000원 <span class="sm" style="color:var(--danger)">+6,000</span></span></div>
-       <div class="card dangerc xs">⚠ 예상의 130% → <b>고객 승인 요청이 발송됩니다.</b> 승인 전까지 세탁을 시작하지 않습니다.</div>
+       <div class="rowb sm"><span class="muted">신청 예상</span><span class="num muted">29,000원</span></div>
+       <div class="rowb"><span class="bold">검수 확정</span><span class="lg num">35,000원 <span class="sm" style="color:var(--danger)">+6,000</span></span></div>
+       <div class="card dangerc xs">⚠ 예상의 121% → <b>고객 승인 요청이 발송됩니다.</b> 승인 전까지 세탁을 시작하지 않습니다.</div>
      </div>
 
      <div class="rowb" style="gap:10px">
@@ -1279,7 +1394,7 @@ admin:[
   id:'prices', nav:'요금표 설정', warn:true,
   title:'요금표 관리',
   desc:'개발자 없이 화면에서 단가를 수정합니다. 저장 전에 매출이 얼마나 달라지는지 먼저 확인할 수 있습니다.',
-  note:'현재 들어 있는 46종 단가는 <b>타사 공개 요금을 참고해 작성한 초안</b>입니다. 실제 원가를 아시는 분의 검토가 필요합니다. 오늘은 주요 품목만 짚어주셔도 충분합니다.',
+  note:'현재 들어 있는 77종 단가는 <b>타사 공개 요금을 참고해 작성한 초안</b>입니다. 실제 원가를 아시는 분의 검토가 필요합니다. 오늘은 주요 품목만 짚어주셔도 충분합니다.',
   d:[D.prices, D.premium],
   html: adminShell({nav:'요금표', url:'/settings/prices'},
     `<div class="rowb"><h3>세탁 요금표</h3><span class="sm dim">변경 이력 · 엑셀 · 품목 추가</span></div>
@@ -1349,7 +1464,8 @@ admin:[
 };
 
 /* ── 렌더링 ───────────────────────────────────────────── */
-const state = {role:'customer', idx:0, panel:true, member:'guest'};
+const state = {role:'customer', idx:0, panel:true, member:'guest', fit:true};
+try{ if(localStorage.getItem('jc-fit') === '0') state.fit = false; }catch(e){}
 const $ = s => document.querySelector(s);
 const RAIL_TITLE = {customer:'고객 화면', driver:'기사 화면', factory:'세탁공장 화면', admin:'관리자 화면'};
 
@@ -1454,7 +1570,9 @@ function render(scrollToTop){
   $('#scTitle').textContent = sc.title;
   $('#scDesc').textContent = sc.desc;
   $('#scMount').innerHTML = typeof sc.html === 'function' ? sc.html(state.member) : sc.html;
-  $('#scNoteBody').innerHTML = sc.note;
+  // '한 화면 맞춤'에서는 상단 설명을 숨기므로 '보실 점' 안으로 합친다
+  $('#scNoteBody').innerHTML =
+    (isMobile() && state.fit ? `<p class="ndesc">${sc.desc}</p>` : '') + sc.note;
   // 모바일에서는 설명을 접어 두고, 화면부터 보이게 한다
   $('#scNote').open = !isMobile();
   $('#member').classList.toggle('on', state.role === 'customer');
@@ -1482,6 +1600,21 @@ document.querySelectorAll('[data-role]').forEach(b=>{
 });
 document.querySelectorAll('[data-member]').forEach(b=>{
   b.addEventListener('click', ()=>{ state.member = b.dataset.member; render(); });
+});
+
+/* 한 화면 맞춤 / 전체 펼치기 */
+function applyFit(){
+  document.body.classList.toggle('fit', state.fit);
+  const b = $('#toggleFit');
+  b.setAttribute('aria-pressed', String(state.fit));
+  b.textContent = state.fit ? '한 화면' : '펼쳐 보기';
+  try{ localStorage.setItem('jc-fit', state.fit ? '1' : '0'); }catch(e){}
+}
+$('#toggleFit').addEventListener('click', ()=>{
+  state.fit = !state.fit;
+  applyFit();
+  render();
+  toast(state.fit ? '시안을 한 화면에 맞춥니다' : '전체를 펼쳐서 보여줍니다');
 });
 
 $('#jumpPanel').addEventListener('click', ()=>{
@@ -1675,6 +1808,7 @@ const fromLink = (()=>{
   return false;
 })();
 
+applyFit();
 render();
 updateProgress();
 

@@ -115,7 +115,7 @@ service_items          inspection_items            issues
 |---|---|---|
 | id | uuid PK | |
 | code | varchar(30) UNIQUE | `SHIRT`, `COAT_DRY`, `BEDDING`, `SHOES` |
-| category | enum | WASH(일반) / DRY(드라이) / BEDDING(이불) / SHOES / PREMIUM / **OPTION(추가옵션)** |
+| category | enum | WASH(일반) / DRY(드라이) / BEDDING(침구·대형) / SHOES / **ETC(생활·특수)** / PREMIUM / OPTION(추가옵션) |
 | name | varchar(50) | "와이셔츠" |
 | unit | enum | PIECE(점) / KG / SET |
 | unit_price | int | 원 |
