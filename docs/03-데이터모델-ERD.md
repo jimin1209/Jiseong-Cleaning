@@ -406,6 +406,23 @@ service_items          inspection_items            issues
 
 ---
 
+## 9.5 운영 설정용 테이블 (문서 13)
+
+관리자가 화면에서 바꾸는 값들을 담는 테이블. 정의는 **[문서 13 §16](13-운영설정-관리자인터페이스.md)** 참조.
+
+| 테이블 | 용도 |
+|---|---|
+| `system_settings` | 정책값 전반 (키-값 + jsonb). 마감시각·승인임계치·재시도횟수 등 |
+| `service_item_prices` | 가격 이력 + 예약 적용. **과거 시점 가격 조회의 근거** |
+| `scheduled_changes` | 설정 예약 적용 큐 |
+| `compensation_rules` | 분실·손상 배상 기준표 |
+| `terms_documents` / `user_agreements` | 약관 버전 + 회원별 동의 이력 |
+
+> ⚠️ `subscriptions`에는 **플랜 스냅샷 컬럼**(`monthly_price_snapshot` 등)이 추가된다.
+> 정기결제 Cron은 `subscription_plans`가 아니라 이 스냅샷을 읽는다 — 문서 13 §3.3
+
+---
+
 ## 10. 설계 시 지켜야 할 규칙
 
 1. **금액은 항상 `int`(원 단위)** — `float`/`decimal` 금지, 부동소수점 오차 방지

@@ -202,14 +202,23 @@ Headers: Idempotency-Key: <uuid>
 | PATCH | `/admin/dispatch/:id/reassign` | 기사 변경 |
 | POST | `/admin/dispatch/auto-suggest` | 자동 배차 제안 (2차) |
 
-### 7.3 마스터 데이터
+### 7.3 마스터 데이터 · 운영 설정
+
+**→ 전체 명세는 [문서 13 §17](13-운영설정-관리자인터페이스.md)에 있다.** 여기는 요약만.
+
 | Method | Path | 설명 |
 |---|---|---|
-| GET/POST/PATCH | `/admin/service-items` | 품목·요금 CRUD |
-| GET/POST/PATCH | `/admin/service-areas` | 서비스 지역 |
-| GET/POST/PATCH | `/admin/time-slots` | 시간 슬롯·정원 |
+| GET/PATCH | `/admin/settings?category=` | **범용 설정** (주문·검수·결제·SLA·회사정보 등 37종) |
+| POST | `/admin/settings/preview` | 변경 미리보기 + 시뮬레이션 |
+| GET/POST/PATCH | `/admin/service-items` | 품목·요금 CRUD (+ preview / bulk / 엑셀) |
+| GET/POST/PATCH | `/admin/service-areas` | 서비스 지역·권역·운영요일 |
+| GET/POST/PATCH | `/admin/time-slots` | 시간 슬롯·정원 (**기사 용량 검증 포함**) |
 | GET/POST/DELETE | `/admin/holidays` | 휴무일 |
-| GET/POST/PATCH | `/admin/subscription-plans` | 구독 플랜 |
+| GET/POST/PATCH | `/admin/subscription-plans` | 구독 플랜 (+ 손익 점검 / 기존자 보호) |
+| GET/PUT | `/admin/compensation-rules` | **배상 기준표** |
+| GET/POST | `/admin/terms` | 약관 버전 관리 |
+| GET/PATCH | `/admin/switches` | **운영 스위치** (신규주문 중단·점검모드 등) |
+| GET | `/public/company-info` · `/public/terms/:type` · `/public/service-status` | 🔓 고객 앱 노출용 |
 
 ### 7.4 회원 · 정산
 | Method | Path | 설명 |
