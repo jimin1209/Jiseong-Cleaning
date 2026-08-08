@@ -1,0 +1,47 @@
+[
+  {
+    "code": "LIGHT_M",
+    "name": "라이트",
+    "description": "혼자 사는 분께. 월 2회 수거로 옷장 정리 끝.",
+    "monthlyPrice": 19900,
+    "includedCount": 2,
+    "includedAmountPerUse": 12000,
+    "extraDiscountRate": 0.05,
+    "isActive": true,
+    "sortOrder": 1
+  },
+  {
+    "code": "STANDARD_M",
+    "name": "스탠다드",
+    "description": "2~3인 가구 표준. 주 1회 수거 가능.",
+    "monthlyPrice": 39900,
+    "includedCount": 4,
+    "includedAmountPerUse": 15000,
+    "extraDiscountRate": 0.10,
+    "isActive": true,
+    "sortOrder": 2
+  },
+  {
+    "code": "FAMILY_M",
+    "name": "패밀리",
+    "description": "4인 이상 가구. 주 2회 수거로 빨래에서 해방.",
+    "monthlyPrice": 79900,
+    "includedCount": 8,
+    "includedAmountPerUse": 20000,
+    "extraDiscountRate": 0.15,
+    "isActive": true,
+    "sortOrder": 3
+  },
+  {
+    "code": "SHIRT_M",
+    "name": "셔츠 정기권",
+    "description": "직장인 전용. 와이셔츠 월 20장까지.",
+    "monthlyPrice": 29900,
+    "includedCount": 4,
+    "includedAmountPerUse": 10000,
+    "extraDiscountRate": 0.10,
+    "restrictedItemCodes": ["SHIRT"],
+    "isActive": true,
+    "sortOrder": 4
+  }
+]

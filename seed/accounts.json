@@ -1,0 +1,61 @@
+{
+  "_note": "초기 계정 시드. 비밀번호는 개발 환경 전용이며 운영 배포 전 반드시 변경한다. 운영에서는 환경변수로 주입.",
+
+  "admins": [
+    {
+      "email": "admin@jiseong-cleaning.co.kr",
+      "name": "관리자",
+      "phone": "01000000000",
+      "level": "SUPER_ADMIN",
+      "devPassword": "ChangeMe!2026"
+    }
+  ],
+
+  "factories": [
+    {
+      "email": "factory@jiseong-cleaning.co.kr",
+      "name": "세탁센터 검수",
+      "phone": "01000000001",
+      "factoryName": "지성클리닝 세탁센터",
+      "address": "경상북도 경주시 (주소 확정 필요)",
+      "isInternal": true,
+      "capacityPerDay": 120,
+      "devPassword": "ChangeMe!2026"
+    }
+  ],
+
+  "drivers": [
+    {
+      "email": "driver1@jiseong-cleaning.co.kr",
+      "name": "기사1",
+      "phone": "01000000002",
+      "vehicleNo": "(차량번호 확정 필요)",
+      "serviceAreaCodes": [
+        "GJ_JUNGBU", "GJ_HWANGO", "GJ_SEONGGEON", "GJ_HWANGNAM", "GJ_WOLSEONG",
+        "GJ_SEONDO", "GJ_YONGGANG", "GJ_HWANGSEONG", "GJ_DONGCHEON", "GJ_BULGUK",
+        "GJ_BODEOK", "GJ_HYEONGOK", "GJ_CHEONBUK", "GJ_GEONCHEON", "GJ_NAENAM",
+        "GJ_OEDONG", "GJ_ANGANG", "GJ_GANGDONG", "GJ_SEOMYEON", "GJ_GAMPO",
+        "GJ_MUNMU", "GJ_YANGNAM", "GJ_SANNAE"
+      ],
+      "dailyCapacity": 25,
+      "isOnDuty": true,
+      "devPassword": "ChangeMe!2026"
+    }
+  ],
+
+  "testCustomers": [
+    {
+      "phone": "01011111111",
+      "name": "테스트고객",
+      "address": {
+        "label": "집",
+        "postcode": "38160",
+        "roadAddress": "경상북도 경주시 화랑로 (테스트)",
+        "detailAddress": "101동 1502호",
+        "entranceNote": "공동현관 #1234",
+        "areaCode": "GJ_HWANGSEONG"
+      },
+      "_note": "개발 환경에서만 시드. 운영 시드 제외."
+    }
+  ]
+}

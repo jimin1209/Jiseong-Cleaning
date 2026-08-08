@@ -1,0 +1,27 @@
+[
+  { "areaCode": "GJ_JUNGBU",     "sido": "경상북도", "sigungu": "경주시", "dong": "중부동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_HWANGO",     "sido": "경상북도", "sigungu": "경주시", "dong": "황오동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_SEONGGEON",  "sido": "경상북도", "sigungu": "경주시", "dong": "성건동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_HWANGNAM",   "sido": "경상북도", "sigungu": "경주시", "dong": "황남동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_WOLSEONG",   "sido": "경상북도", "sigungu": "경주시", "dong": "월성동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_SEONDO",     "sido": "경상북도", "sigungu": "경주시", "dong": "선도동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_YONGGANG",   "sido": "경상북도", "sigungu": "경주시", "dong": "용강동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_HWANGSEONG", "sido": "경상북도", "sigungu": "경주시", "dong": "황성동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_DONGCHEON",  "sido": "경상북도", "sigungu": "경주시", "dong": "동천동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_BULGUK",     "sido": "경상북도", "sigungu": "경주시", "dong": "불국동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+  { "areaCode": "GJ_BODEOK",     "sido": "경상북도", "sigungu": "경주시", "dong": "보덕동",     "zone": 1, "operatingDays": [1,2,3,4,5,6], "minOrderAmount": 15000, "deliveryLeadDays": 0, "isActive": true },
+
+  { "areaCode": "GJ_HYEONGOK",   "sido": "경상북도", "sigungu": "경주시", "dong": "현곡면",     "zone": 2, "operatingDays": [1,3,5], "minOrderAmount": 20000, "deliveryLeadDays": 1, "isActive": true },
+  { "areaCode": "GJ_CHEONBUK",   "sido": "경상북도", "sigungu": "경주시", "dong": "천북면",     "zone": 2, "operatingDays": [1,3,5], "minOrderAmount": 20000, "deliveryLeadDays": 1, "isActive": true },
+  { "areaCode": "GJ_GEONCHEON",  "sido": "경상북도", "sigungu": "경주시", "dong": "건천읍",     "zone": 2, "operatingDays": [1,3,5], "minOrderAmount": 20000, "deliveryLeadDays": 1, "isActive": true },
+  { "areaCode": "GJ_NAENAM",     "sido": "경상북도", "sigungu": "경주시", "dong": "내남면",     "zone": 2, "operatingDays": [1,3,5], "minOrderAmount": 20000, "deliveryLeadDays": 1, "isActive": true },
+  { "areaCode": "GJ_OEDONG",     "sido": "경상북도", "sigungu": "경주시", "dong": "외동읍",     "zone": 2, "operatingDays": [1,3,5], "minOrderAmount": 20000, "deliveryLeadDays": 1, "isActive": true },
+
+  { "areaCode": "GJ_ANGANG",     "sido": "경상북도", "sigungu": "경주시", "dong": "안강읍",     "zone": 3, "operatingDays": [2,4], "minOrderAmount": 25000, "deliveryLeadDays": 2, "isActive": true },
+  { "areaCode": "GJ_GANGDONG",   "sido": "경상북도", "sigungu": "경주시", "dong": "강동면",     "zone": 3, "operatingDays": [2,4], "minOrderAmount": 25000, "deliveryLeadDays": 2, "isActive": true },
+  { "areaCode": "GJ_SEOMYEON",   "sido": "경상북도", "sigungu": "경주시", "dong": "서면",       "zone": 3, "operatingDays": [2,4], "minOrderAmount": 25000, "deliveryLeadDays": 2, "isActive": true },
+  { "areaCode": "GJ_GAMPO",      "sido": "경상북도", "sigungu": "경주시", "dong": "감포읍",     "zone": 3, "operatingDays": [2,4], "minOrderAmount": 25000, "deliveryLeadDays": 2, "isActive": true },
+  { "areaCode": "GJ_MUNMU",      "sido": "경상북도", "sigungu": "경주시", "dong": "문무대왕면", "zone": 3, "operatingDays": [2,4], "minOrderAmount": 25000, "deliveryLeadDays": 2, "isActive": true, "aliases": ["양북면"] },
+  { "areaCode": "GJ_YANGNAM",    "sido": "경상북도", "sigungu": "경주시", "dong": "양남면",     "zone": 3, "operatingDays": [2,4], "minOrderAmount": 25000, "deliveryLeadDays": 2, "isActive": true },
+  { "areaCode": "GJ_SANNAE",     "sido": "경상북도", "sigungu": "경주시", "dong": "산내면",     "zone": 3, "operatingDays": [2,4], "minOrderAmount": 25000, "deliveryLeadDays": 2, "isActive": true }
+]
