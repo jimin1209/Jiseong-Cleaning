@@ -111,7 +111,10 @@ button{font:inherit; color:inherit; cursor:pointer; border:0; background:none}
 @media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important} }
 
 /* ── 셸 ───────────────────────────────────────────────── */
-.shell{min-height:100vh; display:flex; flex-direction:column}
+/* overflow-x:clip 은 스크롤 컨테이너를 만들지 않아 상단바 sticky 를 깨지 않는다.
+   (hidden 을 쓰면 sticky 가 동작하지 않는다) */
+.shell{min-height:100vh; display:flex; flex-direction:column; overflow-x:clip; max-width:100vw}
+.body, .stage, .rail, .panel{min-width:0}
 
 .topbar{
   display:flex; align-items:center; gap:20px; flex-wrap:wrap;
@@ -151,7 +154,8 @@ button{font:inherit; color:inherit; cursor:pointer; border:0; background:none}
 }
 .tbtn:hover{border-color:var(--accent); color:var(--accent)}
 .tbtn[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
-#toggleFit{display:none}   /* 모바일에서만 노출 */
+.fitsw{display:none}   /* 모바일에서만 노출 */
+.fitsw .role{padding:6px 11px; font-size:12px}
 
 /* ── 3단 본문 ─────────────────────────────────────────── */
 .body{display:grid; grid-template-columns:236px minmax(0,1fr) 320px; flex:1; align-items:start}
@@ -479,21 +483,25 @@ tr.hl td{background:var(--warn-soft)}
 @media (max-width:820px){
   body{font-size:14.5px}
 
-  .topbar{padding:7px 11px; gap:8px; row-gap:7px}
-  .brand{gap:0; margin-right:2px}
+  /* 1행: 로고 + 역할 + 결과보기 / 2행: 회원유형 + 표시방식 */
+  .topbar{padding:6px 10px; gap:7px; row-gap:6px}
+  .brand{gap:0; margin-right:2px; flex:none}
   .brand b, .bsub{display:none}
   .bmark{width:24px; height:24px}
-  .roles{padding:3px; gap:3px; overflow-x:auto; flex:1; -webkit-overflow-scrolling:touch}
+  .roles{padding:3px; gap:3px; overflow-x:auto; flex:1 1 auto; min-width:0; -webkit-overflow-scrolling:touch}
   .roles::-webkit-scrollbar{display:none}
-  .role{padding:6px 11px; font-size:12.5px}
-  .member{padding-left:0; border-left:0}
+  .role{padding:6px 11px; font-size:12.5px; flex:none}
+  .topbar-end{gap:5px; flex:none; margin-left:0}
+  .tbtn{padding:6px 10px; font-size:11.5px}
+
+  .member{padding-left:0; border-left:0; order:5; flex:none}
   .mlabel{display:none}
   .member .role{padding:5px 9px; font-size:11.5px}
-  .topbar-end{gap:5px}
-  .tbtn{padding:5px 9px; font-size:11.5px}
+  .fitsw{order:6; margin-left:auto}
   #togglePanel, #toggleTheme{display:none}
   .prog{display:none}
-  #toggleFit{display:inline-block}
+  .fitsw{display:flex; flex:none}
+  .fitsw .role{padding:5px 9px; font-size:11.5px}
 
   .body, .body.no-panel{grid-template-columns:1fr}
 
@@ -509,19 +517,24 @@ tr.hl td{background:var(--warn-soft)}
   .step .n{display:none}
   .step .dot{margin-left:0}
 
-  .stage{padding:10px 10px 20px; gap:8px}
-  .stage-head{text-align:left}
+  .stage{padding:10px 10px 20px; gap:8px; width:100%; min-width:0}
+  .stage-head{text-align:left; width:100%; min-width:0}
   .stage-head h1{font-size:15.5px; margin-bottom:1px}
   .stage-head p{font-size:12.5px; line-height:1.5}
   .note{padding:9px 13px; font-size:12.5px}
+
+  /* 컨테이너 폭을 뷰포트에 묶는다. 이게 없으면 내용 크기만큼 늘어나 가로로 잘린다. */
+  #scMount{width:100%; max-width:100%; min-width:0}
+  .device{width:100% !important; max-width:100% !important; min-width:0}
   .ndesc{margin:0 0 8px; padding-bottom:8px; border-bottom:1px solid var(--line); color:var(--ink-2)}
 
   /* [한 화면 맞춤] 모드 — 시안을 뷰포트 높이에 맞추고 내부에서 스크롤 */
+  /* 상단바 2행(약 84px) + 화면목록(약 46px) = 130px */
   body.fit .stage{
-    padding:10px 10px 10px; gap:7px;
-    height:calc(100vh - 94px);
-    height:calc(100dvh - 94px);
-    min-height:380px;
+    padding:8px 10px 8px; gap:6px;
+    height:calc(100vh - 130px);
+    height:calc(100dvh - 130px);
+    min-height:340px;
     overflow:hidden;
   }
   body.fit .stage-head{flex:none}
@@ -657,7 +670,10 @@ tr.hl td{background:var(--warn-soft)}
         <span class="bar"><i id="progBar" style="width:0%"></i></span>
         <span class="num" id="progText">0 / 15</span>
       </span>
-      <button class="tbtn" id="toggleFit" aria-pressed="true" title="시안을 한 화면에 맞출지 선택">한 화면</button>
+      <div class="roles fitsw" id="fitSwitch" role="group" aria-label="화면 표시 방식">
+        <button class="role" data-fit="1" aria-pressed="true">한 화면</button>
+        <button class="role" data-fit="0" aria-pressed="false">펼치기</button>
+      </div>
       <button class="tbtn" id="openResult">결과 보기</button>
       <button class="tbtn" id="togglePanel" aria-pressed="true">결정 패널</button>
       <button class="tbtn" id="toggleTheme">다크</button>
@@ -1602,19 +1618,22 @@ document.querySelectorAll('[data-member]').forEach(b=>{
   b.addEventListener('click', ()=>{ state.member = b.dataset.member; render(); });
 });
 
-/* 한 화면 맞춤 / 전체 펼치기 */
+/* 한 화면 맞춤 / 펼치기 */
 function applyFit(){
   document.body.classList.toggle('fit', state.fit);
-  const b = $('#toggleFit');
-  b.setAttribute('aria-pressed', String(state.fit));
-  b.textContent = state.fit ? '한 화면' : '펼쳐 보기';
+  document.querySelectorAll('[data-fit]').forEach(b=>
+    b.setAttribute('aria-pressed', String((b.dataset.fit === '1') === state.fit)));
   try{ localStorage.setItem('jc-fit', state.fit ? '1' : '0'); }catch(e){}
 }
-$('#toggleFit').addEventListener('click', ()=>{
-  state.fit = !state.fit;
-  applyFit();
-  render();
-  toast(state.fit ? '시안을 한 화면에 맞춥니다' : '전체를 펼쳐서 보여줍니다');
+document.querySelectorAll('[data-fit]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const next = b.dataset.fit === '1';
+    if(next === state.fit) return;
+    state.fit = next;
+    applyFit();
+    render();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
 });
 
 $('#jumpPanel').addEventListener('click', ()=>{
