@@ -221,7 +221,6 @@ button{font:inherit; color:inherit; cursor:pointer; border:0; background:none}
 .opt .mk{flex:none; width:14px; height:14px; border-radius:50%; border:1.5px solid var(--line-2); margin-top:2px}
 .opt[aria-pressed="true"]{border-color:var(--accent); background:var(--accent-soft); color:var(--accent); font-weight:650}
 .opt[aria-pressed="true"] .mk{border-color:var(--accent); background:var(--accent); box-shadow:inset 0 0 0 2.5px var(--accent-soft)}
-.opt .rectag{margin-left:auto; font-size:10px; color:var(--accent); font-weight:700; white-space:nowrap; padding-left:6px}
 .d .memo{
   margin-top:7px; width:100%; font:inherit; font-size:12px; color:var(--ink);
   border:1px solid var(--line-2); border-radius:7px; padding:7px 9px; background:var(--surface);
@@ -252,7 +251,6 @@ button{font:inherit; color:inherit; cursor:pointer; border:0; background:none}
 .ritem .tag{font-family:var(--mono); font-size:10px; letter-spacing:.06em; font-weight:700; color:var(--ink-3)}
 .ritem h3{margin:4px 0 8px; font-size:14.5px; font-weight:650}
 .ritem .pick{display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:650; color:var(--accent)}
-.ritem .pick.same{color:var(--ink-2); font-weight:500}
 .ritem .miss-t{font-size:13px; color:var(--ink-3)}
 .ritem .memo-out{
   margin-top:8px; font-size:12.5px; color:var(--ink-2); padding:8px 10px;
@@ -700,7 +698,7 @@ tr.hl td{background:var(--warn-soft)}
 
     <aside class="panel" id="panel">
       <h2>이 화면에서 결정할 사항</h2>
-      <p class="lede">화면을 보시면서 선택해 주세요. <b>제안</b> 표시는 실무에서 권해 드리는 안입니다. 선택을 마치신 뒤 우측 상단 <b>결과 보기</b>에서 회신해 주시면 됩니다.</p>
+      <p class="lede">화면을 보시면서 선택해 주세요. 보기에 없는 방향이 있으시면 아래 메모칸에 적어 주시면 됩니다. 선택을 마치신 뒤 우측 상단 <b>결과 보기</b>에서 회신해 주십시오.</p>
       <div class="dlist" id="dlist"></div>
     </aside>
   </div>
@@ -1552,9 +1550,9 @@ function renderPanel(sc){
       <span class="tag">${d.tag}${a.c!=null?' · 선택됨':''}</span>
       <h3>${d.h}</h3>
       <p>${d.p}</p>
-      <ul class="opts">${d.o.map(([t,rec],i)=>`
+      <ul class="opts">${d.o.map(([t],i)=>`
         <li><button class="opt" data-k="${d.k}" data-i="${i}" aria-pressed="${a.c===i}">
-          <span class="mk"></span><span>${esc(t)}</span>${rec?'<span class="rectag">제안</span>':''}
+          <span class="mk"></span><span>${esc(t)}</span>
         </button></li>`).join('')}
       </ul>
       <textarea class="memo" data-k="${d.k}" placeholder="다른 의견이나 조건이 있으면 적어주세요 (선택)">${esc(a.m||'')}</textarea>
@@ -1668,11 +1666,11 @@ function renderResult(){
         <div class="miss-t">아직 선택하지 않으셨습니다</div>
       </div>`;
     }
-    const [label, rec] = d.o[a.c];
+    const [label] = d.o[a.c];
     return `<div class="ritem">
       <span class="tag">${d.tag}</span>
       <h3>${d.h}</h3>
-      <div class="pick ${rec?'':'same'}">▸ ${esc(label)}${rec?' <span class="chip acc">제안과 동일</span>':' <span class="chip warn">제안과 다름</span>'}</div>
+      <div class="pick">▸ ${esc(label)}</div>
       ${a.m?`<div class="memo-out">${esc(a.m)}</div>`:''}
     </div>`;
   }).join('');
@@ -1691,8 +1689,8 @@ function summaryMd(){
     const d = D[k], a = ans[k] || {};
     s += `## ${d.tag} ${d.h}\n\n`;
     if(a.c == null){ s += `- **아직 미정**\n\n`; return; }
-    const [label, rec] = d.o[a.c];
-    s += `- **선택:** ${label} ${rec ? '(제안대로)' : '(제안과 다름 ⚠)'}\n`;
+    const [label] = d.o[a.c];
+    s += `- **선택:** ${label}\n`;
     if(a.m) s += `- **의견:** ${a.m}\n`;
     s += `\n`;
   });
@@ -1708,8 +1706,8 @@ function summaryText(){
     const d = D[k], a = ans[k] || {};
     const title = d.h;
     if(a.c == null){ s += `· ${title}\n  → 미정\n`; return; }
-    const [label, rec] = d.o[a.c];
-    s += `· ${title}\n  → ${label}${rec ? '' : ' (기본안과 다름)'}\n`;
+    const [label] = d.o[a.c];
+    s += `· ${title}\n  → ${label}\n`;
     if(a.m) s += `  메모: ${a.m}\n`;
   });
   s += `\n결과 코드: ${encodeAns()}`;
