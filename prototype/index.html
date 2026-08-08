@@ -6,7 +6,6 @@
 <title>지성클리닝 — 서비스 목업 (회의용)</title>
 </head>
 <body>
-<!-- ARTIFACT-BEGIN -->
 <style>
 /* ── 토큰 ─────────────────────────────────────────────── */
 :root{
@@ -442,15 +441,46 @@ tr.hl td{background:var(--warn-soft)}
       </div>
       <div id="rList" class="stack"></div>
       <div class="stack s">
-        <span class="eyebrow">결과 보내기</span>
-        <div class="linkbox">
-          <input id="rLink" readonly aria-label="결과 링크">
-          <button class="btn row" id="copyLink">링크 복사</button>
+        <span class="eyebrow">결과 보내기 — 셋 중 편하신 방법으로</span>
+
+        <div class="card stack s">
+          <div class="rowb"><span class="bold sm">① 결과 코드</span><span class="chip acc">가장 간단</span></div>
+          <p class="xs dim" style="margin:0">아래 코드를 복사해 카톡·문자로 보내주세요. 담당자가 붙여넣으면 그대로 복원됩니다.</p>
+          <div class="linkbox">
+            <input id="rCode" readonly aria-label="결과 코드">
+            <button class="btn row" id="copyCode">코드 복사</button>
+          </div>
         </div>
-        <p class="xs dim" style="margin:0">이 링크를 담당자에게 보내주시면 선택하신 내용이 그대로 열립니다.</p>
+
+        <div class="card stack s">
+          <div class="bold sm">② 요약 글로 보내기</div>
+          <p class="xs dim" style="margin:0">읽을 수 있는 문장으로 복사됩니다. 그대로 붙여넣어 보내시면 됩니다.</p>
+          <div class="actions">
+            <button class="btn row ghost" id="copyText">요약 복사</button>
+            <button class="btn row ghost" id="dlSummary">요약 파일 저장 (.md)</button>
+          </div>
+        </div>
+
+        <div class="card stack s" id="linkCard">
+          <div class="bold sm">③ 링크로 보내기</div>
+          <div class="linkbox">
+            <input id="rLink" readonly aria-label="결과 링크">
+            <button class="btn row" id="copyLink">링크 복사</button>
+          </div>
+        </div>
       </div>
+
+      <div class="card stack s">
+        <span class="eyebrow">받은 결과 열기 — 담당자용</span>
+        <p class="xs dim" style="margin:0">전달받은 결과 코드를 여기에 붙여넣으세요.</p>
+        <div class="linkbox" style="border-color:var(--line-2); background:var(--ground)">
+          <input id="inCode" placeholder="결과 코드 붙여넣기" aria-label="결과 코드 입력"
+                 style="color:var(--ink)">
+          <button class="btn row ghost" id="applyCode">불러오기</button>
+        </div>
+      </div>
+
       <div class="actions">
-        <button class="btn row ghost" id="dlSummary">요약 파일 내려받기 (.md)</button>
         <button class="btn row ghost" id="resetAll">전부 지우기</button>
       </div>
     </div>
@@ -1252,7 +1282,10 @@ function renderResult(){
     </div>`;
   }).join('');
 
+  $('#rCode').value = encodeAns() || '(아직 선택한 항목이 없습니다)';
   $('#rLink').value = resultLink();
+  // 파일로 열었을 때는 링크가 상대방 PC에서 열리지 않으므로 숨긴다
+  $('#linkCard').style.display = location.protocol === 'file:' ? 'none' : '';
 }
 
 function summaryMd(){
@@ -1268,7 +1301,23 @@ function summaryMd(){
     if(a.m) s += `- **의견:** ${a.m}\n`;
     s += `\n`;
   });
-  s += `---\n\n결과 링크\n\n    ${resultLink()}\n`;
+  s += `---\n\n결과 코드\n\n    ${encodeAns()}\n`;
+  return s;
+}
+
+/* 카톡·문자에 그대로 붙여넣을 수 있는 평문 요약 */
+function summaryText(){
+  const n = answeredCount(), t = D_KEYS.length;
+  let s = `[지성클리닝] 설계 결정 사항 (${n}/${t})\n\n`;
+  D_KEYS.forEach(k=>{
+    const d = D[k], a = ans[k] || {};
+    const title = d.h;
+    if(a.c == null){ s += `· ${title}\n  → 미정\n`; return; }
+    const [label, rec] = d.o[a.c];
+    s += `· ${title}\n  → ${label}${rec ? '' : ' (기본안과 다름)'}\n`;
+    if(a.m) s += `  메모: ${a.m}\n`;
+  });
+  s += `\n결과 코드: ${encodeAns()}`;
   return s;
 }
 
@@ -1278,32 +1327,56 @@ function closeResult(){ $('#result').classList.remove('on'); $('#result').setAtt
 $('#openResult').addEventListener('click', openResult);
 $('#closeResult').addEventListener('click', closeResult);
 
-$('#copyLink').addEventListener('click', async ()=>{
-  const v = $('#rLink').value;
-  try{ await navigator.clipboard.writeText(v); toast('링크를 복사했습니다'); }
+async function copyToClipboard(text, okMsg){
+  try{ await navigator.clipboard.writeText(text); toast(okMsg); return true; }
   catch(e){
-    $('#rLink').select();
-    try{ document.execCommand('copy'); toast('링크를 복사했습니다'); }
-    catch(e2){ toast('복사가 안 됩니다. 링크를 직접 선택해 주세요'); }
+    // 보안 컨텍스트가 아닐 때(파일로 직접 열기 등) 폴백
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try{ ok = document.execCommand('copy'); }catch(e2){}
+    document.body.removeChild(ta);
+    toast(ok ? okMsg : '복사가 안 됩니다. 직접 선택해 복사해 주세요');
+    return ok;
+  }
+}
+
+$('#copyCode').addEventListener('click', ()=>{
+  const v = encodeAns();
+  if(!v){ toast('먼저 항목을 선택해 주세요'); return; }
+  copyToClipboard(v, '결과 코드를 복사했습니다');
+});
+$('#copyLink').addEventListener('click', ()=> copyToClipboard($('#rLink').value, '링크를 복사했습니다'));
+$('#copyText').addEventListener('click', ()=> copyToClipboard(summaryText(), '요약을 복사했습니다'));
+
+$('#applyCode').addEventListener('click', ()=>{
+  const v = $('#inCode').value.trim();
+  if(!v){ toast('결과 코드를 붙여넣어 주세요'); return; }
+  const code = v.includes('#r=') ? v.split('#r=')[1].split('&')[0] : v;
+  D_KEYS.forEach(k=> delete ans[k]);
+  if(decodeAns(code)){
+    saveLocal(); updateProgress(); renderResult(); render();
+    $('#rTitle').textContent = '전달받은 결정 사항';
+    $('#inCode').value = '';
+    toast('불러왔습니다');
+  }else{
+    toast('코드를 읽을 수 없습니다. 다시 확인해 주세요');
   }
 });
 
-$('#dlSummary').addEventListener('click', async ()=>{
+$('#dlSummary').addEventListener('click', ()=>{
   const md = summaryMd();
-  if(window.claude && window.claude.downloads){
-    try{
-      await window.claude.downloads.save({filename:'지성클리닝-결정사항.md', data:md});
-      toast('저장했습니다');
-    }catch(err){
-      const c = err && err.code;
-      if(c === 'declined') return;
-      if(c === 'rate_limited'){ toast('잠시 후 다시 눌러주세요'); return; }
-      try{ await navigator.clipboard.writeText(md); toast('저장이 안 되어 클립보드에 복사했습니다'); }
-      catch(e2){ toast('저장할 수 없습니다'); }
-    }
-  }else{
-    try{ await navigator.clipboard.writeText(md); toast('요약을 클립보드에 복사했습니다'); }
-    catch(e){ toast('이 환경에서는 내려받기가 안 됩니다'); }
+  try{
+    const blob = new Blob([md], {type:'text/markdown;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = '지성클리닝-결정사항.md';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    toast('파일을 저장했습니다');
+  }catch(e){
+    copyToClipboard(md, '저장이 안 되어 클립보드에 복사했습니다');
   }
 });
 
@@ -1351,6 +1424,5 @@ if(fromLink){
   openResult();
 }
 </script>
-<!-- ARTIFACT-END -->
 </body>
 </html>
