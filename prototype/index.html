@@ -396,12 +396,28 @@ tr.hl td{background:var(--warn-soft)}
 .kcard .id{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
 .kcard .it{font-weight:600; margin-top:2px}
 
-/* 주석 말풍선 */
+/* 설명 (접을 수 있음) */
 .note{
   max-width:860px; width:100%; border:1px dashed var(--line-2); border-radius:var(--r);
-  padding:13px 15px; font-size:13px; color:var(--ink-2); background:var(--surface);
+  padding:11px 15px; font-size:13px; color:var(--ink-2); background:var(--surface);
 }
+.note summary{
+  cursor:pointer; list-style:none; font-size:11px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-3); display:flex; align-items:center; gap:7px;
+}
+.note summary::-webkit-details-marker{display:none}
+.note summary::after{content:"▾"; margin-left:auto; font-size:10px; transition:transform .2s}
+.note[open] summary::after{transform:rotate(180deg)}
+.note[open] summary{margin-bottom:9px}
 .note b{color:var(--ink)}
+
+/* 결정 사항으로 건너뛰기 (모바일) */
+.jump{
+  display:none; position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:40;
+  background:var(--ink); color:var(--ground); padding:10px 18px; border-radius:22px;
+  font-size:13px; font-weight:650; box-shadow:var(--shadow-lg);
+}
+.jump.on{display:block}
 
 .footer{
   padding:22px 30px 40px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-3);
@@ -418,18 +434,18 @@ tr.hl td{background:var(--warn-soft)}
 @media (max-width:820px){
   body{font-size:14.5px}
 
-  .topbar{padding:10px 13px; gap:9px; row-gap:9px}
-  .brand{margin-right:0}
-  .brand b{font-size:15.5px}
-  .brand span{display:none}
-  .roles{padding:3px; gap:3px; overflow-x:auto; max-width:100%; -webkit-overflow-scrolling:touch}
+  .topbar{padding:7px 11px; gap:7px; row-gap:7px}
+  .brand{display:none}
+  .roles{padding:3px; gap:3px; overflow-x:auto; flex:1; -webkit-overflow-scrolling:touch}
   .roles::-webkit-scrollbar{display:none}
-  .role{padding:6px 12px; font-size:12.5px}
-  .member{order:3; width:100%; padding-left:0; border-left:0; padding-top:8px; border-top:1px solid var(--line)}
-  .topbar-end{gap:6px}
-  .tbtn{padding:6px 10px; font-size:11.5px}
-  #togglePanel{display:none}
-  .prog .bar{width:38px}
+  .role{padding:6px 11px; font-size:12.5px}
+  .member{padding-left:0; border-left:0}
+  .mlabel{display:none}
+  .member .role{padding:5px 9px; font-size:11.5px}
+  .topbar-end{gap:5px}
+  .tbtn{padding:5px 9px; font-size:11.5px}
+  #togglePanel, #toggleTheme{display:none}
+  .prog{display:none}
 
   .body, .body.no-panel{grid-template-columns:1fr}
 
@@ -445,12 +461,24 @@ tr.hl td{background:var(--warn-soft)}
   .step .n{display:none}
   .step .dot{margin-left:0}
 
-  .stage{padding:18px 12px 26px; gap:14px}
-  .stage-head h1{font-size:17px}
-  .stage-head p{font-size:13px}
-  .note{padding:12px 13px; font-size:12.5px}
+  .stage{padding:12px 10px 22px; gap:10px}
+  .stage-head{text-align:left}
+  .stage-head h1{font-size:16px; margin-bottom:2px}
+  .stage-head p{font-size:12.5px; line-height:1.5}
+  .note{padding:10px 13px; font-size:12.5px}
 
-  .device.phone{width:100%; max-width:100%; border-radius:16px}
+  /* 폰 안에서 폰 프레임을 또 그리지 않는다 — 공간 낭비 */
+  .device.phone{
+    width:100%; max-width:100%; border:0; border-radius:0;
+    box-shadow:none; background:transparent;
+  }
+  .device.phone .statusbar{display:none}
+  .device.phone .appbar{padding:2px 2px 12px}
+  .device.phone .vp{padding:14px 2px 16px}
+  .device.phone .tabbar{
+    border-radius:10px; border:1px solid var(--line); margin-top:4px; overflow:hidden;
+  }
+
   .device.tablet, .device.desk{border-radius:10px}
   .vp{padding:14px 14px 18px}
 
@@ -579,7 +607,10 @@ tr.hl td{background:var(--warn-soft)}
         <p id="scDesc"></p>
       </div>
       <div id="scMount"></div>
-      <div class="note" id="scNote"></div>
+      <details class="note" id="scNote" open>
+        <summary>이 화면에서 보실 점</summary>
+        <div id="scNoteBody"></div>
+      </details>
     </main>
 
     <aside class="panel" id="panel">
@@ -645,6 +676,7 @@ tr.hl td{background:var(--warn-soft)}
     </div>
   </section>
 
+  <button class="jump" id="jumpPanel">이 화면 결정 <span id="jumpN">0</span>개 보기 ↓</button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <footer class="footer">
@@ -756,7 +788,7 @@ customer:[
   id:'home', nav:'홈',
   title:'고객 홈',
   desc:'진행 중인 주문이 있으면 가장 먼저 보이고, 없으면 수거 신청 버튼이 화면 중심에 놓입니다.',
-  note:'<b>보실 점:</b> 고객이 앱을 여는 이유는 둘 중 하나입니다. 새로 맡기거나, 맡긴 세탁물이 어디까지 왔는지 확인하거나. 그래서 이 두 가지만 크게 배치했습니다. 상단의 <b>회원 유형</b>을 바꾸시면 구독 회원과 일반(건별) 회원의 화면을 비교하실 수 있습니다.',
+  note:'고객이 앱을 여는 이유는 둘 중 하나입니다. 새로 맡기거나, 맡긴 세탁물이 어디까지 왔는지 확인하거나. 그래서 이 두 가지만 크게 배치했습니다. 상단의 <b>회원 유형</b>을 바꾸시면 구독 회원과 일반(건별) 회원의 화면을 비교하실 수 있습니다.',
   d:[],
   html: m => phone(
     appbar('지성클리닝','🔔 <span class="badge-n">2</span>'),
@@ -793,7 +825,7 @@ customer:[
   id:'order', nav:'수거 신청', warn:true,
   title:'수거 신청 (4단계)',
   desc:'주소 → 날짜·시간 → 품목 → 확인 순서로 진행되며, 마지막에 예상 금액과 배송 예정일을 함께 안내합니다.',
-  note:'<b>보실 점:</b> 안강읍은 달력에서 화·목요일만 열립니다. 권역별 운영일이 그대로 반영된 화면입니다. 또한 <b>“최종 금액은 검수 후 확정”</b> 안내를 넣었습니다. 이 안내가 없으면 이후 추가 금액 승인 단계에서 불만이 집중됩니다.',
+  note:'안강읍은 달력에서 화·목요일만 열립니다. 권역별 운영일이 그대로 반영된 화면입니다. 또한 <b>“최종 금액은 검수 후 확정”</b> 안내를 넣었습니다. 이 안내가 없으면 이후 추가 금액 승인 단계에서 불만이 집중됩니다.',
   d:[D.minOrder, D.zone, D.leadtime],
   html: phone(
     appbar('수거 신청','<span class="sm dim">4단계 중 2</span>'),
@@ -834,7 +866,7 @@ customer:[
   id:'confirm', nav:'신청 확인',
   title:'신청 확인',
   desc:'예상 금액과 구독 차감, 배송 예정일을 한 화면에서 확인한 뒤 접수합니다.',
-  note:'<b>보실 점:</b> 회원 유형을 바꿔보시면 <b>건별 고객에게는 구독 차감 항목이 없고 전액이 청구</b>됩니다. 구독은 선택 사항이며 가입해야만 이용할 수 있는 구조가 아닙니다. 한 가지 더, 3권역은 배송일이 단순 계산으로 나오지 않습니다. 화요일에 이불(소요 4일)을 수거하면 4일 뒤가 토요일인데 그날은 운행하지 않으므로 실제로는 <b>다음 주 화요일</b>이 됩니다.',
+  note:'회원 유형을 바꿔보시면 <b>건별 고객에게는 구독 차감 항목이 없고 전액이 청구</b>됩니다. 구독은 선택 사항이며 가입해야만 이용할 수 있는 구조가 아닙니다. 한 가지 더, 3권역은 배송일이 단순 계산으로 나오지 않습니다. 화요일에 이불(소요 4일)을 수거하면 4일 뒤가 토요일인데 그날은 운행하지 않으므로 실제로는 <b>다음 주 화요일</b>이 됩니다.',
   d:[D.minOrder, D.guestPay],
   html: m => phone(
     appbar('신청 확인','<span class="sm dim">4단계 중 4</span>'),
@@ -879,7 +911,7 @@ customer:[
   id:'track', nav:'주문 추적',
   title:'주문 추적',
   desc:'진행 상태와 사진, 금액 내역, 세탁소가 확인한 특이사항까지 한 화면에서 볼 수 있습니다.',
-  note:'<b>보실 점:</b> 세탁소가 발견한 기존 오염을 사진과 함께 <b>미리</b> 안내합니다. 배송이 끝난 뒤에 설명하면 고객은 세탁 과정에서 생긴 문제로 받아들입니다.',
+  note:'세탁소가 발견한 기존 오염을 사진과 함께 <b>미리</b> 안내합니다. 배송이 끝난 뒤에 설명하면 고객은 세탁 과정에서 생긴 문제로 받아들입니다.',
   d:[D.driverContact],
   html: m => phone(
     appbar('JC20260808-0001'),
@@ -923,7 +955,7 @@ customer:[
   id:'quote', nav:'추가금 승인', warn:true,
   title:'추가 금액 승인',
   desc:'검수 결과 금액이 예상보다 늘었을 때만 나타납니다. 승인 전에는 세탁을 시작하지 않습니다.',
-  note:'<b>보실 점:</b> 세탁은 봉투를 열어봐야 최종 금액을 알 수 있습니다. 그래서 선결제가 아니라 <b>검수 후 청구</b> 구조로 설계했습니다. 이 화면이 서비스 전체 설계의 중심입니다.',
+  note:'세탁은 봉투를 열어봐야 최종 금액을 알 수 있습니다. 그래서 선결제가 아니라 <b>검수 후 청구</b> 구조로 설계했습니다. 이 화면이 서비스 전체 설계의 중심입니다.',
   d:[D.threshold, D.noResponse],
   html: phone(
     appbar('확인이 필요합니다'),
@@ -957,7 +989,7 @@ customer:[
   id:'sub', nav:'구독', warn:true,
   title:'구독 플랜',
   desc:'자주 이용하시는 고객을 위한 선택 상품입니다. 가입하지 않아도 건별로 동일하게 이용할 수 있습니다.',
-  note:'<b>보실 점:</b> 구독은 <b>선택 사항</b>으로 설계했습니다. 첫 고객은 대부분 건별로 시작하고, 이용이 잦아지면 구독으로 넘어오는 흐름입니다. 표시된 금액은 모두 초안이며, 특히 <b>회당 한도</b>가 손익을 좌우합니다. 한도를 모두 사용하는 고객 비중이 높으면 판매할수록 손실이 납니다.',
+  note:'구독은 <b>선택 사항</b>으로 설계했습니다. 첫 고객은 대부분 건별로 시작하고, 이용이 잦아지면 구독으로 넘어오는 흐름입니다. 표시된 금액은 모두 초안이며, 특히 <b>회당 한도</b>가 손익을 좌우합니다. 한도를 모두 사용하는 고객 비중이 높으면 판매할수록 손실이 납니다.',
   d:[D.planPrice, D.margin],
   html: m => phone(
     appbar('구독 플랜'),
@@ -1001,7 +1033,7 @@ driver:[
   id:'today', nav:'오늘의 배차', warn:true,
   title:'기사 — 당일 배차',
   desc:'수거와 배송이 시간순으로 함께 표시됩니다. 기사는 위에서부터 순서대로 처리하면 됩니다.',
-  note:'<b>보실 점:</b> 담당 직원은 이동 중에, 장갑을 낀 채로, 야외 조도에서 이 화면을 봅니다. 그래서 버튼을 크게 두고 한 화면에 담는 정보량을 줄였습니다.',
+  note:'담당 직원은 이동 중에, 장갑을 낀 채로, 야외 조도에서 이 화면을 봅니다. 그래서 버튼을 크게 두고 한 화면에 담는 정보량을 줄였습니다.',
   d:[D.driverHire, D.driverHours, D.zone],
   html: phone(
     appbar('8월 8일 (금)','김기사'),
@@ -1044,7 +1076,7 @@ driver:[
   id:'pickup', nav:'수거 완료',
   title:'수거 완료 처리',
   desc:'사진을 찍고 봉투 개수를 입력하면 끝납니다. 입력이 번거로우면 기사가 앱을 쓰지 않게 됩니다.',
-  note:'<b>보실 점:</b> 사진은 분쟁이 생겼을 때 <b>사실상 유일한 증거</b>입니다. 필수로 할지, 몇 장을 남길지가 오늘 정하실 부분입니다.',
+  note:'사진은 분쟁이 생겼을 때 <b>사실상 유일한 증거</b>입니다. 필수로 할지, 몇 장을 남길지가 오늘 정하실 부분입니다.',
   d:[D.photo],
   html: phone(
     appbar('수거 완료','<span class="num sm dim">JC…0001</span>'),
@@ -1079,7 +1111,7 @@ factory:[
   id:'board', nav:'작업 보드',
   title:'세탁공장 — 작업 현황',
   desc:'입고부터 출고까지 단계별로 한눈에 보입니다. 카드를 옮기면 상태가 바뀝니다.',
-  note:'<b>보실 점:</b> 공장에서 앱을 실제로 사용하는 사람은 <b>검수 담당 한 명</b>입니다. 하루 120건이면 검수에만 약 5시간이 듭니다. 이 담당자가 서비스 전체의 병목이 됩니다.',
+  note:'공장에서 앱을 실제로 사용하는 사람은 <b>검수 담당 한 명</b>입니다. 하루 120건이면 검수에만 약 5시간이 듭니다. 이 담당자가 서비스 전체의 병목이 됩니다.',
   d:[D.factoryStaff],
   html: tablet(
     appbar('지성클리닝 세탁센터','오늘 입고 12 · 출고 9　<span class="chip acc">QR 스캔</span>'),
@@ -1106,7 +1138,7 @@ factory:[
   id:'inspect', nav:'검수 입력', warn:true,
   title:'검수 입력 — 최종 금액 확정',
   desc:'실제 수량을 확인하고 특이사항을 남기면 그 결과로 고객 청구액이 정해집니다.',
-  note:'<b>보실 점:</b> 시스템에서 가장 중요한 화면입니다. 여기 입력한 숫자가 그대로 고객에게 청구됩니다. 또한 <b>기존 오염·손상은 반드시 사진으로</b> 남겨야 세탁 과정에서 생긴 문제라는 주장에 대응할 수 있습니다.',
+  note:'시스템에서 가장 중요한 화면입니다. 여기 입력한 숫자가 그대로 고객에게 청구됩니다. 또한 <b>기존 오염·손상은 반드시 사진으로</b> 남겨야 세탁 과정에서 생긴 문제라는 주장에 대응할 수 있습니다.',
   d:[D.threshold, D.factoryStaff],
   html: tablet(
     appbar('검수 · JC20260808-0001','고객 최○○　요청: 풀 먹여주세요'),
@@ -1147,7 +1179,7 @@ admin:[
   id:'dash', nav:'대시보드',
   title:'관리자 대시보드 — 당일 현황',
   desc:'당일 수치와 지금 조치가 필요한 항목만 보여줍니다. 나머지는 표시하지 않습니다.',
-  note:'<b>보실 점:</b> 매일 아침 이 화면만 확인하시면 됩니다. 위쪽은 당일 현황, 아래는 <b>조치가 필요한 목록</b>입니다. 여기 표시된 항목을 처리하면 그날 관리 업무는 마무리됩니다.',
+  note:'매일 아침 이 화면만 확인하시면 됩니다. 위쪽은 당일 현황, 아래는 <b>조치가 필요한 목록</b>입니다. 여기 표시된 항목을 처리하면 그날 관리 업무는 마무리됩니다.',
   d:[],
   html: adminShell({nav:'대시보드', url:'/'},
     `<div class="rowb"><h3>대시보드</h3><span class="sm dim num">2026-08-08 (금)</span></div>
@@ -1185,7 +1217,7 @@ admin:[
   id:'dispatch', nav:'배차 보드', warn:true,
   title:'배차 관리',
   desc:'기사와 시간대를 격자로 놓고 배정합니다. 아래 미배차 건을 끌어다 올리면 배차됩니다.',
-  note:'<b>보실 점:</b> 직원 1명이 하루에 실제로 처리할 수 있는 양은 <b>25건</b>이 한계입니다. 시간대 정원을 그보다 크게 잡으면 주문은 받아 놓고 방문하지 못하는 상황이 생깁니다. 인원을 몇 명으로 두실지가 이 화면의 전제입니다.',
+  note:'직원 1명이 하루에 실제로 처리할 수 있는 양은 <b>25건</b>이 한계입니다. 시간대 정원을 그보다 크게 잡으면 주문은 받아 놓고 방문하지 못하는 상황이 생깁니다. 인원을 몇 명으로 두실지가 이 화면의 전제입니다.',
   d:[D.driverHire, D.driverHours],
   html: adminShell({nav:'배차', url:'/dispatch'},
     `<div class="rowb"><h3>배차 관리</h3><span class="sm dim">◀ 2026-08-09 (토) ▶ · 미배차 7건</span></div>
@@ -1223,7 +1255,7 @@ admin:[
   id:'prices', nav:'요금표 설정', warn:true,
   title:'요금표 관리',
   desc:'개발자 없이 화면에서 단가를 수정합니다. 저장 전에 매출이 얼마나 달라지는지 먼저 확인할 수 있습니다.',
-  note:'<b>보실 점:</b> 현재 들어 있는 46종 단가는 <b>타사 공개 요금을 참고해 작성한 초안</b>입니다. 실제 원가를 아시는 분의 검토가 필요합니다. 오늘은 주요 품목만 짚어주셔도 충분합니다.',
+  note:'현재 들어 있는 46종 단가는 <b>타사 공개 요금을 참고해 작성한 초안</b>입니다. 실제 원가를 아시는 분의 검토가 필요합니다. 오늘은 주요 품목만 짚어주셔도 충분합니다.',
   d:[D.prices, D.premium],
   html: adminShell({nav:'요금표', url:'/settings/prices'},
     `<div class="rowb"><h3>세탁 요금표</h3><span class="sm dim">변경 이력 · 엑셀 · 품목 추가</span></div>
@@ -1260,7 +1292,7 @@ admin:[
   id:'comp', nav:'배상 기준', warn:true,
   title:'배상 기준',
   desc:'품목군별 내용연수와 사용 기간에 따른 배상 비율을 미리 정해 둡니다.',
-  note:'<b>보실 점:</b> 세탁물 분실·손상은 <b>언젠가 반드시 발생합니다.</b> 그때마다 즉흥적으로 정하면 고객마다 금액이 달라져 분쟁으로 이어집니다. 이 표는 <b>이용약관에 그대로 실려 법적 효력</b>을 가지므로, 오늘은 방향만 정하시고 최종안은 법률 자문을 받으시는 편이 좋겠습니다.',
+  note:'세탁물 분실·손상은 <b>언젠가 반드시 발생합니다.</b> 그때마다 즉흥적으로 정하면 고객마다 금액이 달라져 분쟁으로 이어집니다. 이 표는 <b>이용약관에 그대로 실려 법적 효력</b>을 가지므로, 오늘은 방향만 정하시고 최종안은 법률 자문을 받으시는 편이 좋겠습니다.',
   d:[D.comp],
   html: adminShell({nav:'배상 기준', url:'/settings/comp'},
     `<div class="rowb"><h3>배상 기준</h3><span class="chip danger">약관에 반영됨</span></div>
@@ -1305,7 +1337,7 @@ function renderFlow(){
       <span class="n">${i+1}</span><span>${s.nav}</span>${s.warn?'<span class="dot"></span>':''}
     </button>`).join('');
   $('#flow').querySelectorAll('.step').forEach(b=>{
-    b.addEventListener('click', ()=>{ state.idx = +b.dataset.i; render(); });
+    b.addEventListener('click', ()=>{ state.idx = +b.dataset.i; render(true); });
   });
 }
 
@@ -1391,15 +1423,30 @@ function renderPanel(sc){
   });
 }
 
-function render(){
+const isMobile = () => window.matchMedia('(max-width:820px)').matches;
+
+function render(scrollToTop){
   const sc = SCREENS[state.role][state.idx];
   $('#scTitle').textContent = sc.title;
   $('#scDesc').textContent = sc.desc;
   $('#scMount').innerHTML = typeof sc.html === 'function' ? sc.html(state.member) : sc.html;
-  $('#scNote').innerHTML = sc.note;
+  $('#scNoteBody').innerHTML = sc.note;
+  // 모바일에서는 설명을 접어 두고, 화면부터 보이게 한다
+  $('#scNote').open = !isMobile();
   $('#member').classList.toggle('on', state.role === 'customer');
   renderFlow();
   renderPanel(sc);
+
+  // 결정 사항으로 건너뛰기 버튼
+  const jump = $('#jumpPanel');
+  jump.classList.toggle('on', isMobile() && sc.d.length > 0);
+  $('#jumpN').textContent = sc.d.length;
+
+  // 화면을 바꾸면 목업이 바로 보이도록 이동
+  if(scrollToTop && isMobile()){
+    const y = $('#scMount').getBoundingClientRect().top + window.scrollY - 96;
+    window.scrollTo({top:Math.max(0,y), behavior:'smooth'});
+  }
   document.querySelectorAll('[data-role]').forEach(b=>
     b.setAttribute('aria-pressed', String(b.dataset.role===state.role)));
   document.querySelectorAll('[data-member]').forEach(b=>
@@ -1407,10 +1454,20 @@ function render(){
 }
 
 document.querySelectorAll('[data-role]').forEach(b=>{
-  b.addEventListener('click', ()=>{ state.role = b.dataset.role; state.idx = 0; render(); });
+  b.addEventListener('click', ()=>{ state.role = b.dataset.role; state.idx = 0; render(true); });
 });
 document.querySelectorAll('[data-member]').forEach(b=>{
   b.addEventListener('click', ()=>{ state.member = b.dataset.member; render(); });
+});
+
+$('#jumpPanel').addEventListener('click', ()=>{
+  const y = $('#panel').getBoundingClientRect().top + window.scrollY - 12;
+  window.scrollTo({top:y, behavior:'smooth'});
+});
+
+window.addEventListener('resize', ()=>{
+  const sc = SCREENS[state.role][state.idx];
+  $('#jumpPanel').classList.toggle('on', isMobile() && sc.d.length > 0);
 });
 
 /* ── 결과 화면 ────────────────────────────────────────── */
