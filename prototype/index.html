@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>지성클리닝 — 서비스 목업 (회의용)</title>
+</head>
+<body>
+<!-- ARTIFACT-BEGIN -->
+<style>
+/* ── 토큰 ─────────────────────────────────────────────── */
+:root{
+  --ground:#F5F4F0; --surface:#FFFFFF; --surface-2:#EEEDE7; --surface-3:#E4E2DA;
+  --line:#DBD9D1; --line-2:#C8C5BA;
+  --ink:#1B211F; --ink-2:#5A6462; --ink-3:#8B928F;
+  --accent:#0E7C6B; --accent-2:#0B6255; --accent-ink:#FFFFFF; --accent-soft:#DBEDE8;
+  --warn:#8F540E; --warn-soft:#F7EBD8; --danger:#A32B26; --danger-soft:#F8E3E1;
+  --ok:#2C7A3F; --ok-soft:#E1EFE4; --info-soft:#E5EAF0;
+  --shadow: 0 1px 2px rgba(27,33,31,.05), 0 8px 24px -12px rgba(27,33,31,.18);
+  --shadow-lg: 0 2px 6px rgba(27,33,31,.06), 0 24px 60px -24px rgba(27,33,31,.3);
+  --r:10px; --r-lg:16px;
+  --kr: "Pretendard Variable", Pretendard, -apple-system, "Segoe UI", "Malgun Gothic",
+        "Apple SD Gothic Neo", system-ui, sans-serif;
+  --mono: "Cascadia Mono", Consolas, "D2Coding", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#111614; --surface:#191F1D; --surface-2:#212927; --surface-3:#2A3331;
+    --line:#2C3634; --line-2:#3A4543;
+    --ink:#E9ECEA; --ink-2:#A2ACA8; --ink-3:#78827E;
+    --accent:#3FBFA6; --accent-2:#5FD3BC; --accent-ink:#08201B; --accent-soft:#17322C;
+    --warn:#DFA45C; --warn-soft:#2F2617; --danger:#E88C86; --danger-soft:#33201E;
+    --ok:#6FC080; --ok-soft:#1A2D20; --info-soft:#1D262E;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    --shadow-lg: 0 2px 6px rgba(0,0,0,.5), 0 24px 60px -24px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#111614; --surface:#191F1D; --surface-2:#212927; --surface-3:#2A3331;
+  --line:#2C3634; --line-2:#3A4543;
+  --ink:#E9ECEA; --ink-2:#A2ACA8; --ink-3:#78827E;
+  --accent:#3FBFA6; --accent-2:#5FD3BC; --accent-ink:#08201B; --accent-soft:#17322C;
+  --warn:#DFA45C; --warn-soft:#2F2617; --danger:#E88C86; --danger-soft:#33201E;
+  --ok:#6FC080; --ok-soft:#1A2D20; --info-soft:#1D262E;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  --shadow-lg: 0 2px 6px rgba(0,0,0,.5), 0 24px 60px -24px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--kr); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit; color:inherit; cursor:pointer; border:0; background:none}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+@media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important} }
+
+/* ── 셸 ───────────────────────────────────────────────── */
+.shell{min-height:100vh; display:flex; flex-direction:column}
+
+.topbar{
+  display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  padding:14px 22px; background:var(--surface); border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:20;
+}
+.brand{display:flex; align-items:baseline; gap:10px; margin-right:4px}
+.brand b{font-size:17px; font-weight:700; letter-spacing:-.02em}
+.brand span{font-size:11.5px; color:var(--ink-3); letter-spacing:.14em; text-transform:uppercase}
+
+.roles{display:flex; gap:4px; background:var(--surface-2); padding:4px; border-radius:var(--r)}
+.role{
+  padding:7px 15px; border-radius:7px; font-size:13.5px; font-weight:600; color:var(--ink-2);
+  transition:background .15s, color .15s; white-space:nowrap;
+}
+.role:hover{color:var(--ink)}
+.role[aria-pressed="true"]{background:var(--surface); color:var(--accent); box-shadow:var(--shadow)}
+
+.topbar-end{margin-left:auto; display:flex; align-items:center; gap:8px}
+.tbtn{
+  padding:7px 13px; border:1px solid var(--line-2); border-radius:8px;
+  font-size:12.5px; font-weight:600; color:var(--ink-2); background:var(--surface);
+}
+.tbtn:hover{border-color:var(--accent); color:var(--accent)}
+.tbtn[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+
+/* ── 3단 본문 ─────────────────────────────────────────── */
+.body{display:grid; grid-template-columns:236px minmax(0,1fr) 320px; flex:1; align-items:start}
+.body.no-panel{grid-template-columns:236px minmax(0,1fr)}
+
+.rail{
+  padding:22px 16px; border-right:1px solid var(--line);
+  position:sticky; top:63px; align-self:stretch;
+}
+.rail h2{
+  font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--ink-3); margin:0 0 12px 8px;
+}
+.flow{display:flex; flex-direction:column; gap:2px}
+.step{
+  display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+  padding:9px 10px; border-radius:8px; font-size:13.5px; color:var(--ink-2);
+  transition:background .15s;
+}
+.step:hover{background:var(--surface-2); color:var(--ink)}
+.step[aria-current="true"]{background:var(--accent-soft); color:var(--accent); font-weight:600}
+.step .n{
+  flex:none; width:21px; height:21px; border-radius:50%; display:grid; place-items:center;
+  font-family:var(--mono); font-size:10.5px; background:var(--surface-3); color:var(--ink-3);
+}
+.step[aria-current="true"] .n{background:var(--accent); color:var(--accent-ink)}
+.step .dot{
+  flex:none; margin-left:auto; width:6px; height:6px; border-radius:50%; background:var(--warn);
+}
+
+.stage{padding:34px 30px 60px; display:flex; flex-direction:column; align-items:center; gap:18px}
+.stage-head{width:100%; max-width:860px; text-align:center}
+.stage-head h1{margin:0 0 5px; font-size:19px; font-weight:700; letter-spacing:-.02em; text-wrap:balance}
+.stage-head p{margin:0; font-size:13.5px; color:var(--ink-2); text-wrap:balance}
+
+/* ── 결정 패널 ────────────────────────────────────────── */
+.panel{
+  padding:22px 20px; border-left:1px solid var(--line); position:sticky; top:63px;
+  align-self:stretch; background:var(--surface);
+}
+.panel h2{
+  font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--ink-3); margin:0 0 4px;
+}
+.panel .lede{font-size:12.5px; color:var(--ink-2); margin:0 0 16px; line-height:1.5}
+.dlist{display:flex; flex-direction:column; gap:11px}
+.d{border:1px solid var(--line); border-left:3px solid var(--warn); border-radius:var(--r); padding:12px 13px; background:var(--ground)}
+.d.crit{border-left-color:var(--danger)}
+.d .tag{
+  font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--warn);
+  font-weight:700; display:block; margin-bottom:5px;
+}
+.d.crit .tag{color:var(--danger)}
+.d h3{margin:0 0 5px; font-size:13.5px; font-weight:650; line-height:1.4}
+.d p{margin:0; font-size:12.5px; color:var(--ink-2); line-height:1.5}
+.d .opts{margin:8px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:3px}
+.d .opts li{font-size:12px; color:var(--ink-2); padding-left:13px; position:relative}
+.d .opts li::before{content:"○"; position:absolute; left:0; color:var(--ink-3); font-size:9px; top:4px}
+.d .opts li.rec::before{content:"●"; color:var(--accent)}
+.d .opts li.rec{color:var(--ink); font-weight:600}
+.panel .none{font-size:12.5px; color:var(--ink-3); padding:16px 0; text-align:center}
+
+/* ── 기기 프레임 ──────────────────────────────────────── */
+.device{background:var(--surface); box-shadow:var(--shadow-lg); overflow:hidden}
+.device.phone{width:376px; border-radius:26px; border:1px solid var(--line-2)}
+.device.tablet{width:100%; max-width:880px; border-radius:14px; border:1px solid var(--line-2)}
+.device.desk{width:100%; max-width:1080px; border-radius:11px; border:1px solid var(--line-2)}
+
+.chrome{
+  display:flex; align-items:center; gap:8px; padding:9px 14px;
+  background:var(--surface-2); border-bottom:1px solid var(--line);
+  font-size:11.5px; color:var(--ink-3); font-family:var(--mono);
+}
+.chrome i{width:9px; height:9px; border-radius:50%; background:var(--line-2); display:block}
+.chrome .url{margin-left:8px}
+
+.statusbar{
+  display:flex; justify-content:space-between; padding:11px 20px 5px;
+  font-size:11.5px; font-family:var(--mono); color:var(--ink-3);
+}
+.appbar{
+  display:flex; align-items:center; gap:10px; padding:9px 18px 14px;
+  border-bottom:1px solid var(--line);
+}
+.appbar .t{font-size:16px; font-weight:700; letter-spacing:-.02em}
+.appbar .r{margin-left:auto; display:flex; align-items:center; gap:12px; font-size:12.5px; color:var(--ink-2)}
+.badge-n{
+  background:var(--danger); color:#fff; font-size:10px; font-weight:700;
+  padding:1px 6px; border-radius:9px; font-family:var(--mono);
+}
+.vp{padding:16px 18px 20px; display:flex; flex-direction:column; gap:14px}
+.vp.tight{gap:11px}
+
+.tabbar{
+  display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line);
+  background:var(--surface-2);
+}
+.tabbar div{padding:11px 0 13px; text-align:center; font-size:11.5px; color:var(--ink-3)}
+.tabbar div.on{color:var(--accent); font-weight:700}
+
+/* ── UI 조각 ──────────────────────────────────────────── */
+.card{border:1px solid var(--line); border-radius:var(--r); background:var(--surface); padding:14px}
+.card.flat{background:var(--ground)}
+.card.accent{border-color:var(--accent); background:var(--accent-soft)}
+.card.warnc{border-color:var(--warn); background:var(--warn-soft)}
+.card.dangerc{border-color:var(--danger); background:var(--danger-soft)}
+
+.rowb{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.stack{display:flex; flex-direction:column; gap:9px}
+.stack.s{gap:5px}
+.muted{color:var(--ink-2)}
+.dim{color:var(--ink-3)}
+.xs{font-size:11.5px}
+.sm{font-size:12.5px}
+.lg{font-size:17px; font-weight:700; letter-spacing:-.02em}
+.num{font-family:var(--mono); font-variant-numeric:tabular-nums}
+.bold{font-weight:650}
+
+.eyebrow{
+  font-size:10.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3);
+}
+.chip{
+  display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:20px;
+  font-size:11.5px; font-weight:650; background:var(--surface-3); color:var(--ink-2);
+}
+.chip.ok{background:var(--ok-soft); color:var(--ok)}
+.chip.warn{background:var(--warn-soft); color:var(--warn)}
+.chip.danger{background:var(--danger-soft); color:var(--danger)}
+.chip.acc{background:var(--accent-soft); color:var(--accent)}
+
+.btn{
+  display:block; width:100%; padding:13px; border-radius:var(--r); text-align:center;
+  background:var(--accent); color:var(--accent-ink); font-weight:700; font-size:14.5px;
+}
+.btn.big{padding:17px; font-size:15.5px}
+.btn.ghost{background:var(--surface); color:var(--ink-2); border:1px solid var(--line-2)}
+.btn.danger{background:var(--danger); color:#fff}
+.btn.row{display:inline-block; width:auto; padding:9px 18px; font-size:13px}
+
+.field{border:1px solid var(--line-2); border-radius:8px; padding:10px 12px; background:var(--surface); font-size:13.5px}
+.field.ph{color:var(--ink-3)}
+
+.divider{height:1px; background:var(--line); margin:2px 0}
+
+/* 진행 타임라인 */
+.tl{display:flex; flex-direction:column}
+.tl-item{display:grid; grid-template-columns:20px 1fr; gap:12px}
+.tl-mark{display:flex; flex-direction:column; align-items:center}
+.tl-mark .b{width:11px; height:11px; border-radius:50%; border:2px solid var(--line-2); background:var(--surface); margin-top:4px}
+.tl-item.done .b{background:var(--accent); border-color:var(--accent)}
+.tl-item.now .b{background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-soft)}
+.tl-mark .l{flex:1; width:2px; background:var(--line); margin:3px 0}
+.tl-item:last-child .l{display:none}
+.tl-body{padding-bottom:14px}
+.tl-body .t{font-size:13.5px; font-weight:600}
+.tl-item.now .t{color:var(--accent)}
+.tl-item:not(.done):not(.now) .t{color:var(--ink-3); font-weight:500}
+
+/* 단계 표시 */
+.steps{display:flex; align-items:center; gap:6px}
+.steps i{height:3px; flex:1; border-radius:2px; background:var(--line); display:block}
+.steps i.on{background:var(--accent)}
+
+/* 테이블 */
+.tw{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:12.5px}
+th{
+  text-align:left; padding:8px 10px; font-size:10.5px; font-weight:700; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--ink-3); border-bottom:1px solid var(--line-2); white-space:nowrap;
+}
+td{padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+td.n, th.n{text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums}
+tr.hl td{background:var(--warn-soft)}
+
+/* KPI */
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:11px}
+.kpi{border:1px solid var(--line); border-radius:var(--r); padding:13px 14px; background:var(--surface)}
+.kpi .k{font-size:11px; color:var(--ink-3); font-weight:600}
+.kpi .v{font-size:24px; font-weight:700; letter-spacing:-.03em; font-family:var(--mono); font-variant-numeric:tabular-nums; margin-top:2px}
+.kpi .d{font-size:11.5px; margin-top:1px}
+
+/* 관리자 셸 */
+.admin{display:grid; grid-template-columns:180px 1fr; min-height:520px}
+.adnav{background:var(--surface-2); border-right:1px solid var(--line); padding:14px 10px}
+.adnav .g{font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); padding:10px 10px 5px}
+.adnav a{display:block; padding:7px 10px; border-radius:7px; font-size:12.5px; color:var(--ink-2); text-decoration:none}
+.adnav a.on{background:var(--surface); color:var(--accent); font-weight:650; box-shadow:var(--shadow)}
+.admain{padding:18px 20px; display:flex; flex-direction:column; gap:15px; min-width:0}
+.admain h3{margin:0; font-size:15.5px; font-weight:700; letter-spacing:-.02em}
+
+/* 배차 보드 */
+.board{overflow-x:auto}
+.board table{min-width:640px}
+.board td{vertical-align:top; height:64px}
+.job{
+  display:block; border-radius:7px; padding:5px 8px; font-size:11.5px; margin-bottom:4px;
+  background:var(--accent-soft); color:var(--accent); font-weight:600;
+}
+.job.del{background:var(--info-soft); color:var(--ink-2)}
+.job.warn{background:var(--warn-soft); color:var(--warn)}
+.unassigned{display:flex; gap:7px; flex-wrap:wrap; padding-top:4px}
+
+/* 칸반 */
+.kanban{display:grid; grid-template-columns:repeat(6,1fr); gap:9px; min-width:760px}
+.kcol h4{
+  margin:0 0 8px; font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--ink-3); display:flex; justify-content:space-between;
+}
+.kcard{border:1px solid var(--line); border-radius:8px; padding:9px; background:var(--surface); margin-bottom:7px; font-size:11.5px}
+.kcard .id{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
+.kcard .it{font-weight:600; margin-top:2px}
+
+/* 주석 말풍선 */
+.note{
+  max-width:860px; width:100%; border:1px dashed var(--line-2); border-radius:var(--r);
+  padding:13px 15px; font-size:13px; color:var(--ink-2); background:var(--surface);
+}
+.note b{color:var(--ink)}
+
+.footer{
+  padding:22px 30px 40px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-3);
+  display:flex; gap:18px; flex-wrap:wrap; justify-content:center; text-align:center;
+}
+
+@media (max-width:1180px){
+  .body{grid-template-columns:200px minmax(0,1fr)}
+  .panel{grid-column:1/-1; border-left:0; border-top:1px solid var(--line); position:static}
+}
+@media (max-width:760px){
+  .body{grid-template-columns:1fr}
+  .rail{position:static; border-right:0; border-bottom:1px solid var(--line)}
+  .flow{flex-direction:row; overflow-x:auto}
+  .step{white-space:nowrap}
+  .stage{padding:22px 14px 40px}
+  .device.phone{width:100%; max-width:376px}
+}
+</style>
+
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><b>지성클리닝</b><span>Service Mockup</span></div>
+    <div class="roles" role="group" aria-label="역할 선택">
+      <button class="role" data-role="customer" aria-pressed="true">고객</button>
+      <button class="role" data-role="driver" aria-pressed="false">기사</button>
+      <button class="role" data-role="factory" aria-pressed="false">세탁공장</button>
+      <button class="role" data-role="admin" aria-pressed="false">관리자</button>
+    </div>
+    <div class="topbar-end">
+      <button class="tbtn" id="togglePanel" aria-pressed="true">결정 항목 13</button>
+      <button class="tbtn" id="toggleTheme">다크</button>
+    </div>
+  </header>
+
+  <div class="body" id="body">
+    <nav class="rail">
+      <h2 id="railTitle">고객 화면</h2>
+      <div class="flow" id="flow"></div>
+    </nav>
+
+    <main class="stage">
+      <div class="stage-head">
+        <h1 id="scTitle"></h1>
+        <p id="scDesc"></p>
+      </div>
+      <div id="scMount"></div>
+      <div class="note" id="scNote"></div>
+    </main>
+
+    <aside class="panel" id="panel">
+      <h2>이 화면에서 정할 것</h2>
+      <p class="lede">회의에서 결정하면 그대로 설정값이 됩니다. ● 표시는 제안하는 기본안입니다.</p>
+      <div class="dlist" id="dlist"></div>
+    </aside>
+  </div>
+
+  <footer class="footer">
+    <span>목업 · 실제 동작하지 않습니다</span>
+    <span>요금·지역·플랜은 <span class="num">seed/</span> 초안 데이터</span>
+    <span>설계 문서 <span class="num">docs/01~13</span></span>
+  </footer>
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────
+   화면 정의: 역할 → 화면 목록
+   각 화면 = { id, nav, title, desc, note, html, decisions[] }
+   ───────────────────────────────────────────────────────── */
+
+const phone = (bar, inner, tab) => `
+<div class="device phone">
+  <div class="statusbar"><span>9:41</span><span>LTE ▮▮▯</span></div>
+  ${bar}
+  <div class="vp">${inner}</div>
+  ${tab||''}
+</div>`;
+
+const tabbar = on => `<div class="tabbar">${
+  ['홈','주문내역','구독','MY'].map(t=>`<div class="${t===on?'on':''}">${t}</div>`).join('')
+}</div>`;
+
+const appbar = (t, right='') => `<div class="appbar"><span class="t">${t}</span><span class="r">${right}</span></div>`;
+
+const desktop = (url, inner) => `
+<div class="device desk">
+  <div class="chrome"><i></i><i></i><i></i><span class="url">admin.jiseong-cleaning.co.kr${url}</span></div>
+  ${inner}
+</div>`;
+
+const adminShell = (active, inner) => {
+  const nav = [
+    ['g','관제'],['대시보드','/'],['주문','/orders'],['배차','/dispatch'],
+    ['g','운영'],['고객','/customers'],['기사','/drivers'],['공장','/factories'],
+    ['g','설정'],['요금표','/settings/prices'],['구독 플랜','/settings/plans'],['배상 기준','/settings/comp'],['운영 스위치','/settings/switch']
+  ];
+  return desktop(active.url, `<div class="admin">
+    <div class="adnav">${nav.map(n =>
+      n[0]==='g' ? `<div class="g">${n[1]}</div>`
+      : `<a href="#" class="${n[0]===active.nav?'on':''}">${n[0]}</a>`).join('')}</div>
+    <div class="admain">${inner}</div>
+  </div>`);
+};
+
+const tablet = (bar, inner) => `
+<div class="device tablet">${bar}<div class="vp">${inner}</div></div>`;
+
+/* ── 결정 항목 사전 ────────────────────────────────────── */
+const D = {
+  minOrder:{crit:false, tag:'결정 01', h:'최소 주문금액에 못 미치면?',
+    p:'1권역 15,000원 / 2권역 20,000원 / 3권역 25,000원이 초안입니다.',
+    o:[['배송비 3,000원 받고 접수',1],['주문을 아예 막기',0],['최소금액 자체를 없애기',0]]},
+  zone:{crit:false, tag:'결정 02', h:'외곽 권역을 주 며칠 돌 것인가',
+    p:'경주는 서울의 2.2배라 전역 매일 운행은 불가능합니다. 3권역(안강·감포·산내 등)이 문제입니다.',
+    o:[['화·목 주 2회',1],['주 1회로 더 줄이기',0],['물량 생길 때만 방문',0]]},
+  leadtime:{crit:false, tag:'결정 03', h:'예약은 며칠 뒤까지 열 것인가',
+    p:'너무 길면 배차 계획이 어렵고, 짧으면 고객이 불편합니다.',
+    o:[['오늘부터 14일 후까지',1],['7일',0],['30일',0]]},
+  driverContact:{crit:false, tag:'결정 04', h:'기사 연락처를 그대로 노출할까',
+    p:'고객이 기사에게 직접 전화할 수 있게 할지, 안심번호를 쓸지입니다.',
+    o:[['실번호 노출 (초기)',1],['안심번호 도입',0],['고객센터만 노출',0]]},
+  threshold:{crit:true, tag:'결정 05 · 중요', h:'얼마나 늘어야 고객 승인을 받나',
+    p:'낮추면 승인 요청이 늘어 CS가 폭증하고, 높이면 고객이 모르는 금액이 청구됩니다.',
+    o:[['예상의 110% 초과 시',1],['105% (요청 약 2배)',0],['120% (요청 절반)',0]]},
+  noResponse:{crit:false, tag:'결정 06', h:'48시간 무응답이면 어떻게',
+    p:'세탁물은 공장에 멈춰 있습니다.',
+    o:[['관리자 확인 목록 → 전화',1],['자동 승인하고 진행',0],['자동 거절 후 반송',0]]},
+  planPrice:{crit:true, tag:'결정 07 · 중요', h:'구독 단가를 확정해 주세요',
+    p:'스탠다드 39,900원 / 4회 / 회당 15,000원은 제가 타사 참고로 채운 초안입니다.',
+    o:[['초안대로 시작',1],['회당 한도를 12,000원으로 낮추기',0],['전면 재산정',0]]},
+  margin:{crit:true, tag:'결정 08 · 중요', h:'역마진을 감수할 구간이 있나',
+    p:'회당 한도를 꽉 채워 쓰는 고객이 많으면 패밀리 플랜은 손해입니다.',
+    o:[['초기 3개월은 감수, 이후 조정',1],['처음부터 보수적으로',0],['패밀리 플랜 보류',0]]},
+  driverHire:{crit:true, tag:'결정 09 · 급함', h:'기사를 어떻게 쓸 것인가',
+    p:'하루 15건 × 위탁 3,000원 = 월 117만원. 초기 물량으로는 위탁 기사가 못 버팁니다.',
+    o:[['1명 직고용 (월 280~320만)',1],['건당 위탁',0],['기존 직원 겸업',0]]},
+  photo:{crit:false, tag:'결정 10', h:'사진을 몇 장 찍게 할까',
+    p:'분쟁 시 유일한 증거입니다. 대신 기사 작업 시간이 늘어납니다.',
+    o:[['수거·배송 각 1장 필수',1],['봉투마다 1장',0],['비대면일 때만',0]]},
+  factoryStaff:{crit:false, tag:'결정 11', h:'검수는 누가 하나',
+    p:'하루 120건이면 검수만 5시간입니다. 이 사람이 서비스 전체의 병목입니다.',
+    o:[['전담 1명 배치',1],['세탁 담당이 겸임',0],['사장님이 직접',0]]},
+  prices:{crit:true, tag:'결정 12 · 중요', h:'요금 46종을 확정해 주세요',
+    p:'타사 공개 요금 참고로 채운 초안입니다. 실제 원가를 아는 분이 봐야 합니다.',
+    o:[['초안 그대로 시작',0],['품목별로 검토 후 수정',1],['품목 수를 줄이기',0]]},
+  comp:{crit:true, tag:'결정 13 · 법적', h:'분실·손상을 얼마나 물어줄 것인가',
+    p:'자사 공장이라 책임이 전부 우리 것입니다. 이 표는 약관에 그대로 실립니다.',
+    o:[['구입가 × 사용기간별 배상비율',1],['세탁요금의 20배 정액',0],['건별 협의',0]]},
+  premium:{crit:false, tag:'결정 14', h:'모피·웨딩드레스를 받을까',
+    p:'자사 공장에서 처리가 어렵고 사고 시 배상액이 큽니다. 현재 목록에서 꺼둔 상태입니다.',
+    o:[['오픈 시 취급 안 함',1],['전문 업체 외주로 받기',0],['처음부터 받기',0]]},
+};
+
+/* ── 화면들 ───────────────────────────────────────────── */
+const SCREENS = {
+customer:[
+{
+  id:'home', nav:'홈',
+  title:'고객 홈 — 처음 열었을 때',
+  desc:'진행 중인 주문이 있으면 그게 먼저 보이고, 없으면 수거 신청 버튼이 화면을 차지합니다.',
+  note:'<b>여기서 보실 것:</b> 고객이 앱을 여는 이유는 두 가지뿐입니다 — 새로 맡기거나, 맡긴 게 어디쯤인지 보거나. 그 둘만 크게 넣었습니다.',
+  d:[],
+  html: phone(
+    appbar('지성클리닝','🔔 <span class="badge-n">2</span>'),
+    `<div class="card accent stack">
+       <div class="rowb"><span class="eyebrow" style="color:var(--accent)">진행 중</span><span class="num sm" style="color:var(--accent)">JC20260808-0001</span></div>
+       <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+       <div class="rowb"><span class="bold">세탁 중</span><span class="sm muted">8/10 14:00</span></div>
+       <div class="sm muted">예상 배송 · 8월 12일(수) 저녁</div>
+     </div>
+
+     <button class="btn big">세탁물 수거 신청하기</button>
+
+     <div class="card stack s">
+       <div class="rowb"><span class="sm bold">내 구독 · 스탠다드</span><span class="chip acc">2회 남음</span></div>
+       <div class="steps"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+       <div class="xs dim">9월 8일에 39,900원이 결제됩니다</div>
+     </div>
+
+     <div class="stack s">
+       <span class="eyebrow">최근 주문</span>
+       <div class="rowb sm"><span>8월 1일 · 와이셔츠 외 3점</span><span class="num muted">12,000원</span></div>
+       <div class="divider"></div>
+       <div class="rowb sm"><span>7월 24일 · 이불 2점</span><span class="num muted">18,000원</span></div>
+     </div>`,
+    tabbar('홈'))
+},
+{
+  id:'order', nav:'수거 신청', warn:true,
+  title:'수거 신청 — 4단계',
+  desc:'주소 → 날짜·시간 → 품목 → 확인. 마지막에 예상 금액과 배송 예정일을 반드시 보여줍니다.',
+  note:'<b>여기서 보실 것:</b> 달력에 안강읍은 화·목만 열립니다. 권역별 운영일이 그대로 반영된 화면입니다. 그리고 <b>“최종 금액은 검수 후 확정”</b> 고지 — 이게 없으면 나중에 추가금 승인 단계에서 항의가 쏟아집니다.',
+  d:[D.minOrder, D.zone, D.leadtime],
+  html: phone(
+    appbar('수거 신청','<span class="sm dim">4단계 중 2</span>'),
+    `<div class="steps"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+
+     <div class="stack s">
+       <span class="eyebrow">수거 주소</span>
+       <div class="card flat rowb">
+         <div><div class="bold sm">집 · 경주시 황성동</div><div class="xs dim">현대아파트 101동 1502호</div></div>
+         <span class="chip acc">1권역</span>
+       </div>
+     </div>
+
+     <div class="stack s">
+       <span class="eyebrow">언제 수거할까요</span>
+       <div class="card flat stack s">
+         <div class="rowb sm bold"><span>2026년 8월</span><span class="dim">〈　〉</span></div>
+         <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center" class="xs">
+           ${['일','월','화','수','목','금','토'].map(d=>`<span class="dim">${d}</span>`).join('')}
+           ${[9,10,11,12,13,14,15].map(n=>{
+             const on = n===10;
+             return `<span class="num" style="padding:6px 0;border-radius:7px;${on?'background:var(--accent);color:var(--accent-ink);font-weight:700':''}">${n}</span>`;
+           }).join('')}
+         </div>
+       </div>
+       <div class="card flat rowb sm"><span>10:00 – 13:00</span><span class="chip">여유 3</span></div>
+       <div class="card flat rowb sm" style="border-color:var(--accent)"><span class="bold">18:00 – 21:00</span><span class="chip acc">선택됨 · 여유 7</span></div>
+     </div>
+
+     <div class="card warnc sm">
+       ⓘ <b>안강읍·감포읍 등 외곽 지역</b>은 화·목요일에만 수거합니다.
+     </div>
+
+     <button class="btn">다음</button>`,
+    tabbar('홈'))
+},
+{
+  id:'confirm', nav:'신청 확인',
+  title:'신청 확인 — 마지막 단계',
+  desc:'예상 금액, 구독 차감, 예상 배송일을 한 화면에서 보여주고 접수합니다.',
+  note:'<b>여기서 보실 것:</b> 3권역은 배송일이 단순 덧셈으로 안 나옵니다. 화요일에 이불(4일)을 수거하면 4일 뒤는 토요일인데 그날은 운행을 안 하니 <b>다음 주 화요일</b>이 됩니다. 체감 7일이라 미리 안 알리면 반드시 항의가 들어옵니다.',
+  d:[D.minOrder],
+  html: phone(
+    appbar('신청 확인','<span class="sm dim">4단계 중 4</span>'),
+    `<div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+
+     <div class="card stack s">
+       <div class="rowb sm"><span class="dim">수거</span><span class="bold">8/10(월) 18–21시</span></div>
+       <div class="rowb sm"><span class="dim">주소</span><span>황성동 101동 1502호</span></div>
+       <div class="rowb sm"><span class="dim">방식</span><span>문 앞 수거</span></div>
+     </div>
+
+     <div class="card stack s">
+       <span class="eyebrow">맡기실 품목</span>
+       <div class="rowb sm"><span>와이셔츠 × 5</span><span class="num">10,000</span></div>
+       <div class="rowb sm"><span>코트(하프) × 1</span><span class="num">10,000</span></div>
+       <div class="divider"></div>
+       <div class="rowb sm"><span class="muted">예상 금액</span><span class="num">20,000</span></div>
+       <div class="rowb sm"><span class="muted">구독 차감</span><span class="num" style="color:var(--accent)">−15,000</span></div>
+       <div class="divider"></div>
+       <div class="rowb"><span class="bold">예상 결제</span><span class="lg num">5,000원</span></div>
+     </div>
+
+     <div class="card accent stack s">
+       <div class="rowb sm"><span>예상 배송</span><span class="bold">8월 12일(수) 저녁</span></div>
+       <div class="xs" style="color:var(--accent)">황성동은 매일 배송 가능 지역입니다</div>
+     </div>
+
+     <div class="card warnc sm">
+       ⓘ <b>최종 금액은 세탁소 검수 후 확정됩니다.</b> 실제 수량·품목이 다르면 알려드리고 확인을 받습니다.
+     </div>
+
+     <button class="btn big">수거 신청하기</button>`,
+    tabbar('홈'))
+},
+{
+  id:'track', nav:'주문 추적',
+  title:'주문 추적 — 지금 어디쯤인가',
+  desc:'상태 타임라인, 사진, 금액 내역, 공장이 발견한 특이사항까지 한 화면에.',
+  note:'<b>여기서 보실 것:</b> 세탁소가 발견한 기존 오염을 사진과 함께 <b>먼저</b> 알립니다. 배송 후에 “원래 이랬어요”라고 하면 이미 늦습니다.',
+  d:[D.driverContact],
+  html: phone(
+    appbar('JC20260808-0001'),
+    `<div class="tl">
+       ${[['수거 신청','8/08 14:20','done'],
+          ['기사 배정 · 김기사 010-****-1234','8/08 16:00','done'],
+          ['수거 완료 · 사진 2장','8/10 10:15','done'],
+          ['세탁소 도착','8/10 11:30','done'],
+          ['세탁 중','8/10 14:00','now'],
+          ['배송 준비','',''],
+          ['배송 완료','','']].map(([t,s,c])=>`
+       <div class="tl-item ${c}">
+         <div class="tl-mark"><span class="b"></span><span class="l"></span></div>
+         <div class="tl-body"><div class="t">${t}</div>${s?`<div class="xs dim num">${s}</div>`:''}</div>
+       </div>`).join('')}
+     </div>
+
+     <div class="card stack s">
+       <span class="eyebrow">확정 금액</span>
+       <div class="rowb sm"><span>와이셔츠 × 6</span><span class="num">12,000</span></div>
+       <div class="rowb sm"><span>코트(하프) × 1</span><span class="num">10,000</span></div>
+       <div class="divider"></div>
+       <div class="rowb sm"><span class="muted">검수 확정</span><span class="num">22,000</span></div>
+       <div class="rowb sm"><span class="muted">구독 차감</span><span class="num" style="color:var(--accent)">−15,000</span></div>
+       <div class="rowb"><span class="bold">결제 예정</span><span class="lg num">7,000원</span></div>
+     </div>
+
+     <div class="card warnc stack s">
+       <span class="eyebrow" style="color:var(--warn)">세탁소 확인 사항</span>
+       <div class="sm">코트 왼쪽 소매에 기름때가 있었습니다. 최대한 제거해 보겠지만 완전히 지워지지 않을 수 있습니다.</div>
+       <div class="xs" style="color:var(--warn)">📷 사진 2장 보기</div>
+     </div>
+
+     <div class="rowb" style="gap:9px">
+       <button class="btn ghost">문의하기</button>
+       <button class="btn ghost">문제 신고</button>
+     </div>`,
+    tabbar('주문내역'))
+},
+{
+  id:'quote', nav:'추가금 승인', warn:true,
+  title:'추가금 승인 — 서비스의 갈림길',
+  desc:'검수 결과 금액이 예상보다 늘었을 때만 뜹니다. 승인 전에는 세탁을 시작하지 않습니다.',
+  note:'<b>여기서 보실 것:</b> 세탁은 봉투를 열어봐야 최종 금액을 압니다. 그래서 “선결제”가 아니라 <b>검수 후 청구</b> 구조입니다. 이 화면이 서비스 전체 설계의 중심입니다.',
+  d:[D.threshold, D.noResponse],
+  html: phone(
+    appbar('확인이 필요합니다'),
+    `<div class="card dangerc sm">
+       세탁소 검수 결과, 신청하신 내용과 차이가 있어 확인을 요청드립니다.
+     </div>
+
+     <div class="card stack s">
+       <div class="rowb xs dim"><span>품목</span><span>신청 → 확인</span></div>
+       <div class="divider"></div>
+       <div class="rowb sm"><span>와이셔츠</span><span class="num">5 → 6 <span style="color:var(--danger)">+2,000</span></span></div>
+       <div class="rowb sm"><span>코트(하프)</span><span class="num dim">1 → 1</span></div>
+       <div class="rowb sm"><span>니트 <span class="chip danger">추가</span></span><span class="num">– → 1 <span style="color:var(--danger)">+4,000</span></span></div>
+     </div>
+
+     <div class="card stack s">
+       <div class="rowb sm"><span class="muted">기존 예상</span><span class="num muted">20,000</span></div>
+       <div class="rowb sm"><span class="bold">변경 금액</span><span class="num bold">26,000</span></div>
+       <div class="rowb sm"><span class="muted">구독 차감</span><span class="num" style="color:var(--accent)">−15,000</span></div>
+       <div class="divider"></div>
+       <div class="rowb"><span class="bold">결제 예정</span><span class="lg num">11,000원</span></div>
+     </div>
+
+     <div class="card flat sm">⏰ 48시간 안에 응답이 없으면 담당자가 전화드립니다.</div>
+
+     <button class="btn big">승인하고 세탁 진행</button>
+     <button class="btn ghost">거절 · 원상 반송</button>`,
+    tabbar('주문내역'))
+},
+{
+  id:'sub', nav:'구독', warn:true,
+  title:'구독 플랜 — 월정액',
+  desc:'월 요금 안에서 정해진 횟수만큼 이용합니다. 한도를 넘는 금액만 따로 청구합니다.',
+  note:'<b>여기서 보실 것:</b> 숫자가 전부 초안입니다. 특히 <b>회당 한도</b>가 손익을 좌우합니다 — 한도를 꽉 채워 쓰는 고객이 많으면 팔수록 손해입니다.',
+  d:[D.planPrice, D.margin],
+  html: phone(
+    appbar('구독 플랜'),
+    `<div class="card stack s">
+       <div class="rowb"><span class="bold">라이트</span><span class="lg num">19,900<span class="sm muted">/월</span></span></div>
+       <div class="sm muted">월 2회 · 회당 12,000원까지 포함</div>
+       <div class="xs dim">혼자 사는 분께</div>
+     </div>
+
+     <div class="card accent stack s">
+       <div class="rowb"><span class="bold">스탠다드 <span class="chip acc">추천</span></span><span class="lg num">39,900<span class="sm muted">/월</span></span></div>
+       <div class="sm" style="color:var(--accent)">월 4회 · 회당 15,000원까지 포함 · 초과분 10% 할인</div>
+       <div class="xs dim">2~3인 가구 · 주 1회 수거</div>
+     </div>
+
+     <div class="card stack s">
+       <div class="rowb"><span class="bold">패밀리</span><span class="lg num">79,900<span class="sm muted">/월</span></span></div>
+       <div class="sm muted">월 8회 · 회당 20,000원까지 포함</div>
+       <div class="xs dim">4인 이상 가구</div>
+     </div>
+
+     <div class="card stack s">
+       <div class="rowb"><span class="bold">셔츠 정기권</span><span class="lg num">29,900<span class="sm muted">/월</span></span></div>
+       <div class="sm muted">와이셔츠 전용 · 월 20장까지</div>
+       <div class="xs dim">직장인</div>
+     </div>
+
+     <div class="card flat xs">첫 달 50% · 언제든 해지 가능 (기간 말 해지)</div>
+     <button class="btn big">스탠다드로 시작하기</button>`,
+    tabbar('구독'))
+}],
+
+driver:[
+{
+  id:'today', nav:'오늘의 배차', warn:true,
+  title:'기사 화면 — 오늘 뭘 해야 하나',
+  desc:'수거와 배송이 시간순으로 섞여 나옵니다. 기사는 위에서부터 순서대로 처리하면 됩니다.',
+  note:'<b>여기서 보실 것:</b> 기사는 운전 중에, 장갑 끼고, 햇빛 아래서 이 화면을 봅니다. 그래서 버튼을 크게 하고 한 화면에 정보를 적게 담았습니다.',
+  d:[D.driverHire, D.zone],
+  html: phone(
+    appbar('8월 8일 (금)','김기사'),
+    `<div class="rowb sm">
+       <span class="chip">수거 5</span><span class="chip">배송 3</span><span class="chip ok">완료 2</span>
+     </div>
+
+     <div class="stack s">
+       <span class="eyebrow" style="color:var(--accent)">10:00 – 13:00</span>
+       <div class="card stack s">
+         <div class="rowb"><span class="bold">① 수거</span><span class="num sm dim">JC…0001</span></div>
+         <div class="sm">경주시 황성동 현대아파트<br>101동 1502호</div>
+         <div class="rowb xs"><span class="chip">🚪 문 앞 수거</span><span class="chip">봉투 예상 2</span></div>
+         <div class="rowb" style="gap:8px">
+           <button class="btn ghost">🗺 길안내</button>
+           <button class="btn">출발</button>
+         </div>
+       </div>
+       <div class="card flat rowb sm" style="opacity:.55">
+         <span>② 배송 · JC…9832</span><span class="chip ok">완료</span>
+       </div>
+     </div>
+
+     <div class="stack s">
+       <span class="eyebrow">15:00 – 18:00</span>
+       <div class="card stack s">
+         <div class="rowb"><span class="bold">③ 수거</span><span class="num sm dim">JC…0004</span></div>
+         <div class="sm">경주시 안강읍 …</div>
+         <div class="rowb xs"><span class="chip warn">⚠ 재방문 · 1차 부재</span><span class="chip">3권역</span></div>
+         <div class="rowb" style="gap:8px">
+           <button class="btn ghost">🗺 길안내</button>
+           <button class="btn">출발</button>
+         </div>
+       </div>
+     </div>`,
+    `<div class="tabbar" style="grid-template-columns:repeat(3,1fr)">
+       <div class="on">배차</div><div>공장 스캔</div><div>요약</div></div>`)
+},
+{
+  id:'pickup', nav:'수거 완료',
+  title:'수거 완료 처리',
+  desc:'사진을 찍고 봉투 개수를 넣으면 끝. 여기서 손이 많이 가면 기사가 앱을 안 씁니다.',
+  note:'<b>여기서 보실 것:</b> 사진은 나중에 분쟁이 생겼을 때 <b>유일한 증거</b>입니다. 필수로 걸어둘지, 몇 장으로 할지가 회의에서 정할 부분입니다.',
+  d:[D.photo],
+  html: phone(
+    appbar('수거 완료','<span class="num sm dim">JC…0001</span>'),
+    `<div class="stack s">
+       <span class="eyebrow">세탁물 사진 <span style="color:var(--danger)">필수</span></span>
+       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">
+         <div class="card flat" style="aspect-ratio:1;display:grid;place-items:center;font-size:22px">📷</div>
+         <div class="card flat" style="aspect-ratio:1;display:grid;place-items:center;border-color:var(--accent);color:var(--accent);font-size:22px">✓</div>
+         <div class="card flat" style="aspect-ratio:1;display:grid;place-items:center;color:var(--ink-3);font-size:22px">＋</div>
+       </div>
+     </div>
+
+     <div class="stack s">
+       <span class="eyebrow">봉투 개수</span>
+       <div class="card flat" style="display:flex;align-items:center;justify-content:center;gap:26px;padding:15px">
+         <span style="font-size:24px;color:var(--ink-3)">−</span>
+         <span class="num" style="font-size:30px;font-weight:700">2</span>
+         <span style="font-size:24px;color:var(--accent)">＋</span>
+       </div>
+     </div>
+
+     <div class="stack s">
+       <span class="eyebrow">특이사항 (선택)</span>
+       <div class="field ph">예: 문 앞에 두고 왔습니다</div>
+     </div>
+
+     <button class="btn big">수거 완료 처리</button>`)
+}],
+
+factory:[
+{
+  id:'board', nav:'작업 보드',
+  title:'세탁공장 — 오늘 뭐가 얼마나 있나',
+  desc:'입고부터 출고까지 단계별로 한눈에. 카드를 옮기면 상태가 바뀝니다.',
+  note:'<b>여기서 보실 것:</b> 공장에서 앱을 실제로 쓰는 사람은 <b>검수 담당 한 명</b>입니다. 하루 120건이면 검수만 5시간 걸립니다. 이 사람이 서비스 전체의 병목입니다.',
+  d:[D.factoryStaff],
+  html: tablet(
+    appbar('지성클리닝 세탁센터','오늘 입고 12 · 출고 9　<span class="chip acc">QR 스캔</span>'),
+    `<div class="tw"><div class="kanban">
+      ${[['입고',3,[['JC…0001','와이셔츠 6 · 코트 1','10:20'],['JC…0002','이불 2',''],['JC…0003','운동화 2','']]],
+         ['검수 중',2,[['JC…0007','와이셔츠 3','11:05'],['JC…0008','정장 1','']]],
+         ['세탁',5,[['JC…9911','이불 2','⚠ D+2'],['JC…9912','바지 4','']]],
+         ['건조·다림',4,[['JC…9905','코트 1','']]],
+         ['포장',2,[['JC…9880','와이셔츠 8','']]],
+         ['출고 대기',3,[['JC…9877','코트 2','']]]
+      ].map(([t,n,cards])=>`
+        <div class="kcol">
+          <h4><span>${t}</span><span class="num">${n}</span></h4>
+          ${cards.map(([id,it,s])=>`
+            <div class="kcard">
+              <div class="id">${id}</div>
+              <div class="it">${it}</div>
+              ${s?`<div class="xs ${s.includes('⚠')?'':'dim'}" style="${s.includes('⚠')?'color:var(--warn)':''}">${s}</div>`:''}
+            </div>`).join('')}
+        </div>`).join('')}
+    </div></div>`)
+},
+{
+  id:'inspect', nav:'검수 입력', warn:true,
+  title:'검수 입력 — 금액이 확정되는 순간',
+  desc:'실제 수량을 확인하고 특이사항을 남기면, 그 결과로 고객 청구액이 정해집니다.',
+  note:'<b>여기서 보실 것:</b> 이 화면이 시스템에서 가장 중요합니다. 여기서 누른 숫자가 그대로 고객 카드에서 빠져나갑니다. 그리고 <b>기존 오염·손상은 반드시 사진으로</b> 남겨야 나중에 “세탁하다 그랬다”는 주장에 대응할 수 있습니다.',
+  d:[D.threshold, D.factoryStaff],
+  html: tablet(
+    appbar('검수 · JC20260808-0001','고객 최○○　요청: 풀 먹여주세요'),
+    `<div class="tw"><table>
+       <thead><tr><th>품목</th><th class="n">신청</th><th class="n">실제</th><th class="n">단가</th><th class="n">금액</th></tr></thead>
+       <tbody>
+         <tr class="hl"><td>와이셔츠</td><td class="n dim">5</td><td class="n bold">6</td><td class="n">2,000</td><td class="n">12,000</td></tr>
+         <tr><td>코트(하프)</td><td class="n dim">1</td><td class="n bold">1</td><td class="n">10,000</td><td class="n">10,000</td></tr>
+         <tr class="hl"><td>니트 <span class="chip danger">추가</span></td><td class="n dim">–</td><td class="n bold">1</td><td class="n">4,000</td><td class="n">4,000</td></tr>
+       </tbody>
+     </table></div>
+
+     <div class="card warnc stack s">
+       <span class="eyebrow" style="color:var(--warn)">특이사항 · 사진 필수</span>
+       <div class="rowb" style="gap:10px;align-items:flex-start">
+         <div class="field sm" style="flex:1">기존 오염 — 코트 왼쪽 소매 기름때</div>
+         <div style="display:flex;gap:7px">
+           <div class="card flat" style="width:52px;height:52px;display:grid;place-items:center">📷</div>
+           <div class="card flat" style="width:52px;height:52px;display:grid;place-items:center;border-color:var(--accent);color:var(--accent)">✓</div>
+         </div>
+       </div>
+     </div>
+
+     <div class="card stack s">
+       <div class="rowb sm"><span class="muted">신청 예상</span><span class="num muted">20,000원</span></div>
+       <div class="rowb"><span class="bold">검수 확정</span><span class="lg num">26,000원 <span class="sm" style="color:var(--danger)">+6,000</span></span></div>
+       <div class="card dangerc xs">⚠ 예상의 130% → <b>고객 승인 요청이 발송됩니다.</b> 승인 전까지 세탁을 시작하지 않습니다.</div>
+     </div>
+
+     <div class="rowb" style="gap:10px">
+       <button class="btn ghost">세탁 불가 · 반송</button>
+       <button class="btn">검수 확정</button>
+     </div>`)
+}],
+
+admin:[
+{
+  id:'dash', nav:'대시보드',
+  title:'관리자 대시보드 — 아침에 5분',
+  desc:'오늘 숫자와 “지금 손대야 하는 것”만. 나머지는 안 보여줍니다.',
+  note:'<b>여기서 보실 것:</b> 사장님이 매일 아침 이 화면만 보면 됩니다. 상단은 현황, 아래는 <b>지금 조치가 필요한 목록</b>입니다. 여기 뜬 걸 다 처리하면 그날 할 일은 끝입니다.',
+  d:[],
+  html: adminShell({nav:'대시보드', url:'/'},
+    `<div class="rowb"><h3>대시보드</h3><span class="sm dim num">2026-08-08 (금)</span></div>
+     <div class="kpis">
+       <div class="kpi"><div class="k">신규 주문</div><div class="v">12</div><div class="d" style="color:var(--ok)">▲ 3</div></div>
+       <div class="kpi"><div class="k">오늘 수거</div><div class="v">18</div><div class="d dim">배차 완료 17</div></div>
+       <div class="kpi"><div class="k">오늘 배송</div><div class="v">14</div><div class="d dim">출고 대기 3</div></div>
+       <div class="kpi"><div class="k">오늘 매출</div><div class="v">384천</div><div class="d" style="color:var(--ok)">▲ 12%</div></div>
+     </div>
+
+     <div class="stack s">
+       <span class="eyebrow">즉시 확인 필요</span>
+       <div class="tw"><table>
+         <tbody>
+           <tr><td style="width:74px"><span class="chip danger">미배차</span></td><td class="num">JC…0021</td><td>내일 09–12시 수거 · 안강읍</td><td style="text-align:right"><button class="btn row">배차하기</button></td></tr>
+           <tr><td><span class="chip danger">결제실패</span></td><td class="num">JC…9877</td><td>9,000원 · 3회 실패 → 미수금</td><td style="text-align:right"><button class="btn row">확인</button></td></tr>
+           <tr><td><span class="chip warn">승인대기</span></td><td class="num">JC…0009</td><td>36시간 무응답 · 세탁 대기 중</td><td style="text-align:right"><button class="btn row">전화 요청</button></td></tr>
+           <tr><td><span class="chip warn">지연</span></td><td class="num">JC…9911</td><td>공장 D+2 · 이불 2점</td><td style="text-align:right"><button class="btn row">확인</button></td></tr>
+           <tr><td><span class="chip warn">수거실패</span></td><td class="num">JC…0014</td><td>부재 · 재방문 필요</td><td style="text-align:right"><button class="btn row">재배차</button></td></tr>
+         </tbody>
+       </table></div>
+     </div>
+
+     <div class="stack s">
+       <span class="eyebrow">오늘 진행 현황</span>
+       <div class="tw"><table>
+         <thead><tr><th>접수</th><th>수거</th><th>공장</th><th>세탁</th><th>배송</th><th>완료</th></tr></thead>
+         <tbody><tr class="num" style="font-size:15px;font-weight:700">
+           <td>12</td><td>9</td><td>15</td><td>22</td><td>8</td><td>6</td>
+         </tr></tbody>
+       </table></div>
+     </div>`)
+},
+{
+  id:'dispatch', nav:'배차 보드', warn:true,
+  title:'배차 — 누가 언제 어디를 가나',
+  desc:'기사 × 시간대 격자. 아래 미배차 건을 끌어다 올리면 배차됩니다.',
+  note:'<b>여기서 보실 것:</b> 기사 1명이 하루에 실제로 도는 건 <b>25건</b>이 한계입니다. 슬롯 정원을 그보다 크게 잡으면 주문은 받아놓고 못 가는 사고가 납니다. 기사를 몇 명 쓸지가 이 화면의 전제입니다.',
+  d:[D.driverHire, D.zone],
+  html: adminShell({nav:'배차', url:'/dispatch'},
+    `<div class="rowb"><h3>배차 관리</h3><span class="sm dim">◀ 2026-08-09 (토) ▶ · 미배차 7건</span></div>
+     <div class="board tw"><table>
+       <thead><tr><th>기사</th><th>09–12</th><th>12–15</th><th>15–18</th><th>18–21</th></tr></thead>
+       <tbody>
+         <tr>
+           <td><div class="bold">김기사</div><div class="xs dim">1권역 · 12/25</div></td>
+           <td><span class="job">수 0001 황성동</span><span class="job">수 0002 동천동</span><span class="job del">배 9880 용강동</span></td>
+           <td><span class="job del">배 9877 성건동</span></td>
+           <td><span class="job">수 0014 불국동</span></td>
+           <td></td>
+         </tr>
+         <tr>
+           <td><div class="bold">이기사</div><div class="xs dim">2·3권역 · 8/25</div></td>
+           <td><span class="job warn">수 0005 안강읍</span></td>
+           <td></td>
+           <td><span class="job del">배 9901 건천읍</span></td>
+           <td><span class="job">수 0019 현곡면</span></td>
+         </tr>
+       </tbody>
+     </table></div>
+
+     <div class="stack s">
+       <span class="eyebrow">미배차 · 끌어서 배차</span>
+       <div class="unassigned">
+         <span class="job">수 0021 안강읍 09–12</span>
+         <span class="job">수 0022 감포읍 12–15</span>
+         <span class="job del">배 9910 산내면 15–18</span>
+         <span class="job">수 0023 황남동 18–21</span>
+       </div>
+     </div>`)
+},
+{
+  id:'prices', nav:'요금표 설정', warn:true,
+  title:'요금표 — 사장님이 직접 고칩니다',
+  desc:'개발자 없이 화면에서 단가를 바꿉니다. 저장 전에 매출이 얼마나 바뀌는지 먼저 보여줍니다.',
+  note:'<b>여기서 보실 것:</b> 지금 들어있는 46종 단가는 제가 <b>타사 공개 요금을 참고해 채운 초안</b>입니다. 실제 원가를 아는 분이 봐야 합니다. 오늘 회의에서 몇 개만 짚어주셔도 됩니다.',
+  d:[D.prices, D.premium],
+  html: adminShell({nav:'요금표', url:'/settings/prices'},
+    `<div class="rowb"><h3>세탁 요금표</h3><span class="sm dim">변경 이력 · 엑셀 · 품목 추가</span></div>
+     <div class="rowb sm">
+       <span><span class="chip acc">전체 46</span> <span class="chip">일반세탁</span> <span class="chip">드라이</span> <span class="chip">침구</span> <span class="chip">신발</span> <span class="chip">프리미엄</span></span>
+     </div>
+     <div class="tw"><table>
+       <thead><tr><th>코드</th><th>품목</th><th>단위</th><th class="n">현재가</th><th class="n">변경가</th><th class="n">소요일</th><th>활성</th></tr></thead>
+       <tbody>
+         <tr class="hl"><td class="num dim">SHIRT</td><td>와이셔츠 / 블라우스</td><td class="dim">점</td><td class="n dim">2,000</td><td class="n bold">2,200 ▲</td><td class="n">2</td><td>✔</td></tr>
+         <tr><td class="num dim">TSHIRT</td><td>티셔츠 / 반팔</td><td class="dim">점</td><td class="n dim">2,500</td><td class="n">2,500</td><td class="n">2</td><td>✔</td></tr>
+         <tr class="hl"><td class="num dim">KNIT_W</td><td>니트 / 스웨터</td><td class="dim">점</td><td class="n dim">3,000</td><td class="n bold">3,300 ▲</td><td class="n">3</td><td>✔</td></tr>
+         <tr><td class="num dim">COAT_H</td><td>코트 (하프)</td><td class="dim">점</td><td class="n dim">10,000</td><td class="n">10,000</td><td class="n">4</td><td>✔</td></tr>
+         <tr><td class="num dim">BED_S</td><td>이불 (싱글)</td><td class="dim">점</td><td class="n dim">9,000</td><td class="n">9,000</td><td class="n">4</td><td>✔</td></tr>
+         <tr><td class="num dim">SNEAKER</td><td>운동화 (일반)</td><td class="dim">점</td><td class="n dim">9,000</td><td class="n">9,000</td><td class="n">4</td><td>✔</td></tr>
+         <tr style="opacity:.5"><td class="num dim">FUR</td><td>모피</td><td class="dim">점</td><td class="n dim">80,000</td><td class="n">80,000</td><td class="n">14</td><td class="dim">꺼짐</td></tr>
+       </tbody>
+     </table></div>
+
+     <div class="card warnc stack s">
+       <div class="rowb"><span class="bold">변경 2건 · 적용 전 영향도</span><span class="sm">최근 30일 주문 기준</span></div>
+       <div class="tw"><table>
+         <tbody class="sm">
+           <tr><td>영향받는 주문</td><td class="n bold">68%</td><td class="dim">412건 중 280건</td></tr>
+           <tr><td>평균 주문금액</td><td class="n bold">22,400 → 23,150</td><td style="color:var(--warn)">+3.3%</td></tr>
+           <tr><td>월 예상 매출</td><td class="n bold">9,228,800 → 9,537,800</td><td style="color:var(--ok)">+309,000</td></tr>
+           <tr><td>구독 한도 초과 발생</td><td class="n bold">12% → 16%</td><td style="color:var(--warn)">+4%p ⚠</td></tr>
+         </tbody>
+       </table></div>
+       <div class="rowb" style="gap:10px"><button class="btn ghost">초기화</button><button class="btn">적용하기</button></div>
+     </div>`)
+},
+{
+  id:'comp', nav:'배상 기준', warn:true,
+  title:'배상 기준 — 잃어버렸을 때 얼마를 물어주나',
+  desc:'품목군별로 내용연수와 사용 기간에 따른 배상 비율을 미리 정해둡니다.',
+  note:'<b>여기서 보실 것:</b> 세탁물 분실·손상은 <b>반드시 생깁니다.</b> 그때마다 감으로 정하면 고객마다 금액이 달라지고 그게 분쟁이 됩니다. 이 표는 <b>약관에 그대로 실리고 법적 효력</b>을 가지므로 오늘 방향만 잡고 최종안은 법률 자문을 받는 게 좋습니다.',
+  d:[D.comp],
+  html: adminShell({nav:'배상 기준', url:'/settings/comp'},
+    `<div class="rowb"><h3>배상 기준</h3><span class="chip danger">약관에 반영됨</span></div>
+     <div class="card sm">기준 방식 · <b>구입가 × 배상비율</b> (사용 기간에 따라 차등) — 세탁업에서 일반적인 방식입니다.</div>
+     <div class="tw"><table>
+       <thead><tr><th>품목군</th><th class="n">내용연수</th><th class="n">20% 미만</th><th class="n">20–40%</th><th class="n">40–60%</th><th class="n">60–80%</th><th class="n">80% 이상</th></tr></thead>
+       <tbody>
+         <tr><td>일반 의류</td><td class="n">3년</td><td class="n">95%</td><td class="n">80%</td><td class="n">60%</td><td class="n">40%</td><td class="n">20%</td></tr>
+         <tr class="hl"><td>정장 · 코트</td><td class="n">4년</td><td class="n">95%</td><td class="n bold">80%</td><td class="n">60%</td><td class="n">40%</td><td class="n">20%</td></tr>
+         <tr><td>패딩 · 다운</td><td class="n">5년</td><td class="n">90%</td><td class="n">75%</td><td class="n">55%</td><td class="n">35%</td><td class="n">20%</td></tr>
+         <tr><td>가죽 · 모피</td><td class="n">5년</td><td class="n">90%</td><td class="n">75%</td><td class="n">55%</td><td class="n">35%</td><td class="n">20%</td></tr>
+         <tr><td>침구</td><td class="n">3년</td><td class="n">90%</td><td class="n">70%</td><td class="n">50%</td><td class="n">30%</td><td class="n">15%</td></tr>
+         <tr><td>신발</td><td class="n">2년</td><td class="n">90%</td><td class="n">70%</td><td class="n">50%</td><td class="n">30%</td><td class="n">15%</td></tr>
+       </tbody>
+     </table></div>
+
+     <div class="card accent stack s">
+       <span class="eyebrow" style="color:var(--accent)">클레임 화면에서 이렇게 계산됩니다</span>
+       <div class="sm">코트 · 구입가 200,000원 · 구입 2025년 3월 (사용 17개월 = 내용연수 4년의 35%)</div>
+       <div class="rowb"><span class="sm">→ 20–40% 구간 · 배상비율 80%</span><span class="lg num">160,000원</span></div>
+       <div class="xs" style="color:var(--accent)">근거를 댈 수 있으면 “규정상 80%입니다”로 끝납니다. 감으로 정하면 분쟁이 됩니다.</div>
+     </div>
+
+     <div class="card stack s sm">
+       <div class="rowb"><span>1건 배상 한도</span><span class="num bold">300,000원</span></div>
+       <div class="rowb"><span>구입가 확인이 안 될 때</span><span class="num bold">세탁요금의 20배</span></div>
+       <div class="rowb"><span>고가품(50만원 초과) 미신고 시</span><span class="num bold">100,000원까지</span></div>
+     </div>`)
+}]
+};
+
+/* ── 렌더링 ───────────────────────────────────────────── */
+const state = {role:'customer', idx:0, panel:true};
+const $ = s => document.querySelector(s);
+const RAIL_TITLE = {customer:'고객 화면', driver:'기사 화면', factory:'세탁공장 화면', admin:'관리자 화면'};
+
+function renderFlow(){
+  const list = SCREENS[state.role];
+  $('#railTitle').textContent = RAIL_TITLE[state.role];
+  $('#flow').innerHTML = list.map((s,i)=>`
+    <button class="step" data-i="${i}" aria-current="${i===state.idx}">
+      <span class="n">${i+1}</span><span>${s.nav}</span>${s.warn?'<span class="dot"></span>':''}
+    </button>`).join('');
+  $('#flow').querySelectorAll('.step').forEach(b=>{
+    b.addEventListener('click', ()=>{ state.idx = +b.dataset.i; render(); });
+  });
+}
+
+function renderPanel(sc){
+  const el = $('#dlist');
+  if(!sc.d.length){ el.innerHTML = '<p class="none">이 화면에서 정할 것은 없습니다.<br>다른 화면을 눌러보세요.</p>'; return; }
+  el.innerHTML = sc.d.map(d=>`
+    <div class="d ${d.crit?'crit':''}">
+      <span class="tag">${d.tag}</span>
+      <h3>${d.h}</h3>
+      <p>${d.p}</p>
+      <ul class="opts">${d.o.map(([t,rec])=>`<li class="${rec?'rec':''}">${t}</li>`).join('')}</ul>
+    </div>`).join('');
+}
+
+function render(){
+  const sc = SCREENS[state.role][state.idx];
+  $('#scTitle').textContent = sc.title;
+  $('#scDesc').textContent = sc.desc;
+  $('#scMount').innerHTML = sc.html;
+  $('#scNote').innerHTML = sc.note;
+  renderFlow();
+  renderPanel(sc);
+  document.querySelectorAll('.role').forEach(b=>
+    b.setAttribute('aria-pressed', String(b.dataset.role===state.role)));
+}
+
+document.querySelectorAll('.role').forEach(b=>{
+  b.addEventListener('click', ()=>{ state.role = b.dataset.role; state.idx = 0; render(); });
+});
+
+$('#togglePanel').addEventListener('click', ()=>{
+  state.panel = !state.panel;
+  $('#body').classList.toggle('no-panel', !state.panel);
+  $('#panel').style.display = state.panel ? '' : 'none';
+  $('#togglePanel').setAttribute('aria-pressed', String(state.panel));
+});
+
+$('#toggleTheme').addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  $('#toggleTheme').textContent = next === 'dark' ? '라이트' : '다크';
+});
+
+document.addEventListener('keydown', e=>{
+  const n = SCREENS[state.role].length;
+  if(e.key === 'ArrowRight'){ state.idx = (state.idx+1)%n; render(); }
+  if(e.key === 'ArrowLeft'){ state.idx = (state.idx-1+n)%n; render(); }
+});
+
+render();
+</script>
+<!-- ARTIFACT-END -->
+</body>
+</html>
