@@ -31,9 +31,17 @@ function resolveDemoRole(phone: string): DemoSession["role"] {
 }
 
 export async function createDemoSession(phone: string) {
+  return createSession(resolveDemoRole(phone));
+}
+
+export async function createPartnerSession() {
+  return createSession("CUSTOMER");
+}
+
+async function createSession(role: DemoSession["role"]) {
   const session: DemoSession = {
     userId: randomUUID(),
-    role: resolveDemoRole(phone),
+    role,
   };
   const value = await new SignJWT({
     purpose: sessionPurpose,
@@ -55,6 +63,8 @@ export async function createDemoSession(phone: string) {
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
   });
+
+  return session;
 }
 
 export async function getDemoSession(): Promise<DemoSession | null> {
