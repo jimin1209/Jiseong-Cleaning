@@ -17,6 +17,6 @@ export async function login(
     return { error: "테스트에 사용할 휴대폰 번호를 입력해 주세요." };
   }
 
-  await createDemoSession(phone);
-  redirect("/dashboard");
+  const session = await createDemoSession(phone);
+  redirect(session.role === "ADMIN" ? "/admin/orders" : "/dashboard");
 }

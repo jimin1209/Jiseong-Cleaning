@@ -44,6 +44,20 @@ export function getDatabase() {
       quantity INTEGER NOT NULL CHECK (quantity > 0),
       line_amount INTEGER NOT NULL CHECK (line_amount >= 0)
     );
+
+    CREATE TABLE IF NOT EXISTS order_status_histories (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+      from_status TEXT NOT NULL,
+      to_status TEXT NOT NULL,
+      actor_type TEXT NOT NULL,
+      actor_id TEXT NOT NULL,
+      reason_code TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_order_status_histories_order_id
+      ON order_status_histories(order_id, created_at DESC);
   `);
 
   const upsertProduct = database.prepare(`
