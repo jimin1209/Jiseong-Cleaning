@@ -29,6 +29,10 @@ type OrderRow = {
 
 type OrderSummaryRow = OrderRow & { item_summary: string };
 
+type PartnerOrderRow = Omit<OrderRow, "company_name">;
+
+type PartnerOrderSummaryRow = PartnerOrderRow & { item_summary: string };
+
 type OrderItemRow = {
   product_id: number;
   product_name: string;
@@ -70,6 +74,92 @@ export type AdminOrderDetail = Omit<AdminOrderSummary, "itemSummary"> & {
     createdAt: string;
   }>;
 };
+
+export type PartnerOrderSummary = {
+  orderNumber: string;
+  itemSummary: string;
+  estimatedAmount: number;
+  status: string;
+  createdAt: string;
+};
+
+export type PartnerOrderDetail = Omit<PartnerOrderSummary, "itemSummary"> & {
+  items: AdminOrderDetail["items"];
+};
+
+export function listOrdersByPartner(
+  partnerUserId: string,
+): PartnerOrderSummary[] {
+  const rows = getDatabase()
+    .prepare(`
+      SELECT
+        o.order_number,
+        o.status,
+        o.estimated_amount,
+        o.created_at,
+        COALESCE(
+          GROUP_CONCAT(oi.product_name || ' ' || oi.quantity || '장', ', '),
+          ''
+        ) AS item_summary
+      FROM orders o
+      LEFT JOIN order_items oi ON oi.order_id = o.id
+      WHERE o.partner_user_id = ?
+      GROUP BY o.id
+      ORDER BY o.created_at DESC, o.id DESC
+    `)
+    .all(partnerUserId) as PartnerOrderSummaryRow[];
+
+  return rows.map((row) => ({
+    orderNumber: row.order_number,
+    itemSummary: row.item_summary,
+    estimatedAmount: row.estimated_amount,
+    status: normalizeOrderStatus(row.status),
+    createdAt: row.created_at,
+  }));
+}
+
+export function getOrderByNumberForPartner(
+  orderNumber: string,
+  partnerUserId: string,
+): PartnerOrderDetail | null {
+  const database = getDatabase();
+  const order = database
+    .prepare(`
+      SELECT order_number, status, estimated_amount, created_at
+      FROM orders
+      WHERE order_number = ? AND partner_user_id = ?
+    `)
+    .get(orderNumber, partnerUserId) as PartnerOrderRow | undefined;
+
+  if (!order) return null;
+
+  const items = database
+    .prepare(`
+      SELECT product_id, product_name, unit_price, quantity, line_amount
+      FROM order_items
+      WHERE order_id = (
+        SELECT id
+        FROM orders
+        WHERE order_number = ? AND partner_user_id = ?
+      )
+      ORDER BY id
+    `)
+    .all(orderNumber, partnerUserId) as OrderItemRow[];
+
+  return {
+    orderNumber: order.order_number,
+    estimatedAmount: order.estimated_amount,
+    status: normalizeOrderStatus(order.status),
+    createdAt: order.created_at,
+    items: items.map((item) => ({
+      productId: item.product_id,
+      productName: item.product_name,
+      unitPrice: item.unit_price,
+      quantity: item.quantity,
+      lineAmount: item.line_amount,
+    })),
+  };
+}
 
 export function listOrders(): AdminOrderSummary[] {
   const rows = getDatabase()
@@ -219,7 +309,11 @@ export function calculateOrder(items: OrderItemInput[]) {
   return calculateOrderWithDatabase(getDatabase(), items);
 }
 
-export function createOrder(companyName: string, items: OrderItemInput[]) {
+export function createOrder(
+  partnerUserId: string,
+  companyName: string,
+  items: OrderItemInput[],
+) {
   const database = getDatabase();
 
   return database.transaction(() => {
@@ -231,8 +325,9 @@ export function createOrder(companyName: string, items: OrderItemInput[]) {
     const createdAt = new Date().toISOString();
     const insertOrder = database.prepare(`
       INSERT INTO orders (
-        order_number, company_name, status, estimated_amount, created_at
-      ) VALUES (?, ?, ?, ?, ?)
+        order_number, partner_user_id, company_name, status,
+        estimated_amount, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?)
     `);
     let orderNumber = "";
     let orderId: number | bigint | undefined;
@@ -242,6 +337,7 @@ export function createOrder(companyName: string, items: OrderItemInput[]) {
       try {
         orderId = insertOrder.run(
           orderNumber,
+          partnerUserId,
           companyName,
           "신청접수",
           calculation.amount,

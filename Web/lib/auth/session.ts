@@ -34,13 +34,16 @@ export async function createDemoSession(phone: string) {
   return createSession(resolveDemoRole(phone));
 }
 
-export async function createPartnerSession() {
-  return createSession("CUSTOMER");
+export async function createPartnerSession(userId: string) {
+  return createSession("CUSTOMER", userId);
 }
 
-async function createSession(role: DemoSession["role"]) {
+async function createSession(
+  role: DemoSession["role"],
+  userId: string = randomUUID(),
+) {
   const session: DemoSession = {
-    userId: randomUUID(),
+    userId,
     role,
   };
   const value = await new SignJWT({

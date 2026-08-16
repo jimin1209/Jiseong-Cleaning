@@ -18,10 +18,12 @@ function parseItems(value: string): OrderItemInput[] {
 
 async function requirePartner() {
   const session = await getDemoSession();
-  if (!session) throw new Error("로그인이 필요합니다.");
+  if (!session || session.role !== "CUSTOMER") {
+    throw new Error("거래처 로그인이 필요합니다.");
+  }
   const partner = getDemoPartner(session.userId);
   if (!partner) throw new Error("거래처 로그인이 필요합니다.");
-  return partner;
+  return { session, partner };
 }
 
 export async function estimateOrder(itemsJson: string) {
@@ -34,8 +36,12 @@ export async function createOrder(
   formData: FormData,
 ): Promise<OrderState> {
   try {
-    const partner = await requirePartner();
-    return saveOrder(partner.companyName, parseItems(String(formData.get("items") ?? "[]")));
+    const { session, partner } = await requirePartner();
+    return saveOrder(
+      session.userId,
+      partner.companyName,
+      parseItems(String(formData.get("items") ?? "[]")),
+    );
   } catch (error) {
     return { error: error instanceof Error ? error.message : "주문을 저장하지 못했습니다." };
   }

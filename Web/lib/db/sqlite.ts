@@ -23,6 +23,7 @@ export function getDatabase() {
     CREATE TABLE IF NOT EXISTS demo_partners (
       user_id TEXT PRIMARY KEY,
       company_name TEXT NOT NULL,
+      partner_code_hash TEXT,
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -30,6 +31,7 @@ export function getDatabase() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       order_number TEXT NOT NULL UNIQUE,
       company_name TEXT NOT NULL,
+      partner_user_id TEXT REFERENCES demo_partners(user_id),
       status TEXT NOT NULL,
       estimated_amount INTEGER NOT NULL CHECK (estimated_amount >= 0),
       created_at TEXT NOT NULL
@@ -58,6 +60,35 @@ export function getDatabase() {
 
     CREATE INDEX IF NOT EXISTS idx_order_status_histories_order_id
       ON order_status_histories(order_id, created_at DESC);
+  `);
+
+  const partnerColumns = database
+    .prepare("PRAGMA table_info(demo_partners)")
+    .all() as Array<{ name: string }>;
+
+  if (!partnerColumns.some((column) => column.name === "partner_code_hash")) {
+    database.exec(
+      "ALTER TABLE demo_partners ADD COLUMN partner_code_hash TEXT",
+    );
+  }
+
+  const orderColumns = database
+    .prepare("PRAGMA table_info(orders)")
+    .all() as Array<{ name: string }>;
+
+  if (!orderColumns.some((column) => column.name === "partner_user_id")) {
+    database.exec(
+      "ALTER TABLE orders ADD COLUMN partner_user_id TEXT REFERENCES demo_partners(user_id)",
+    );
+  }
+
+  database.exec(`
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_demo_partners_partner_code_hash
+      ON demo_partners(partner_code_hash)
+      WHERE partner_code_hash IS NOT NULL;
+
+    CREATE INDEX IF NOT EXISTS idx_orders_partner_user_id
+      ON orders(partner_user_id);
   `);
 
   const upsertProduct = database.prepare(`
