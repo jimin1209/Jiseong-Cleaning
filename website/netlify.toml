@@ -13,9 +13,10 @@
   # node:sqlite 와 Next 16 이 요구하는 버전. 기본값이 낮으면 빌드가 깨집니다.
   NODE_VERSION = "22"
 
-# App Router · 서버 액션 · 미들웨어(proxy.ts)를 함께 처리해 준다
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# Next.js 어댑터는 일부러 선언하지 않습니다.
+# Netlify 가 Next 13.5+ 를 자동 감지해 최신 어댑터를 붙여 주고,
+# netlify.toml 에 [[plugins]] 로 고정하면 자동 업데이트와 최신 아키텍처(OpenNext)에서
+# 빠진다고 공식 문서가 권고합니다. App Router·서버 액션·proxy.ts 모두 자동 처리됩니다.
 
 # 문의 목록에는 거래처 담당자 연락처가 들어간다.
 # proxy.ts 의 Basic 인증이 1차 방어이고, 검색엔진 차단을 여기서 한 겹 더 둔다.
