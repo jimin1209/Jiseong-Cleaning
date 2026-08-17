@@ -7,6 +7,7 @@
  *
  * 촬영이 끝나면 이 컴포넌트 자리를 next/image 로 바꾸면 된다.
  */
+import { SAMPLE_CONTENT } from "@/lib/sample";
 
 type Props = { className?: string; variant: IllustrationVariant };
 
@@ -296,9 +297,12 @@ export function IllustrationCard({
       <figcaption className="border-t border-line px-4 py-3.5">
         <strong className="block text-[0.9375rem] font-bold text-navy">{title}</strong>
         <span className="mt-0.5 block text-[0.8125rem] text-muted">{caption}</span>
-        <span className="mt-1.5 block text-[0.6875rem] font-semibold tracking-[0.06em] text-faint">
-          일러스트 · 실사 촬영 후 교체
-        </span>
+        {/* 내부 안내이므로 샘플 모드에서만 보인다. 고객에게 노출할 문구가 아니다 */}
+        {SAMPLE_CONTENT && (
+          <span className="mt-1.5 block text-[0.6875rem] font-semibold tracking-[0.06em] text-faint">
+            일러스트 · 실사 촬영 후 교체
+          </span>
+        )}
       </figcaption>
     </figure>
   );

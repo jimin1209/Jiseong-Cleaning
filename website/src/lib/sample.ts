@@ -44,7 +44,6 @@ export const businessHours = SAMPLE_CONTENT
       weekday: "평일 08:00 – 18:00",
       saturday: "토요일 08:00 – 13:00",
       holiday: "일요일 · 공휴일 휴무",
-      note: "수거 · 납품 시간은 거래처별 일정에 따라 별도로 정합니다.",
     }
   : null;
 
@@ -62,7 +61,7 @@ export const certification = SAMPLE_CONTENT
 
 /**
  * 처리 능력 — 확정 필요.
- * 설비 사양을 확인하기 전이라 실측값이 아니다. 영업 자료에 쓰지 말 것.
+ * 설비 사양을 확인하기 전이라 실측값이 아니다.
  */
 export const capacity = SAMPLE_CONTENT
   ? [
@@ -81,6 +80,5 @@ export const serviceAreas = SAMPLE_CONTENT
   ? {
       primary: ["경주시"],
       secondary: ["포항시", "울산 북구", "영천시"],
-      note: "권역 밖이어도 물량에 따라 상담 가능합니다. 사업장 지역을 알려주세요.",
     }
   : null;

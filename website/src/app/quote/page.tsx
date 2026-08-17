@@ -5,14 +5,14 @@ import { PageHero } from "@/components/page-hero";
 import { QuoteForm } from "@/components/quote-form";
 import { Reveal } from "@/components/reveal";
 import { ButtonAnchor, Card, Container, Section, SectionHead } from "@/components/ui";
-import { businessHours } from "@/lib/sample";
+import { businessHours, SAMPLE_CONTENT } from "@/lib/sample";
 import { processSteps } from "@/lib/services";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "견적 · 상담 문의",
   description:
-    "업체명과 품목, 주당 물량만 알려주시면 영업일 기준 1일 이내에 견적을 드립니다. 전화 054-621-5002.",
+    "업체명과 품목, 주당 물량을 알려주시면 담당자가 확인해 견적을 드립니다. 전화 054-621-5002.",
   alternates: { canonical: "/quote" },
 };
 
@@ -22,7 +22,7 @@ export default function QuotePage() {
       <PageHero
         eyebrow="견 적 · 상 담 문 의"
         title="물량과 주기만 알려주시면 바로 견적을 드립니다"
-        lede="영업일 기준 1일 이내에 담당자가 연락드립니다. 급하시면 전화가 가장 빠릅니다."
+        lede="담당자가 확인 후 연락드립니다. 급하시면 전화가 가장 빠릅니다."
       />
 
       <Section tone="white">
@@ -127,9 +127,12 @@ export default function QuotePage() {
                     카카오맵
                   </ButtonAnchor>
                 </div>
-                <p className="mt-4 border-t border-line pt-3.5 text-[0.75rem] leading-[1.6] text-muted">
-                  지도 임베드는 도메인 확정 후 API 키를 발급받아 이 자리에 넣습니다.
-                </p>
+                {/* 내부 안내이므로 샘플 모드에서만 보인다 */}
+                {SAMPLE_CONTENT && (
+                  <p className="mt-4 border-t border-line pt-3.5 text-[0.75rem] leading-[1.6] text-warn">
+                    지도 임베드는 도메인 확정 후 API 키를 발급받아 이 자리에 넣습니다.
+                  </p>
+                )}
               </Card>
             </Reveal>
           </div>

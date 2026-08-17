@@ -164,7 +164,7 @@ export default async function ServiceDetailPage({
             <SectionHead
               eyebrow="이 용 절 차"
               title="첫 통화부터 첫 납품까지 네 단계"
-              lede="한 번 주기를 정하면 그다음부터는 연락 없이 정해진 요일에 오갑니다."
+              lede="주기를 정하고 나면 그 일정에 맞춰 수거와 납품이 이어집니다."
             />
           </Reveal>
 
@@ -195,7 +195,7 @@ export default async function ServiceDetailPage({
               <div className="flex flex-wrap items-center justify-between gap-6">
                 <SectionHead
                   title="물량만 알려주시면 견적을 드립니다"
-                  lede="영업일 기준 1일 이내에 담당자가 연락드립니다."
+                  lede="담당자가 확인 후 연락드립니다."
                   className="flex-1 basis-[22rem]"
                 />
                 <div className="flex flex-wrap gap-3">

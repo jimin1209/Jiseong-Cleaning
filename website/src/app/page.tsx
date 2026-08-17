@@ -52,9 +52,9 @@ export default function HomePage() {
             </h1>
 
             <p className="mt-5 max-w-[33em] text-base leading-[1.85] text-[#C8DBF2] sm:text-[1.0625rem]">
-              정해진 요일에 수거하고, 고온 세탁·살균을 거쳐, 정해진 요일에
-              납품합니다. 객실 회전이 세탁 일정 때문에 멈추지 않도록
-              지성크리닝이 린넨 운영을 맡습니다.
+              원하시는 요일에 수거하고, 고온 세탁·살균을 거쳐 납품합니다.
+              호텔·모텔·펜션 린넨과 식당·급식소 주방 리넨을 사업장 단위로
+              정기 처리합니다.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -138,7 +138,7 @@ export default function HomePage() {
             <SectionHead
               eyebrow="이 용 절 차"
               title="첫 통화부터 첫 납품까지 네 단계"
-              lede="한 번 주기를 정하면 그다음부터는 연락 없이 정해진 요일에 오갑니다."
+              lede="주기를 정하고 나면 그 일정에 맞춰 수거와 납품이 이어집니다."
             />
           </Reveal>
 
@@ -173,8 +173,8 @@ export default function HomePage() {
           <Reveal>
             <SectionHead
               eyebrow="왜 지 성 크 리 닝 인 가"
-              title="세탁 품질보다 먼저, 일정이 어긋나지 않습니다"
-              lede="숙박업소가 세탁업체를 바꾸는 이유는 대개 가격이 아니라 수거가 밀려서입니다."
+              title="정기 세탁에 필요한 것을 갖추고 있습니다"
+              lede="사업장 세탁물은 품목과 물량이 일정해서, 주기와 공정이 맞아야 운영이 편해집니다."
             />
           </Reveal>
 
@@ -237,8 +237,8 @@ export default function HomePage() {
           <Reveal>
             <SectionHead
               eyebrow="시 설 · 공 정"
-              title="경주 천북면에 자체 세탁 시설을 두고 있습니다"
-              lede="수거한 세탁물은 외부에 재위탁하지 않고 자사 시설에서 직접 처리합니다."
+              title="경주 천북면 사업장에서 처리합니다"
+              lede="업소용 세탁 장비와 전문 세탁 공정으로 사업장 세탁물을 대량 처리합니다."
             />
           </Reveal>
 
@@ -317,7 +317,8 @@ export default function HomePage() {
               <SectionHead
                 tone="dark"
                 title="장애인 표준사업장으로 운영합니다"
-                lede="지성크리닝은 장애인에게 안정적인 일자리를 제공하고 사회적 가치를 실현하기 위해 장애인 표준사업장으로 운영되고 있습니다. 세탁 품질과 납기는 일반 사업장과 동일한 기준으로 관리합니다."
+                /* 전단지에 인쇄된 문장 그대로. 방침을 덧붙이지 않는다 */
+                lede="지성크리닝은 장애인에게 안정적인 일자리를 제공하고 사회적 가치를 실현하기 위해 장애인 표준사업장으로 운영되고 있습니다."
               />
             </Reveal>
 
@@ -377,7 +378,7 @@ export default function HomePage() {
                 align="center"
                 eyebrow="견 적 · 상 담 문 의"
                 title="물량과 주기만 알려주시면 바로 견적을 드립니다"
-                lede="영업일 기준 1일 이내에 담당자가 연락드립니다. 급하시면 전화가 가장 빠릅니다."
+                lede="담당자가 확인 후 연락드립니다. 급하시면 전화가 가장 빠릅니다."
                 className="mx-auto"
               />
               <div className="mt-8 flex flex-wrap justify-center gap-3">

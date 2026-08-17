@@ -100,7 +100,7 @@ export function QuoteForm() {
         </span>
         <h2 className="mt-5 text-[1.375rem] text-navy">접수되었습니다</h2>
         <p className="mt-3 text-[0.9375rem] leading-[1.8] text-ink-2">
-          영업일 기준 1일 이내에 담당자가 연락드리겠습니다.
+          담당자가 확인 후 연락드리겠습니다.
           {state.id != null && (
             <>
               {" "}
