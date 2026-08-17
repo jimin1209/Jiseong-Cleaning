@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { countInquiries, listInquiries } from "@/lib/inquiries";
+import { countInquiries, listInquiries, storageBackend } from "@/lib/inquiries";
 import { Container } from "@/components/ui";
 import { site } from "@/lib/site";
 
@@ -22,9 +22,8 @@ function formatDate(iso: string) {
   });
 }
 
-export default function AdminInquiriesPage() {
-  const inquiries = listInquiries();
-  const total = countInquiries();
+export default async function AdminInquiriesPage() {
+  const [inquiries, total] = await Promise.all([listInquiries(), countInquiries()]);
 
   return (
     <div className="min-h-screen bg-paper py-10">
@@ -135,9 +134,14 @@ export default function AdminInquiriesPage() {
         )}
 
         <p className="mt-5 text-[0.78rem] leading-[1.7] text-muted">
-          이 목록은 SQLite 파일(<code>.data/inquiries.db</code>)에 저장됩니다. 서버리스
-          환경에 배포하면 파일이 유지되지 않으므로, 정식 배포 시에는{" "}
-          <code>src/lib/inquiries.ts</code> 의 구현만 PostgreSQL로 교체하면 됩니다.
+          저장 위치 : <strong className="text-ink">{storageBackend}</strong>
+          {storageBackend === "SQLite 파일" && (
+            <>
+              {" "}
+              (<code>.data/inquiries.db</code>) — 서버를 옮기거나 배포 폴더를
+              갈아끼울 때 이 파일을 함께 옮기지 않으면 접수 내역이 사라집니다.
+            </>
+          )}
         </p>
       </Container>
     </div>

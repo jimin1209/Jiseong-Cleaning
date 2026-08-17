@@ -37,7 +37,7 @@ export async function submitQuote(
 
   let id: number;
   try {
-    id = saveInquiry(parsed.data);
+    id = await saveInquiry(parsed.data);
   } catch (err) {
     console.error("[inquiry] 저장 실패", err);
     return {

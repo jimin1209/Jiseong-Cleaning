@@ -1,0 +1,25 @@
+# 지성크리닝 홍보 웹사이트 — Netlify 설정
+#
+# ⚠️ Netlify 사이트 설정에서 Base directory 를 `website` 로 지정해야 이 파일이 읽힙니다.
+#    저장소 최상위에는 package.json 이 없어서 지정하지 않으면 빌드가 바로 실패합니다.
+#
+# 배포 절차는 저장소 최상위의 `Netlify 배포 설정 안내.md` 를 보세요.
+
+[build]
+  command = "npm run build"
+  # publish 는 지정하지 않습니다. Next 런타임이 출력 위치를 직접 정합니다.
+
+[build.environment]
+  # node:sqlite 와 Next 16 이 요구하는 버전. 기본값이 낮으면 빌드가 깨집니다.
+  NODE_VERSION = "22"
+
+# App Router · 서버 액션 · 미들웨어(proxy.ts)를 함께 처리해 준다
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# 문의 목록에는 거래처 담당자 연락처가 들어간다.
+# proxy.ts 의 Basic 인증이 1차 방어이고, 검색엔진 차단을 여기서 한 겹 더 둔다.
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

@@ -1,19 +1,18 @@
-import { DatabaseSync } from "node:sqlite";
-import { mkdirSync } from "node:fs";
-import path from "node:path";
 import type { InquiryInput } from "./schema";
 
 /**
  * 견적 문의 저장소.
  *
- * SQLite를 쓰는 이유: 결정사항.md 에서 데모 스택이 **Next.js + SQLite** 로 확정돼 있고,
- * 문의 접수는 외부 서비스 없이도 유실되지 않아야 한다.
- * node 22+ 내장 `node:sqlite` 를 써서 네이티브 빌드 의존성이 없다.
+ * 저장 위치가 배포 환경에 따라 다르다. 호출부(서버 액션·관리자 페이지)는
+ * 이 파일의 두 함수만 쓰고 어디에 저장되는지는 모른다.
  *
- * ⚠️ 서버리스(Vercel·Netlify Functions)에 올리면 파일 시스템이 요청마다 초기화되므로
- *    이 저장소는 유지되지 않는다. 그 환경으로 배포할 때는 아래 두 함수의 구현만
- *    PostgreSQL(설계서 2장 권장안)로 갈아끼우면 되고, 호출부는 바뀌지 않는다.
- *    그 사이에도 문의가 유실되지 않도록 메일 발송을 함께 붙여 두었다(lib/mail.ts).
+ *   Netlify        → Netlify Blobs   (서버리스라 파일이 유지되지 않으므로)
+ *   그 외(직접 실행) → SQLite 파일     (결정사항.md 의 SQLite 확정과 일치)
+ *
+ * ⚠️ 서버리스에서 SQLite 를 쓰면 접수가 조용히 사라진다. 함수 인스턴스가
+ *    요청마다 새로 뜨고 파일 시스템이 초기화되기 때문이다. 그래서 Netlify 에서는
+ *    같은 인터페이스로 Blobs 를 쓴다. Blobs 는 Netlify 내장이라 외부 서비스
+ *    가입이나 연결 문자열이 필요 없다.
  */
 
 export type Inquiry = InquiryInput & {
@@ -22,17 +21,93 @@ export type Inquiry = InquiryInput & {
   itemsText: string;
 };
 
-const DB_PATH =
-  process.env.INQUIRY_DB_PATH ?? path.join(process.cwd(), ".data", "inquiries.db");
+/** Netlify 빌드·런타임에서 자동으로 설정되는 환경변수 */
+const onNetlify = Boolean(process.env.NETLIFY || process.env.NETLIFY_LOCAL);
 
-let db: DatabaseSync | null = null;
+const STORE_NAME = "jiseong-cleaning-inquiries";
+/** 다음 번호를 담아두는 키. Blobs 에는 자동 증가가 없어 직접 센다 */
+const COUNTER_KEY = "_counter";
 
-function getDb(): DatabaseSync {
+/* ═══════════════ 공통 ═══════════════ */
+
+function toInquiry(id: number, createdAt: string, input: InquiryInput): Inquiry {
+  return {
+    ...input,
+    id,
+    createdAt,
+    itemsText: input.items.join(", "),
+    consent: true,
+  };
+}
+
+/** 목록 정렬·조회 키. 시각 역순으로 정렬되도록 0 을 채운 번호를 뒤에 붙인다 */
+function blobKey(id: number, createdAt: string) {
+  return `${createdAt}__${String(id).padStart(8, "0")}`;
+}
+
+/* ═══════════════ Netlify Blobs ═══════════════ */
+
+async function blobStore() {
+  const { getStore } = await import("@netlify/blobs");
+  return getStore({ name: STORE_NAME, consistency: "strong" });
+}
+
+async function saveToBlobs(input: InquiryInput): Promise<number> {
+  const store = await blobStore();
+
+  // 번호 발급. 동시 접수가 겹치면 번호가 밀릴 수 있으나
+  // 접수 자체는 각자 다른 키로 저장되므로 유실되지 않는다.
+  const raw = await store.get(COUNTER_KEY);
+  const id = (raw ? Number(raw) : 0) + 1;
+  await store.set(COUNTER_KEY, String(id));
+
+  const createdAt = new Date().toISOString();
+  await store.setJSON(blobKey(id, createdAt), toInquiry(id, createdAt, input));
+
+  return id;
+}
+
+async function listFromBlobs(limit: number): Promise<Inquiry[]> {
+  const store = await blobStore();
+  const { blobs } = await store.list();
+
+  const keys = blobs
+    .map((b) => b.key)
+    .filter((k) => k !== COUNTER_KEY)
+    .sort()
+    .reverse()
+    .slice(0, limit);
+
+  const rows = await Promise.all(
+    keys.map((key) => store.get(key, { type: "json" }) as Promise<Inquiry | null>),
+  );
+
+  return rows.filter((r): r is Inquiry => r !== null);
+}
+
+async function countFromBlobs(): Promise<number> {
+  const store = await blobStore();
+  const raw = await store.get(COUNTER_KEY);
+  return raw ? Number(raw) : 0;
+}
+
+/* ═══════════════ SQLite (직접 실행 환경) ═══════════════ */
+
+type SqliteDb = import("node:sqlite").DatabaseSync;
+let db: SqliteDb | null = null;
+
+async function getDb(): Promise<SqliteDb> {
   if (db) return db;
 
-  mkdirSync(path.dirname(DB_PATH), { recursive: true });
-  db = new DatabaseSync(DB_PATH);
+  const { DatabaseSync } = await import("node:sqlite");
+  const { mkdirSync } = await import("node:fs");
+  const path = await import("node:path");
 
+  const file =
+    process.env.INQUIRY_DB_PATH ?? path.join(process.cwd(), ".data", "inquiries.db");
+  mkdirSync(path.dirname(file), { recursive: true });
+
+  db = new DatabaseSync(file);
   db.exec(`
     CREATE TABLE IF NOT EXISTS inquiries (
       id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,30 +130,6 @@ function getDb(): DatabaseSync {
   return db;
 }
 
-export function saveInquiry(input: InquiryInput): number {
-  const stmt = getDb().prepare(`
-    INSERT INTO inquiries
-      (created_at, company, industry, contact_name, phone, email, region, items, volume, cycle, message)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
-
-  const info = stmt.run(
-    new Date().toISOString(),
-    input.company,
-    input.industry,
-    input.contactName,
-    input.phone,
-    input.email,
-    input.region,
-    input.items.join(", "),
-    input.volume,
-    input.cycle,
-    input.message,
-  );
-
-  return Number(info.lastInsertRowid);
-}
-
 type Row = {
   id: number;
   created_at: string;
@@ -94,8 +145,34 @@ type Row = {
   message: string;
 };
 
-export function listInquiries(limit = 200): Inquiry[] {
-  const rows = getDb()
+async function saveToSqlite(input: InquiryInput): Promise<number> {
+  const conn = await getDb();
+  const info = conn
+    .prepare(
+      `INSERT INTO inquiries
+         (created_at, company, industry, contact_name, phone, email, region, items, volume, cycle, message)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+    .run(
+      new Date().toISOString(),
+      input.company,
+      input.industry,
+      input.contactName,
+      input.phone,
+      input.email,
+      input.region,
+      input.items.join(", "),
+      input.volume,
+      input.cycle,
+      input.message,
+    );
+
+  return Number(info.lastInsertRowid);
+}
+
+async function listFromSqlite(limit: number): Promise<Inquiry[]> {
+  const conn = await getDb();
+  const rows = conn
     .prepare(
       `SELECT * FROM inquiries ORDER BY datetime(created_at) DESC, id DESC LIMIT ?`,
     )
@@ -119,9 +196,27 @@ export function listInquiries(limit = 200): Inquiry[] {
   }));
 }
 
-export function countInquiries(): number {
-  const row = getDb().prepare(`SELECT COUNT(*) AS n FROM inquiries`).get() as
+async function countFromSqlite(): Promise<number> {
+  const conn = await getDb();
+  const row = conn.prepare(`SELECT COUNT(*) AS n FROM inquiries`).get() as
     | { n: number }
     | undefined;
   return row?.n ?? 0;
 }
+
+/* ═══════════════ 공개 인터페이스 ═══════════════ */
+
+export async function saveInquiry(input: InquiryInput): Promise<number> {
+  return onNetlify ? saveToBlobs(input) : saveToSqlite(input);
+}
+
+export async function listInquiries(limit = 200): Promise<Inquiry[]> {
+  return onNetlify ? listFromBlobs(limit) : listFromSqlite(limit);
+}
+
+export async function countInquiries(): Promise<number> {
+  return onNetlify ? countFromBlobs() : countFromSqlite();
+}
+
+/** 관리자 화면에 어디에 저장되는지 알려준다 */
+export const storageBackend = onNetlify ? "Netlify Blobs" : "SQLite 파일";
