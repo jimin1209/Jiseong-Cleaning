@@ -23,11 +23,18 @@ Netlify → **Add new site** → **Import an existing project** → GitHub →
 | --- | --- |
 | **Branch to deploy** | `feature/marketing-website` (아직 main 에 병합 안 됨) |
 | **Base directory** | `website` |
-| Build command | `npm run build` (자동 인식) |
-| Publish directory | 비워둠 (Next 런타임이 처리) |
+| Build command | `npm run build` |
+| **Publish directory** | `.next` |
 
-**Base directory 를 `website` 로 지정하지 않으면** 저장소 최상위에
-`package.json` 이 없어서 빌드가 바로 실패합니다.
+두 곳이 틀리기 쉽고, 둘 다 실제로 한 번씩 터졌습니다.
+
+- **Base directory** — 저장소 최상위에 `package.json` 이 없습니다.
+  `website` 로 지정하지 않으면 빌드가 바로 실패합니다.
+- **Publish directory** — Next.js 는 `.next` 입니다(base 기준 상대경로).
+  비워두면 base(소스 폴더)가 publish 로 잡히고, Netlify 는 「publish 폴더 안의
+  파일만 배포」하므로 **모든 경로가 404 가 되고 소스 코드가 그대로 공개**됩니다.
+  `website/netlify.toml` 에 `publish = ".next"` 를 넣어 뒀고, netlify.toml 이
+  UI 설정을 덮어쓰므로 UI 값은 비워둬도 됩니다.
 
 ## 3. 환경변수 (Site configuration → Environment variables)
 

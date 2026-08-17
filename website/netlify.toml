@@ -7,7 +7,16 @@
 
 [build]
   command = "npm run build"
-  # publish 는 지정하지 않습니다. Next 런타임이 출력 위치를 직접 정합니다.
+
+  # ⭐ Next.js 의 배포 대상은 빌드 결과인 .next 입니다 (base 기준 상대경로).
+  #
+  # 이 줄이 없으면 publish 가 base(= website, 소스 폴더)로 잡히고,
+  # Netlify 는 "publish 폴더 안의 파일만 배포"하므로 소스가 그대로 서빙됩니다.
+  # 실제로 그렇게 배포돼서 모든 경로가 404 이고 package.json·src/*.ts 가
+  # 공개로 다운로드되는 상태가 됐습니다.
+  #
+  # netlify.toml 은 UI 설정을 덮어쓰므로 여기에 두는 것이 확실합니다.
+  publish = ".next"
 
 [build.environment]
   # node:sqlite 와 Next 16 이 요구하는 버전. 기본값이 낮으면 빌드가 깨집니다.
