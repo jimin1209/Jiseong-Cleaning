@@ -22,10 +22,21 @@
   # node:sqlite 와 Next 16 이 요구하는 버전. 기본값이 낮으면 빌드가 깨집니다.
   NODE_VERSION = "22"
 
-# Next.js 어댑터는 일부러 선언하지 않습니다.
-# Netlify 가 Next 13.5+ 를 자동 감지해 최신 어댑터를 붙여 주고,
-# netlify.toml 에 [[plugins]] 로 고정하면 자동 업데이트와 최신 아키텍처(OpenNext)에서
-# 빠진다고 공식 문서가 권고합니다. App Router·서버 액션·proxy.ts 모두 자동 처리됩니다.
+# ⭐ Next.js 어댑터를 명시적으로 선언합니다.
+#
+# 공식 문서는 "자동 감지되니 선언하지 말라"고 권고하지만, 이 저장소에서는
+# 자동 감지가 동작하지 않았습니다. 근거:
+#   - 빌드 로그에 `❯ Plugins` 섹션이 아예 없었다
+#   - 배포 결과가 .next 폴더의 정적 서빙이었다
+#     (/BUILD_ID, /routes-manifest.json, /package.json 이 200 으로 열렸다)
+#   - /.netlify/functions/* 가 전부 404 — 서버 함수가 만들어지지 않았다
+#   그 결과 모든 페이지 경로가 404 였다.
+#
+# 최상위에 package.json 이 없는 구조(website/ 하위 프로젝트)라 감지가
+# 걸리지 않는 것으로 보입니다. version 을 적지 않았으므로 버전 고정은 아니고,
+# Netlify 가 매 빌드마다 최신 어댑터를 설치합니다.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 # 문의 목록에는 거래처 담당자 연락처가 들어간다.
 # proxy.ts 의 Basic 인증이 1차 방어이고, 검색엔진 차단을 여기서 한 겹 더 둔다.
