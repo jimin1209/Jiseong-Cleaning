@@ -86,6 +86,59 @@ npm run dev                    # http://localhost:3000
 
 ---
 
+## 배포
+
+이 사이트는 **정적 파일이 아닙니다.** 견적 폼 접수, 문의 저장, 관리자 인증이
+서버에서 돌아가므로 HTML 폴더만 올리는 방식으로는 동작하지 않습니다.
+Node.js 20 이상이 필요합니다.
+
+### 방법 1 — 폴더를 올려서 직접 실행 (사내 서버 · VPS)
+
+```bash
+npm ci
+npm run build
+npm run pack     # → deploy/ 폴더가 만들어진다 (약 25MB)
+```
+
+**`deploy/` 폴더만** 서버에 올리고:
+
+```bash
+node server.js   # 기본 3000번 포트
+```
+
+`node_modules`(약 500MB)나 `.next`(약 300MB)를 올릴 필요가 없습니다. 필요한 모듈이
+`deploy/` 안에 이미 들어 있어서 서버에서 `npm install` 도 하지 않습니다.
+폴더 안에 `실행방법.txt` 를 함께 넣어 두었습니다.
+
+포트를 바꾸려면:
+
+```bash
+PORT=8080 node server.js          # Linux · macOS
+$env:PORT=8080; node server.js    # Windows PowerShell
+```
+
+환경변수는 `deploy/.env.production` 에 두거나 서버에 직접 설정합니다.
+`NEXT_PUBLIC_SITE_URL` 과 `ADMIN_USER`/`ADMIN_PASSWORD` 는 반드시 지정하세요.
+
+> ⚠️ 문의는 `deploy/.data/inquiries.db` 에 쌓입니다. 새 버전으로 폴더를 갈아끼울 때
+> **이 파일을 먼저 백업해 옮기지 않으면 접수 내역이 사라집니다.**
+
+### 방법 2 — Vercel · Netlify (폴더 업로드 없음)
+
+저장소를 연결하고 **Root Directory 를 `website`** 로 지정하면 됩니다.
+빌드 명령과 출력 경로는 자동 감지되고, `output: "standalone"` 은 무시됩니다.
+
+단, 서버리스 환경에서는 파일 시스템이 요청마다 초기화되므로 **SQLite 저장이
+유지되지 않습니다.** 아래 「문의 데이터가 저장되는 곳」을 먼저 읽으세요.
+
+### 정적 호스팅(그누보드 서버 같은 곳)에 올리려면
+
+가능하지만 기능을 덜어내야 합니다. 견적 폼(서버 액션) · 문의 저장 · 관리자 페이지 ·
+`/admin` 인증을 모두 빼고 `output: "export"` 로 바꾸면 `out/` 폴더가 나옵니다.
+그 폴더는 아무 웹호스팅에나 올라갑니다. 폼은 외부 서비스로 대체해야 합니다.
+
+---
+
 ## 문의 데이터가 저장되는 곳
 
 `.data/inquiries.db` (SQLite, gitignore 대상).

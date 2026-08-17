@@ -18,6 +18,18 @@ const extraDevOrigins = (process.env.ALLOWED_DEV_ORIGINS ?? "")
   .filter(Boolean);
 
 const nextConfig: NextConfig = {
+  /**
+   * 배포용 자립 출력.
+   *
+   * 이걸 켜면 .next/standalone 에 서버 실행에 필요한 것만 모인다
+   * (node_modules 496MB · .next 297MB 를 통째로 올리지 않아도 된다).
+   * public 과 .next/static 은 Next 가 자동으로 넣어주지 않으므로
+   * scripts/pack.mjs 가 함께 복사해 배포 폴더를 완성한다.
+   *
+   * Vercel·Netlify 에 올릴 때는 이 설정이 무시되므로 그대로 둬도 된다.
+   */
+  output: "standalone",
+
   allowedDevOrigins: [
     "100.107.165.112", // 이 PC Tailscale
     "192.168.123.8", // 사내망

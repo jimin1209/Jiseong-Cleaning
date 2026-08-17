@@ -9,6 +9,7 @@
     "prebuild": "npm run setup:fonts",
     "build": "next build",
     "start": "next start",
+    "pack": "node scripts/pack.mjs",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
