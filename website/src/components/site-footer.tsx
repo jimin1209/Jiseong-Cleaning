@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BrandLockup } from "./brand-mark";
 import { Container } from "./ui";
+import { businessInfo, SAMPLE_CONTENT } from "@/lib/sample";
 import { services } from "@/lib/services";
 import { site } from "@/lib/site";
 
@@ -75,12 +76,31 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <div className="flex flex-wrap gap-x-6 gap-y-2.5 pt-6 text-[0.8125rem] text-[#6E8CB4]">
+        {/* 사업자 정보 — 법적 지위(사업부/별도 사업자) 확정 전이라 임시값 */}
+        <div className="flex flex-wrap gap-x-6 gap-y-1.5 pt-6 text-[0.8125rem] text-[#8AA4C6]">
+          {businessInfo.representative && (
+            <span>대표자 {businessInfo.representative}</span>
+          )}
+          {businessInfo.registrationNumber && (
+            <span data-numeric>
+              사업자등록번호 {businessInfo.registrationNumber}
+            </span>
+          )}
+          {businessInfo.mailOrderNumber && (
+            <span data-numeric>
+              통신판매업 {businessInfo.mailOrderNumber}
+            </span>
+          )}
+          {businessInfo.fax && <span data-numeric>팩스 {businessInfo.fax}</span>}
+        </div>
+
+        <div className="flex flex-wrap gap-x-6 gap-y-2.5 pt-3 text-[0.8125rem] text-[#6E8CB4]">
           <span>© {new Date().getFullYear()} 지성크리닝 · {site.parent}</span>
-          {/* 사업자 정보는 법적 지위(사업부/별도 사업자) 확정 후 표기한다 */}
-          <span className="text-[#C08A4A]">
-            사업자등록번호 · 대표자 표기 확정 필요
-          </span>
+          {SAMPLE_CONTENT && (
+            <span className="text-[#C08A4A]">
+              사업자 정보는 확인 전 임시값입니다
+            </span>
+          )}
         </div>
       </Container>
     </footer>

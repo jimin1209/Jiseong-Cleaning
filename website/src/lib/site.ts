@@ -26,8 +26,14 @@ export const site = {
   addressShort: "경주시 천북면 모서안길 44",
   region: "경상북도 경주시",
 
-  /** 운영시간 — 확정 필요 */
-  hours: null as string | null,
+  /** 모회사 본사 주소 — jiseong.co.kr 푸터에서 확인한 실제 값(2026-08-17) */
+  parentAddress: "경상북도 경주시 용강동 승삼신리길 80",
+
+  /** 지도 앱 길찾기 — API 키가 필요 없는 검색 링크 */
+  mapLinks: {
+    naver: "https://map.naver.com/p/search/경주시%20천북면%20모서안길%2044",
+    kakao: "https://map.kakao.com/?q=경주시%20천북면%20모서안길%2044",
+  },
 
   /** 배포 도메인 확정 후 교체 — 사이트맵·OG·구조화 데이터가 이 값을 쓴다 */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://jiseongcleaning.co.kr",

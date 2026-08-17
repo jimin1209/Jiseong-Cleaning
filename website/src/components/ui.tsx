@@ -307,34 +307,5 @@ export function Alert({
   );
 }
 
-/* ═══════════════ 사진 자리 ═══════════════ */
-
-/**
- * 실사 촬영 전 자리표시자.
- * 스톡 이미지를 채워 넣지 않는다 — 이 사이트의 논거가 「실체 있는 업체」이므로
- * 가짜 사진은 그 논거를 스스로 무너뜨린다.
- */
-export function PhotoSlot({
-  title,
-  caption,
-  ratio = "aspect-[4/3]",
-}: {
-  title: string;
-  caption: string;
-  ratio?: string;
-}) {
-  return (
-    <figure className="overflow-hidden rounded-brand border border-line-strong bg-white">
-      <div
-        className={`${ratio} flex flex-col items-center justify-center gap-2.5 bg-[repeating-linear-gradient(135deg,#EDF4FB_0_10px,#E2ECF7_10px_20px)] text-faint`}
-      >
-        <Icon.camera className="size-8 opacity-60" />
-        <span className="text-xs font-bold tracking-[0.06em]">사진 위치 · 촬영 예정</span>
-      </div>
-      <figcaption className="border-t border-line px-4 py-3.5">
-        <strong className="block text-[0.9375rem] font-bold text-navy">{title}</strong>
-        <span className="mt-0.5 block text-[0.8125rem] text-muted">{caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
+/* 사진 자리표시자는 IllustrationCard(components/illustration.tsx)로 대체됐다.
+   실사 촬영이 끝나면 그 컴포넌트 자리를 next/image 로 바꾼다. */

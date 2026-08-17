@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Icon } from "@/components/icons";
+import { IllustrationCard } from "@/components/illustration";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import {
@@ -9,10 +10,10 @@ import {
   Card,
   Container,
   IconBubble,
-  PhotoSlot,
   Section,
   SectionHead,
 } from "@/components/ui";
+import { businessHours, capacity, serviceAreas } from "@/lib/sample";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -89,21 +90,77 @@ export default function FacilityPage() {
             <SectionHead
               eyebrow="시 설"
               title="설비와 작업 현장"
-              lede="스톡 이미지를 쓰지 않습니다. 실제 시설을 촬영해 이 자리에 올릴 예정입니다."
+              lede="남의 공장 사진을 가져다 쓰지 않습니다. 지금은 일러스트로 두었고, 실제 시설을 촬영해 이 자리에 교체할 예정입니다."
             />
           </Reveal>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { title: "세탁 설비 전경", caption: "업소용 세탁기 · 건조기 라인" },
-              { title: "고온 세탁 · 살균", caption: "세제 투입부터 탈수까지" },
-              { title: "건조 · 프레스", caption: "품목별 건조와 유니폼 마감" },
-              { title: "품목 검수", caption: "입고 시 분류와 수량 확인" },
-              { title: "정리 · 적재", caption: "납품 단위 포장" },
-              { title: "배송 차량", caption: "자체 수거 · 납품 차량" },
-            ].map((shot, i) => (
+          {capacity && (
+            <Reveal delay={60}>
+              <dl className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {capacity.map((c) => (
+                  <div
+                    key={c.label}
+                    className="rounded-brand border border-line bg-white px-5 py-4 shadow-card"
+                  >
+                    <dt className="text-[0.75rem] font-bold tracking-[0.08em] text-faint">
+                      {c.label}
+                    </dt>
+                    <dd className="m-0 mt-1.5 text-[1.5rem] font-extrabold tracking-[-0.03em] text-navy">
+                      <span data-numeric>{c.value}</span>
+                      <span className="ml-1 text-[0.875rem] font-bold text-muted">
+                        {c.unit}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-3 text-[0.78rem] text-warn">
+                설비 사양 확인 전 임시값입니다. 영업 자료에 그대로 쓰지 마세요.
+              </p>
+            </Reveal>
+          )}
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {(
+              [
+                {
+                  variant: "machines",
+                  title: "세탁 설비 전경",
+                  caption: "업소용 세탁기 · 건조기 라인",
+                },
+                {
+                  variant: "inspect",
+                  title: "품목 검수",
+                  caption: "입고 시 분류와 수량 확인",
+                },
+                {
+                  variant: "press",
+                  title: "건조 · 프레스",
+                  caption: "품목별 건조와 유니폼 마감",
+                },
+                {
+                  variant: "linen",
+                  title: "정리 · 적재",
+                  caption: "납품 단위 포장",
+                },
+                {
+                  variant: "shelf",
+                  title: "출고 대기",
+                  caption: "거래처별 분류 선반",
+                },
+                {
+                  variant: "truck",
+                  title: "배송 차량",
+                  caption: "자체 수거 · 납품 차량",
+                },
+              ] as const
+            ).map((shot, i) => (
               <Reveal key={shot.title} delay={(i % 3) * 70}>
-                <PhotoSlot title={shot.title} caption={shot.caption} />
+                <IllustrationCard
+                  variant={shot.variant}
+                  title={shot.title}
+                  caption={shot.caption}
+                />
               </Reveal>
             ))}
           </div>
@@ -178,6 +235,85 @@ export default function FacilityPage() {
               있으시면 상담 시 알려주세요.
             </Alert>
           </Reveal>
+
+          {/* 운영 시간 · 서비스 권역 */}
+          {(businessHours || serviceAreas) && (
+            <Reveal delay={180}>
+              <div className="mt-10 grid gap-5 sm:grid-cols-2">
+                {businessHours && (
+                  <Card className="p-6">
+                    <h3 className="text-[0.6875rem] font-bold tracking-[0.16em] text-faint">
+                      운 영 시 간
+                    </h3>
+                    <dl className="mt-4 flex flex-col gap-2.5 text-[0.9375rem]">
+                      {[
+                        ["평일", businessHours.weekday],
+                        ["토요일", businessHours.saturday],
+                        ["휴무", businessHours.holiday],
+                      ].map(([k, v]) => (
+                        <div key={k} className="flex gap-3">
+                          <dt className="w-14 shrink-0 text-[0.8125rem] font-bold text-muted">
+                            {k}
+                          </dt>
+                          <dd className="m-0 text-ink-2" data-numeric>
+                            {v}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                    <p className="mt-4 border-t border-line pt-3.5 text-[0.8125rem] leading-[1.7] text-muted">
+                      {businessHours.note}
+                    </p>
+                    <p className="mt-2 text-[0.75rem] font-semibold text-warn">
+                      운영시간은 확인 전 임시값입니다.
+                    </p>
+                  </Card>
+                )}
+
+                {serviceAreas && (
+                  <Card className="p-6">
+                    <h3 className="text-[0.6875rem] font-bold tracking-[0.16em] text-faint">
+                      수 거 · 납 품 권 역
+                    </h3>
+                    <div className="mt-4 flex flex-col gap-3.5">
+                      <div>
+                        <span className="text-[0.75rem] font-bold text-sky">주 권역</span>
+                        <ul className="mt-1.5 flex flex-wrap gap-1.5">
+                          {serviceAreas.primary.map((a) => (
+                            <li key={a}>
+                              <span className="inline-flex rounded-full bg-navy px-3 py-1 text-xs font-bold text-white">
+                                {a}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-[0.75rem] font-bold text-muted">
+                          협의 가능
+                        </span>
+                        <ul className="mt-1.5 flex flex-wrap gap-1.5">
+                          {serviceAreas.secondary.map((a) => (
+                            <li key={a}>
+                              <span className="inline-flex rounded-full bg-tint px-3 py-1 text-xs font-semibold text-navy">
+                                {a}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <p className="mt-4 border-t border-line pt-3.5 text-[0.8125rem] leading-[1.7] text-muted">
+                      {serviceAreas.note}
+                    </p>
+                    <p className="mt-2 text-[0.75rem] font-semibold text-warn">
+                      권역은 확인 전 임시값입니다.
+                    </p>
+                  </Card>
+                )}
+              </div>
+            </Reveal>
+          )}
         </Container>
       </Section>
 

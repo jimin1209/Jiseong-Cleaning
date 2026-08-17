@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
+import { FaqJsonLd, FaqList } from "@/components/faq-list";
 import { Icon } from "@/components/icons";
+import { IllustrationCard } from "@/components/illustration";
 import { Reveal } from "@/components/reveal";
 import {
   Badge,
@@ -10,11 +12,12 @@ import {
   Chip,
   Container,
   IconBubble,
-  PhotoSlot,
   Section,
   SectionHead,
 } from "@/components/ui";
+import { faqs } from "@/lib/faq";
 import { processSteps, reasons, services } from "@/lib/services";
+import { capacity, certification } from "@/lib/sample";
 import { site, targetIndustries, trustPoints } from "@/lib/site";
 
 export default function HomePage() {
@@ -249,18 +252,62 @@ export default function HomePage() {
           </Reveal>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { title: "세탁 설비 전경", caption: "업소용 세탁기 · 건조기 라인" },
-              { title: "고온 세탁 · 살균 공정", caption: "세제 투입부터 건조까지" },
-              { title: "정리 · 납품 준비", caption: "품목별 적재와 배송 차량" },
-            ].map((shot, i) => (
+            {(
+              [
+                {
+                  variant: "machines",
+                  title: "세탁 설비 전경",
+                  caption: "업소용 세탁기 · 건조기 라인",
+                },
+                {
+                  variant: "press",
+                  title: "고온 세탁 · 살균 공정",
+                  caption: "세제 투입부터 마감까지",
+                },
+                {
+                  variant: "truck",
+                  title: "정리 · 납품 준비",
+                  caption: "품목별 적재와 배송 차량",
+                },
+              ] as const
+            ).map((shot, i) => (
               <Reveal key={shot.title} delay={i * 70}>
-                <PhotoSlot title={shot.title} caption={shot.caption} />
+                <IllustrationCard
+                  variant={shot.variant}
+                  title={shot.title}
+                  caption={shot.caption}
+                />
               </Reveal>
             ))}
           </div>
 
-          <Reveal delay={140}>
+          {capacity && (
+            <Reveal delay={140}>
+              <dl className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {capacity.map((c) => (
+                  <div
+                    key={c.label}
+                    className="rounded-brand border border-line bg-paper px-5 py-4"
+                  >
+                    <dt className="text-[0.75rem] font-bold tracking-[0.08em] text-faint">
+                      {c.label}
+                    </dt>
+                    <dd className="m-0 mt-1.5 text-[1.5rem] font-extrabold tracking-[-0.03em] text-navy">
+                      <span data-numeric>{c.value}</span>
+                      <span className="ml-1 text-[0.875rem] font-bold text-muted">
+                        {c.unit}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-3 text-[0.78rem] text-warn">
+                처리 능력 수치는 설비 사양 확인 전 임시값입니다.
+              </p>
+            </Reveal>
+          )}
+
+          <Reveal delay={200}>
             <div className="mt-8">
               <ButtonLink href="/facility" variant="ghost">
                 시설과 공정 자세히 보기
@@ -291,13 +338,43 @@ export default function HomePage() {
                     장애인 표준사업장
                   </strong>
                   <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
-                    인증기관 · 인증번호 확인 후 표기
+                    {certification
+                      ? `${certification.issuer} · ${certification.number}`
+                      : "인증기관 · 인증번호 확인 후 표기"}
                   </span>
                 </span>
               </div>
             </Reveal>
           </div>
         </Container>
+      </Section>
+
+      {/* ═══════════════ 자주 묻는 질문 ═══════════════ */}
+      <Section tone="white">
+        <Container>
+          <Reveal>
+            <SectionHead
+              eyebrow="자 주 묻 는 질 문"
+              title="거래를 검토하실 때 가장 많이 물어보시는 것들"
+              lede="여기에 없는 내용은 전화로 물어보시면 바로 답해 드립니다."
+            />
+          </Reveal>
+          <Reveal delay={80}>
+            <div className="mt-9">
+              {/* 홈에는 앞 6개만. 전체는 견적 문의 페이지에 있다 */}
+              <FaqList items={faqs.slice(0, 6)} />
+            </div>
+          </Reveal>
+          <Reveal delay={140}>
+            <div className="mt-6">
+              <ButtonLink href="/quote#faq" variant="ghost">
+                질문 전체 보기
+                <Icon.chevronRight className="size-4" />
+              </ButtonLink>
+            </div>
+          </Reveal>
+        </Container>
+        <FaqJsonLd items={faqs} />
       </Section>
 
       {/* ═══════════════ 마무리 CTA ═══════════════ */}

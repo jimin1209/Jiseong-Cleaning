@@ -11,6 +11,7 @@ import {
   Section,
   SectionHead,
 } from "@/components/ui";
+import { businessInfo, certification, SAMPLE_CONTENT } from "@/lib/sample";
 import { site, targetIndustries } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -70,6 +71,24 @@ export default function AboutPage() {
                   <dt className="text-[0.8125rem] font-bold text-muted">운영</dt>
                   <dd className="m-0 text-ink-2">{site.parent}</dd>
 
+                  {businessInfo.representative && (
+                    <>
+                      <dt className="text-[0.8125rem] font-bold text-muted">대표자</dt>
+                      <dd className="m-0 text-ink-2">{businessInfo.representative}</dd>
+                    </>
+                  )}
+
+                  {businessInfo.registrationNumber && (
+                    <>
+                      <dt className="text-[0.8125rem] font-bold text-muted">
+                        사업자번호
+                      </dt>
+                      <dd className="m-0 text-ink-2" data-numeric>
+                        {businessInfo.registrationNumber}
+                      </dd>
+                    </>
+                  )}
+
                   <dt className="text-[0.8125rem] font-bold text-muted">소재지</dt>
                   <dd className="m-0 text-ink-2">{site.address}</dd>
 
@@ -80,14 +99,32 @@ export default function AboutPage() {
                     </a>
                   </dd>
 
+                  {businessInfo.fax && (
+                    <>
+                      <dt className="text-[0.8125rem] font-bold text-muted">팩스</dt>
+                      <dd className="m-0 text-ink-2" data-numeric>
+                        {businessInfo.fax}
+                      </dd>
+                    </>
+                  )}
+
                   <dt className="text-[0.8125rem] font-bold text-muted">취급</dt>
                   <dd className="m-0 text-ink-2">
                     숙박 린넨 · 주방 리넨 · 월세탁 정기 계약
                   </dd>
                 </dl>
 
-                <p className="mt-6 border-t border-line pt-5 text-[0.8125rem] leading-[1.7] text-muted">
-                  모회사 홈페이지{" "}
+                {SAMPLE_CONTENT && (
+                  <p className="mt-4 rounded-brand bg-warn-bg px-3.5 py-2.5 text-[0.75rem] leading-[1.6] font-semibold text-warn">
+                    대표자 · 사업자번호 · 팩스는 확인 전 임시값입니다.
+                  </p>
+                )}
+
+                <p className="mt-5 border-t border-line pt-5 text-[0.8125rem] leading-[1.8] text-muted">
+                  모회사 본사
+                  <br />
+                  {site.parentAddress}
+                  <br />
                   <a
                     href={site.parentUrl}
                     target="_blank"
@@ -129,9 +166,22 @@ export default function AboutPage() {
                   <strong className="block text-[1.0625rem] font-extrabold tracking-[-0.02em] text-white">
                     장애인 표준사업장
                   </strong>
-                  <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
-                    인증기관 · 인증번호 확인 후 표기
-                  </span>
+                  {certification ? (
+                    <span className="mt-1 block text-[0.8125rem] leading-[1.6] text-[#A6C5E8]">
+                      {certification.issuer}
+                      <br />
+                      <span data-numeric>
+                        {certification.number} · {certification.date}
+                      </span>
+                      <span className="mt-1 block text-[0.6875rem] text-[#C08A4A]">
+                        인증번호 · 인증일은 확인 전 임시값
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
+                      인증기관 · 인증번호 확인 후 표기
+                    </span>
+                  )}
                 </span>
               </div>
             </Reveal>

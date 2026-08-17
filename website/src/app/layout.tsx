@@ -3,6 +3,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MobileCtaBar } from "@/components/mobile-cta-bar";
+import { SampleBanner } from "@/components/sample-banner";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -104,6 +105,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           본문으로 건너뛰기
         </a>
+        <SampleBanner />
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
