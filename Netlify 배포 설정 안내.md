@@ -33,10 +33,18 @@ Netlify → **Add new site** → **Import an existing project** → GitHub →
 
 | 변수 | 값 | 필수 |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | 배포된 실제 주소 (예: `https○○.netlify.app`) | 필수 |
 | `ADMIN_USER` | 관리자 아이디 | 필수 |
 | `ADMIN_PASSWORD` | 관리자 비밀번호 | 필수 |
+| `NEXT_PUBLIC_SITE_URL` | 도메인 연결 후 `https://www.jiseong-cleaning.co.kr` | 선택 |
 | `NEXT_PUBLIC_SAMPLE_CONTENT` | `off` — 임시값 배너를 끌 때 | 선택 |
+
+> ⚠️ **`NEXT_PUBLIC_SITE_URL` 은 값을 넣을 거면 넣고, 아니면 변수를 아예 만들지 마세요.**
+> 변수만 만들고 값을 비워두면 빈 문자열이 들어갑니다. 예전에는 그것 때문에
+> `metadataBase` 의 `new URL()` 이 터져 빌드가 실패했습니다. 지금은 빈 값·잘못된
+> 값을 무시하도록 고쳤지만, 굳이 빈 변수를 만들 이유가 없습니다.
+>
+> 이 변수를 넣지 않으면 Netlify 가 배포마다 자동으로 주는 주소(`URL`)를 씁니다.
+> 그래서 도메인 연결 전에도 `sitemap.xml` 과 OG 태그가 맞습니다.
 
 `ADMIN_USER` / `ADMIN_PASSWORD` 를 넣지 않으면 `/admin/inquiries` 가 503 으로
 완전히 막힙니다. 문의 목록에 거래처 연락처가 들어가므로 일부러 그렇게 만들었습니다.

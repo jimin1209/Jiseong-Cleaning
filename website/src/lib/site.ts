@@ -6,6 +6,50 @@
  * Document/브랜드-웹디자인-규격서 의 「확정 필요」 목록과 짝을 이룬다.
  */
 
+/** 운영 도메인. 가비아 등록, www 를 기본으로 쓴다 */
+const PRODUCTION_URL = "https://www.jiseong-cleaning.co.kr";
+
+/**
+ * 사이트 주소를 정한다.
+ *
+ * ⚠️ `process.env.X ?? 기본값` 으로 쓰면 안 된다. `??` 는 null/undefined 만
+ *    걸러내므로, Netlify UI 에서 **변수만 만들고 값을 비워두면** 빈 문자열이
+ *    들어와 기본값이 적용되지 않는다. 그 값이 metadataBase 의 new URL() 에
+ *    닿으면 빌드가 통째로 실패한다(ERR_INVALID_URL). 실제로 그렇게 깨졌다.
+ *
+ * 그래서 값이 있어도 **URL 로 파싱되는지 확인**하고, 안 되면 다음 후보로 넘어간다.
+ *
+ * 순서
+ *   1. NEXT_PUBLIC_SITE_URL   — 직접 지정한 값이 최우선
+ *   2. URL / DEPLOY_PRIME_URL — Netlify 가 배포마다 자동으로 넣어주는 주소.
+ *                               덕분에 도메인 연결 전에도 사이트맵·OG 가 맞는다
+ *   3. PRODUCTION_URL         — 최후 기본값
+ */
+function resolveSiteUrl(): string {
+  const candidates = [
+    process.env.NEXT_PUBLIC_SITE_URL,
+    // Netlify 자동 주입값 (NEXT_PUBLIC_ 이 아니므로 서버에서만 보인다)
+    process.env.URL,
+    process.env.DEPLOY_PRIME_URL,
+    PRODUCTION_URL,
+  ];
+
+  for (const raw of candidates) {
+    const value = raw?.trim();
+    if (!value) continue;
+    try {
+      const parsed = new URL(value);
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") continue;
+      // 뒤 슬래시를 떼어 sitemap 등에서 `//` 가 생기지 않게 한다
+      return parsed.origin;
+    } catch {
+      // 파싱 실패 — 다음 후보로
+    }
+  }
+
+  return PRODUCTION_URL;
+}
+
 export const site = {
   name: "지성크리닝",
   /** 영문 표기 — 락업 반전형과 OG 이미지에 쓴다 */
@@ -35,8 +79,8 @@ export const site = {
     kakao: "https://map.kakao.com/?q=경주시%20천북면%20모서안길%2044",
   },
 
-  /** 배포 도메인 확정 후 교체 — 사이트맵·OG·구조화 데이터가 이 값을 쓴다 */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://jiseongcleaning.co.kr",
+  /** 사이트 주소 — 사이트맵·OG·구조화 데이터가 쓴다. 아래 resolveSiteUrl() 참고 */
+  url: resolveSiteUrl(),
 } as const;
 
 /** 상단·하단 공통 내비게이션 */
