@@ -82,12 +82,45 @@ INQUIRY_TO  문의를 받을 주소. 쉼표로 여러 개 가능
 
 ## 도메인
 
-Netlify 기본 주소로 먼저 확인한 뒤, 실제 도메인을 붙일 때
-**Domain management** 에서 연결하고 `NEXT_PUBLIC_SITE_URL` 을 그 주소로 바꿔
+운영 도메인은 `jiseong-cleaning.co.kr` 입니다. 가비아에서 등록했고, 네임서버도
+가비아에 그대로 둔 채 DNS 레코드만 Netlify 로 향하게 합니다.
+
+순서를 지켜야 합니다. Netlify 기본 주소(`○○.netlify.app`)로 사이트가 정상인지
+먼저 확인한 뒤에 도메인을 붙이세요.
+
+### 1) Netlify 에 도메인 등록
+
+Domain management → Add domain → `www.jiseong-cleaning.co.kr`.
+Netlify 가 루트 도메인까지 함께 등록합니다.
+
+기본 도메인(primary)은 `www` 쪽으로 둡니다. 외부 DNS 를 쓸 때 루트 도메인은
+Netlify CDN 의 직접 라우팅을 쓸 수 없기 때문입니다. 루트는 www 로 리다이렉트됩니다.
+
+### 2) 가비아 DNS 레코드
+
+My가비아 → DNS 관리툴 → 호스트 관리에서 두 줄을 넣습니다.
+
+| 호스트 이름 | 타입 | 값 |
+| --- | --- | --- |
+| www | CNAME | `○○.netlify.app` (사이트 기본 주소) |
+| (비움 = 루트) | A | `75.2.60.5` |
+
+가비아 DNS 는 ALIAS·ANAME 을 지원하지 않으므로 루트는 A 레코드로 갑니다.
+루트를 빼먹으면 `www.` 를 붙일 때만 열립니다. 반영은 10분~1시간입니다.
+
+### 3) 환경변수와 SSL
+
+`NEXT_PUBLIC_SITE_URL` 을 `https://www.jiseong-cleaning.co.kr` 로 바꾸고
 재배포하세요. `sitemap.xml` 과 검색엔진용 정보가 이 값을 씁니다.
 
-`www` 를 붙이지 마세요. 모회사 `jiseong.co.kr` 은 `www` 를 붙이면 도메인 파킹
-페이지로 가는 상태라, 같은 실수를 반복하지 않기 위한 규칙입니다.
+SSL 인증서는 Netlify 가 자동 발급합니다. DNS 반영 전에 누르면 실패하므로
+레코드가 조회되는 것을 확인한 뒤 발급하세요.
+
+### 참고
+
+모회사 `jiseong.co.kr` 은 `www` 를 붙이면 도메인 파킹 페이지로 갑니다.
+그 도메인의 DNS 설정 문제이고, 이 사이트와는 무관합니다.
+여기서는 www·루트 양쪽을 모두 등록하므로 같은 문제가 생기지 않습니다.
 
 ## Netlify 를 쓰지 않는 경우
 
