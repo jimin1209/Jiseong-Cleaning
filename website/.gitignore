@@ -1,0 +1,51 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files — 실제 값은 커밋하지 않되, 예시 파일은 저장소에 남긴다
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# ── 지성크리닝 추가 규칙 ─────────────────────────────────────────────────────
+# 폰트는 scripts/setup-fonts.mjs 가 node_modules 에서 생성한다.
+# 92개 woff2(약 3MB)를 저장소에 넣지 않고, 빌드 때마다 다시 만든다.
+/public/fonts/
+/src/styles/pretendard.css
+
+# 견적 문의 SQLite — 운영 데이터이므로 커밋하지 않는다
+/.data/

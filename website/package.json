@@ -1,0 +1,34 @@
+{
+  "name": "website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "setup:fonts": "node scripts/setup-fonts.mjs",
+    "predev": "npm run setup:fonts",
+    "dev": "next dev",
+    "prebuild": "npm run setup:fonts",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.3.1",
+    "nodemailer": "^9.0.5",
+    "pretendard": "^1.3.9",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^24.13.3",
+    "@types/nodemailer": "^8.0.1",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
