@@ -106,12 +106,19 @@
    =========================================================================== */
 @layer utilities {
   /*
-   * 숨김은 [data-js] 안에서만 적용한다.
-   * layout 의 인라인 스크립트가 첫 페인트 전에 html[data-js] 를 붙이므로,
-   * 스크립트가 막히거나 오류로 죽으면 이 규칙이 아예 걸리지 않고 콘텐츠가 그대로 보인다.
-   * (기본을 opacity:0 으로 두면 JS 한 줄이 실패할 때 사이트 전체가 백지가 된다)
+   * ⚠️ 이 규칙은 JS 가 data-reveal 을 **붙일 때만** 걸린다.
+   *
+   * 서버가 보내는 HTML 에는 data-reveal 이 없다 → 콘텐츠는 처음부터 보인다.
+   * 숨기는 것도 JS, 되살리는 것도 JS 이므로 스크립트가 막히거나
+   * 하이드레이션이 실패해도 화면이 비지 않는다.
+   *
+   * 반대로 CSS 기본값을 opacity:0 으로 두면, 청크 하나가 403 만 나도
+   * 사이트 전체가 백지가 된다. 실제로 그렇게 만들어 놨다가 당했다.
+   *
+   * "init" = 숨김(전환 없음) → "" = 숨김(전환 준비) → "shown" = 표시
+   * 첫 숨김에 전환을 끄는 이유는 화면 밖에서 사라지는 모습이 스쳐 보이지 않게 하려는 것.
    */
-  [data-js] [data-reveal] {
+  [data-reveal] {
     opacity: 0;
     transform: translateY(18px);
     transition:
@@ -120,7 +127,39 @@
     transition-delay: var(--reveal-delay, 0ms);
   }
 
-  [data-js] [data-reveal="shown"] {
+  [data-reveal="init"] {
+    transition: none;
+  }
+
+  [data-reveal="shown"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* 히어로 진입 — CSS 애니메이션이라 JS 와 무관하게 재생된다 */
+  .hero-enter > * {
+    animation: jc-rise 700ms var(--ease-brand) both;
+  }
+  .hero-enter > *:nth-child(2) {
+    animation-delay: 70ms;
+  }
+  .hero-enter > *:nth-child(3) {
+    animation-delay: 140ms;
+  }
+  .hero-enter > *:nth-child(4) {
+    animation-delay: 210ms;
+  }
+  .hero-enter > *:nth-child(5) {
+    animation-delay: 280ms;
+  }
+}
+
+@keyframes jc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
     opacity: 1;
     transform: none;
   }
@@ -131,10 +170,15 @@
     scroll-behavior: auto;
   }
 
-  [data-js] [data-reveal],
-  [data-js] [data-reveal="shown"] {
+  [data-reveal],
+  [data-reveal="init"],
+  [data-reveal="shown"] {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .hero-enter > * {
+    animation: none;
   }
 }

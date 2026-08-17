@@ -86,18 +86,6 @@ function LocalBusinessJsonLd() {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko">
-      <head>
-        {/*
-          스크롤 등장 애니메이션을 쓸 수 있는지 표시한다.
-          첫 페인트 전에 실행돼야 하고, 이 한 줄이 없으면 globals.css 의 숨김 규칙이
-          걸리지 않아 콘텐츠가 처음부터 보인다 — 즉 JS 실패 시에도 백지가 되지 않는다.
-        */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.documentElement.setAttribute('data-js','')`,
-          }}
-        />
-      </head>
       <body className="pb-[4.75rem] lg:pb-0">
         <a
           href="#main"

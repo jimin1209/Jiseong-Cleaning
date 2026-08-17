@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { BrandMark } from "./brand-mark";
 import { Container } from "./ui";
-import { Reveal } from "./reveal";
 
 /**
  * 하위 페이지 머리.
@@ -31,29 +30,18 @@ export function PageHero({
 
       <Container className="relative">
         <div className="flex flex-wrap items-end justify-between gap-8 py-12 sm:py-16 lg:py-20">
-          <div className="max-w-[38rem]">
-            <Reveal>
-              <p className="mb-4 flex items-center gap-2.5 text-[0.78rem] font-bold tracking-[0.16em] text-pale">
-                <span className="h-0.5 w-6 rounded-full bg-ci-cyan" aria-hidden="true" />
-                {eyebrow}
-              </p>
-            </Reveal>
-            <Reveal delay={60}>
-              <h1 className="text-[1.875rem] leading-[1.26] tracking-[-0.035em] sm:text-[2.25rem] lg:text-[2.5rem]">
-                {title}
-              </h1>
-            </Reveal>
-            {lede && (
-              <Reveal delay={120}>
-                <p className="mt-4 text-base leading-[1.85] text-[#C8DBF2]">{lede}</p>
-              </Reveal>
-            )}
+          {/* 진입은 CSS 애니메이션 — JS 실패와 무관하게 내용이 보인다 */}
+          <div className="hero-enter max-w-[38rem]">
+            <p className="mb-4 flex items-center gap-2.5 text-[0.78rem] font-bold tracking-[0.16em] text-pale">
+              <span className="h-0.5 w-6 rounded-full bg-ci-cyan" aria-hidden="true" />
+              {eyebrow}
+            </p>
+            <h1 className="text-[1.875rem] leading-[1.26] tracking-[-0.035em] sm:text-[2.25rem] lg:text-[2.5rem]">
+              {title}
+            </h1>
+            {lede && <p className="mt-4 text-base leading-[1.85] text-[#C8DBF2]">{lede}</p>}
           </div>
-          {aside && (
-            <Reveal delay={160} className="shrink-0">
-              {aside}
-            </Reveal>
-          )}
+          {aside && <div className="hero-enter shrink-0">{aside}</div>}
         </div>
       </Container>
     </section>

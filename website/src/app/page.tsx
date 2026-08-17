@@ -37,56 +37,47 @@ export default function HomePage() {
         />
 
         <Container className="relative">
-          <div className="max-w-[42rem] py-16 sm:py-20 lg:py-28">
-            <Reveal>
-              <p className="mb-5 inline-flex items-center gap-2.5 text-[0.78rem] font-bold tracking-[0.13em] text-pale">
-                <span className="h-0.5 w-6 rounded-full bg-ci-cyan" aria-hidden="true" />
-                기업 · 펜션 · 호텔 · 모텔 린넨 세탁 전문
-              </p>
-            </Reveal>
+          {/* 히어로 진입은 CSS 애니메이션이다 — JS 가 실패해도 내용이 보인다 */}
+          <div className="hero-enter max-w-[42rem] py-16 sm:py-20 lg:py-28">
+            <p className="mb-5 inline-flex items-center gap-2.5 text-[0.78rem] font-bold tracking-[0.13em] text-pale">
+              <span className="h-0.5 w-6 rounded-full bg-ci-cyan" aria-hidden="true" />
+              기업 · 펜션 · 호텔 · 모텔 린넨 세탁 전문
+            </p>
 
-            <Reveal delay={60}>
-              <h1 className="text-[2.125rem] leading-[1.22] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.375rem]">
-                수거부터 납품까지
-                <br />
-                사업장 린넨을{" "}
-                <em className="not-italic text-[#6FD6FF]">대신 관리합니다</em>
-              </h1>
-            </Reveal>
+            <h1 className="text-[2.125rem] leading-[1.22] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.375rem]">
+              수거부터 납품까지
+              <br />
+              사업장 린넨을{" "}
+              <em className="not-italic text-[#6FD6FF]">대신 관리합니다</em>
+            </h1>
 
-            <Reveal delay={120}>
-              <p className="mt-5 max-w-[33em] text-base leading-[1.85] text-[#C8DBF2] sm:text-[1.0625rem]">
-                정해진 요일에 수거하고, 고온 세탁·살균을 거쳐, 정해진 요일에
-                납품합니다. 객실 회전이 세탁 일정 때문에 멈추지 않도록
-                지성크리닝이 린넨 운영을 맡습니다.
-              </p>
-            </Reveal>
+            <p className="mt-5 max-w-[33em] text-base leading-[1.85] text-[#C8DBF2] sm:text-[1.0625rem]">
+              정해진 요일에 수거하고, 고온 세탁·살균을 거쳐, 정해진 요일에
+              납품합니다. 객실 회전이 세탁 일정 때문에 멈추지 않도록
+              지성크리닝이 린넨 운영을 맡습니다.
+            </p>
 
-            <Reveal delay={180}>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <ButtonLink href="/quote" variant="onNavy" size="lg">
-                  견적 문의하기
-                  <Icon.arrowRight className="size-4" />
-                </ButtonLink>
-                <ButtonAnchor href={site.telHref} variant="onNavyGhost" size="lg">
-                  <Icon.phone className="size-[1.0625rem]" />
-                  <span data-numeric>{site.tel}</span>
-                </ButtonAnchor>
-              </div>
-            </Reveal>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href="/quote" variant="onNavy" size="lg">
+                견적 문의하기
+                <Icon.arrowRight className="size-4" />
+              </ButtonLink>
+              <ButtonAnchor href={site.telHref} variant="onNavyGhost" size="lg">
+                <Icon.phone className="size-[1.0625rem]" />
+                <span data-numeric>{site.tel}</span>
+              </ButtonAnchor>
+            </div>
 
-            <Reveal delay={240}>
-              <ul className="mt-9 flex flex-wrap gap-2.5">
-                {trustPoints.map((point) => (
-                  <li key={point}>
-                    <Badge tone="onNavy" className="py-2">
-                      <Icon.check className="size-3.5 text-[#6FD6FF]" />
-                      {point}
-                    </Badge>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
+            <ul className="mt-9 flex flex-wrap gap-2.5">
+              {trustPoints.map((point) => (
+                <li key={point}>
+                  <Badge tone="onNavy" className="py-2">
+                    <Icon.check className="size-3.5 text-[#6FD6FF]" />
+                    {point}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
           </div>
         </Container>
       </section>
