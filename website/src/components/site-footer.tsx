@@ -2,8 +2,7 @@ import Link from "next/link";
 import { BrandLockup } from "./brand-mark";
 import { Container } from "./ui";
 import { businessInfo, SAMPLE_CONTENT } from "@/lib/sample";
-import { services } from "@/lib/services";
-import { site } from "@/lib/site";
+import { nav, site } from "@/lib/site";
 
 export function SiteFooter() {
   return (
@@ -34,35 +33,12 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <nav className="min-w-36 shrink-0" aria-label="서비스">
-            <h2 className="mb-4 text-xs font-bold tracking-[0.14em] text-[#6E8CB4]">
-              서 비 스
-            </h2>
-            <ul className="flex flex-col gap-2.5">
-              {services.map((s) => (
-                <li key={s.slug}>
-                  <Link
-                    href={`/services/${s.slug}`}
-                    className="text-[0.9375rem] text-[#C3D6EC] hover:text-white"
-                  >
-                    {s.short}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
           <nav className="min-w-36 shrink-0" aria-label="안내">
             <h2 className="mb-4 text-xs font-bold tracking-[0.14em] text-[#6E8CB4]">
               안 내
             </h2>
             <ul className="flex flex-col gap-2.5">
-              {[
-                { href: "/facility", label: "시설 · 공정" },
-                { href: "/about", label: "회사소개" },
-                { href: "/about#standard-workplace", label: "장애인 표준사업장" },
-                { href: "/quote", label: "견적 문의" },
-              ].map((l) => (
+              {nav.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}

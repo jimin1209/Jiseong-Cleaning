@@ -42,12 +42,12 @@ export function Illustration({ variant, className = "" }: Props) {
 }
 
 const LABELS: Record<IllustrationVariant, string> = {
-  machines: "업소용 세탁기와 건조기가 나란히 놓인 세탁 설비 라인 일러스트",
-  linen: "품목별로 개어 쌓아 둔 린넨 일러스트",
-  truck: "수거와 납품에 쓰는 배송 차량 일러스트",
+  machines: "전문 세탁기와 건조기가 나란히 놓인 세탁 설비 라인 일러스트",
+  linen: "품목별로 개어 쌓아 둔 세탁물 일러스트",
+  truck: "수거와 배달(납품)에 쓰는 배송 차량 일러스트",
   inspect: "품목과 수량을 검수해 기록하는 모습 일러스트",
   press: "유니폼을 프레스로 마감하는 모습 일러스트",
-  shelf: "납품 단위로 적재한 선반 일러스트",
+  shelf: "배달(납품) 단위로 적재한 선반 일러스트",
 };
 
 /* 공통 바닥 */
@@ -97,7 +97,7 @@ const SCENES: Record<IllustrationVariant, React.ReactNode> = {
     </>
   ),
 
-  /* 개어 쌓은 린넨 */
+  /* 개어 쌓은 세탁물 */
   linen: (
     <>
       {Floor}
