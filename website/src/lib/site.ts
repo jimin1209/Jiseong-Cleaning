@@ -58,16 +58,16 @@ export const site = {
   parent: "(주)지성이엔지",
   parentUrl: "http://jiseong.co.kr/", // www 를 붙이면 도메인 파킹 스텁으로 간다(2026-08-14 실측)
 
-  tagline: "사업장 린넨을 수거부터 배달까지 대신 관리합니다",
+  tagline: "사업장 세탁물을 수거부터 배달까지 대신 관리합니다",
   description:
-    "경주 천북면 자체 세탁 시설을 갖춘 장애인 표준사업장. 호텔·모텔·펜션 린넨과 식당·급식소 행주를 정해진 주기로 수거·세탁·납품합니다.",
+    "경주 강동면 자체 세탁 시설을 갖춘 장애인 표준사업장. 기업·호텔·모텔·펜션·사우나 세탁물과 식당·급식소 행주를 정해진 날짜에 수거·세탁·배달(납품)합니다.",
 
-  tel: "054-621-5002",
+  tel: "010-9828-3637",
   /** tel: 링크용 — 하이픈 제거 */
-  telHref: "tel:+82546215002",
+  telHref: "tel:+821098283637",
 
-  address: "경상북도 경주시 천북면 모서안길 44",
-  addressShort: "경주시 천북면 모서안길 44",
+  address: "경상북도 경주시 강동면 모서안길 44 지성크리닝",
+  addressShort: "경주시 강동면 모서안길 44",
   region: "경상북도 경주시",
 
   /** 모회사 본사 주소 — jiseong.co.kr 푸터에서 확인한 실제 값(2026-08-17) */
@@ -75,8 +75,8 @@ export const site = {
 
   /** 지도 앱 길찾기 — API 키가 필요 없는 검색 링크 */
   mapLinks: {
-    naver: "https://map.naver.com/p/search/경주시%20천북면%20모서안길%2044",
-    kakao: "https://map.kakao.com/?q=경주시%20천북면%20모서안길%2044",
+    naver: "https://map.naver.com/p/search/경주시%20강동면%20모서안길%2044",
+    kakao: "https://map.kakao.com/?q=경주시%20강동면%20모서안길%2044",
   },
 
   /** 사이트 주소 — 사이트맵·OG·구조화 데이터가 쓴다. 아래 resolveSiteUrl() 참고 */
@@ -85,17 +85,17 @@ export const site = {
 
 /** 상단·하단 공통 내비게이션 */
 export const nav = [
-  { href: "/services", label: "서비스" },
-  { href: "/facility", label: "시설 · 공정" },
-  { href: "/about", label: "회사소개" },
+  { href: "/", label: "사업 개요" },
+  { href: "/about", label: "회사 소개" },
+  { href: "/services", label: "세탁 서비스" },
   { href: "/quote", label: "견적 문의" },
 ] as const;
 
-/** 히어로와 회사소개에서 쓰는 신뢰 근거 */
+/** 히어로와 회사 소개에서 쓰는 신뢰 근거 */
 export const trustPoints = [
   "장애인 표준사업장",
-  "월 단위 정기 계약 가능",
-  "경주 천북면 자체 세탁 시설",
+  "정기 계약 가능",
+  "경주 강동면 자체 세탁 시설",
 ] as const;
 
 /**
@@ -108,7 +108,7 @@ export const targetIndustries = [
   { label: "펜션", icon: "pension" },
   { label: "기업체", icon: "office" },
   { label: "급식소 · 식당", icon: "kitchen" },
-  { label: "단체시설", icon: "group" },
+  { label: "단체 시설", icon: "group" },
 ] as const;
 
 export type IndustryIcon = (typeof targetIndustries)[number]["icon"];

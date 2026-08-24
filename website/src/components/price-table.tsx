@@ -30,8 +30,8 @@ export function PriceTable({
       {isDraft && (
         <Alert tone="warn" className="mb-6 max-w-3xl">
           <strong className="block">아래 단가는 예시 초안입니다</strong>
-          실제 계약 단가가 아닙니다. 거래처별 단가는 품목 · 물량 · 수거 주기에 따라
-          따로 산정하므로, 물량을 알려주시면 정식 견적을 드립니다.
+          실제 계약 단가가 아닙니다. 거래처별 단가는 품목 · 물량 · 수거 날짜에 따라
+          따로 산정하므로, 물량을 알려 주시면 정식 견적을 드립니다.
         </Alert>
       )}
 
@@ -135,7 +135,7 @@ export function PriceTable({
         <>
           {isDraft && (
             <p className="mt-6 mb-3 text-[0.8125rem] font-semibold text-warn">
-              아래 조건도 확정 전 초안입니다. 최소 발주 · 수거 납품비 · 정산 방식은
+              아래 조건도 확정 전 초안입니다. 최소 발주 · 수거 배달(납품)비 · 정산 방식은
               상담 시 협의합니다.
             </p>
           )}

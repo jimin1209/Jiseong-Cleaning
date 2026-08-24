@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
 import { FaqJsonLd, FaqList } from "@/components/faq-list";
 import { Icon } from "@/components/icons";
-import { IllustrationCard } from "@/components/illustration";
 import { Reveal } from "@/components/reveal";
 import {
   Badge,
@@ -17,7 +15,7 @@ import {
 } from "@/components/ui";
 import { faqs } from "@/lib/faq";
 import { processSteps, reasons, services } from "@/lib/services";
-import { capacity, certification } from "@/lib/sample";
+import { certification } from "@/lib/sample";
 import { site, targetIndustries, trustPoints } from "@/lib/site";
 
 export default function HomePage() {
@@ -41,20 +39,20 @@ export default function HomePage() {
           <div className="hero-enter max-w-[42rem] py-16 sm:py-20 lg:py-28">
             <p className="mb-5 inline-flex items-center gap-2.5 text-[0.78rem] font-bold tracking-[0.13em] text-pale">
               <span className="h-0.5 w-6 rounded-full bg-ci-cyan" aria-hidden="true" />
-              기업 · 펜션 · 호텔 · 모텔 린넨 세탁 전문
+              기업 · 펜션 · 호텔 · 모텔 · 사우나 세탁물 세탁 전문
             </p>
 
             <h1 className="text-[2.125rem] leading-[1.22] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.375rem]">
-              수거부터 납품까지
+              수거부터 배달(납품)까지
               <br />
-              사업장 린넨을{" "}
+              사업장 세탁물을{" "}
               <em className="not-italic text-[#6FD6FF]">대신 관리합니다</em>
             </h1>
 
             <p className="mt-5 max-w-[33em] text-base leading-[1.85] text-[#C8DBF2] sm:text-[1.0625rem]">
-              원하시는 요일에 수거하고, 고온 세탁·살균을 거쳐 납품합니다.
-              호텔·모텔·펜션 린넨과 식당·급식소 주방 리넨을 사업장 단위로
-              정기 처리합니다.
+              안전한 세탁·살균을 거쳐 약속한 날짜에 수거·배달해 드립니다.
+              기업·호텔·모텔·펜션·사우나 세탁물과 식당·급식소 세탁물을 사업장 단위로
+              정기 세탁합니다.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -87,9 +85,9 @@ export default function HomePage() {
         <Container>
           <Reveal>
             <SectionHead
-              eyebrow="서 비 스"
-              title="사업장 규모와 주기에 맞춰 세 가지로 운영합니다"
-              lede="품목과 물량, 수거 주기만 알려주시면 사업장에 맞는 방식으로 제안해 드립니다."
+              eyebrow="세 탁 서 비 스"
+              title="사업장 규모에 맞춰 정해진 날짜에 관리해 드립니다"
+              lede="품목과 물량, 수거 날짜만 알려 주시면 사업장에 맞는 방식으로 제안해 드립니다."
             />
           </Reveal>
 
@@ -115,14 +113,6 @@ export default function HomePage() {
                         </li>
                       ))}
                     </ul>
-
-                    <Link
-                      href={`/services/${service.slug}`}
-                      className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-bold text-brand transition-all duration-150 group-hover:gap-2.5 hover:text-brand-hover"
-                    >
-                      취급 품목 보기
-                      <Icon.chevronRight className="size-4" />
-                    </Link>
                   </Card>
                 </Reveal>
               );
@@ -137,13 +127,13 @@ export default function HomePage() {
           <Reveal>
             <SectionHead
               eyebrow="이 용 절 차"
-              title="첫 통화부터 첫 납품까지 네 단계"
-              lede="주기를 정하고 나면 그 일정에 맞춰 수거와 납품이 이어집니다."
+              title="처음 상담부터 처음 배달(납품)까지 세 단계"
+              lede="날짜를 정하고 나면 그 일정에 맞춰 수거와 배달(납품)이 이어집니다."
             />
           </Reveal>
 
           {/* 순서가 정보이므로 번호를 쓴다 */}
-          <ol className="relative mt-11 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="relative mt-11 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {/* 데스크톱 연결선 */}
             <div
               aria-hidden="true"
@@ -174,7 +164,7 @@ export default function HomePage() {
             <SectionHead
               eyebrow="왜 지 성 크 리 닝 인 가"
               title="정기 세탁에 필요한 것을 갖추고 있습니다"
-              lede="사업장 세탁물은 품목과 물량이 일정해서, 주기와 공정이 맞아야 운영이 편해집니다."
+              lede="사업장 세탁물은 품목과 물량이 일정해서, 날짜와 공정이 맞아야 운영이 편해집니다."
             />
           </Reveal>
 
@@ -225,89 +215,12 @@ export default function HomePage() {
               })}
             </ul>
             <p className="mt-5 text-sm text-muted">
-              가정(아파트 · 빌라) 세탁물은 취급하지 않습니다. 사업장 고객 전용입니다.
+              사업장 고객 전문 세탁 플랫폼입니다.
             </p>
           </Reveal>
         </Container>
       </Section>
 
-      {/* ═══════════════ 시설 · 공정 ═══════════════ */}
-      <Section tone="white" id="facility">
-        <Container>
-          <Reveal>
-            <SectionHead
-              eyebrow="시 설 · 공 정"
-              title="경주 천북면 사업장에서 처리합니다"
-              lede="업소용 세탁 장비와 전문 세탁 공정으로 사업장 세탁물을 대량 처리합니다."
-            />
-          </Reveal>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {(
-              [
-                {
-                  variant: "machines",
-                  title: "세탁 설비 전경",
-                  caption: "업소용 세탁기 · 건조기 라인",
-                },
-                {
-                  variant: "press",
-                  title: "고온 세탁 · 살균 공정",
-                  caption: "세제 투입부터 마감까지",
-                },
-                {
-                  variant: "truck",
-                  title: "정리 · 납품 준비",
-                  caption: "품목별 적재와 배송 차량",
-                },
-              ] as const
-            ).map((shot, i) => (
-              <Reveal key={shot.title} delay={i * 70}>
-                <IllustrationCard
-                  variant={shot.variant}
-                  title={shot.title}
-                  caption={shot.caption}
-                />
-              </Reveal>
-            ))}
-          </div>
-
-          {capacity && (
-            <Reveal delay={140}>
-              <dl className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {capacity.map((c) => (
-                  <div
-                    key={c.label}
-                    className="rounded-brand border border-line bg-paper px-5 py-4"
-                  >
-                    <dt className="text-[0.75rem] font-bold tracking-[0.08em] text-faint">
-                      {c.label}
-                    </dt>
-                    <dd className="m-0 mt-1.5 text-[1.5rem] font-extrabold tracking-[-0.03em] text-navy">
-                      <span data-numeric>{c.value}</span>
-                      <span className="ml-1 text-[0.875rem] font-bold text-muted">
-                        {c.unit}
-                      </span>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="mt-3 text-[0.78rem] text-warn">
-                처리 능력 수치는 설비 사양 확인 전 임시값입니다.
-              </p>
-            </Reveal>
-          )}
-
-          <Reveal delay={200}>
-            <div className="mt-8">
-              <ButtonLink href="/facility" variant="ghost">
-                시설과 공정 자세히 보기
-                <Icon.chevronRight className="size-4" />
-              </ButtonLink>
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
 
       {/* ═══════════════ 사회적 가치 ═══════════════ */}
       <Section tone="navy" id="standard-workplace" className="!py-16 sm:!py-20">
@@ -348,7 +261,7 @@ export default function HomePage() {
             <SectionHead
               eyebrow="자 주 묻 는 질 문"
               title="거래를 검토하실 때 가장 많이 물어보시는 것들"
-              lede="여기에 없는 내용은 전화로 물어보시면 바로 답해 드립니다."
+              lede="더 궁금하신 점은 연락 주시면 상세히 설명해 드립니다."
             />
           </Reveal>
           <Reveal delay={80}>
@@ -377,8 +290,8 @@ export default function HomePage() {
               <SectionHead
                 align="center"
                 eyebrow="견 적 · 상 담 문 의"
-                title="물량과 주기만 알려주시면 바로 견적을 드립니다"
-                lede="담당자가 확인 후 연락드립니다. 급하시면 전화가 가장 빠릅니다."
+                title="물량과 날짜만 알려 주시면 바로 견적을 드립니다"
+                lede="연락 주시면 견적을 상담해 드립니다."
                 className="mx-auto"
               />
               <div className="mt-8 flex flex-wrap justify-center gap-3">
