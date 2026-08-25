@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} · 사업장 세탁물 세탁 수거·배달(납품)`,
+    default: site.name,
     template: `%s · ${site.name}`,
   },
   description: site.description,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ko_KR",
     siteName: site.name,
-    title: `${site.name} · 사업장 세탁물 세탁 수거·배달(납품)`,
+    title: site.name,
     description: site.description,
     url: site.url,
   },
