@@ -88,7 +88,7 @@ export default function QuotePage() {
 
               <Reveal as="div" delay={180}>
                 <Card className="h-full p-8 sm:p-9">
-                  <h2 className="text-sm font-bold tracking-[0.16em] text-faint">찾 아 오 는 길</h2>
+                  <h2 className="text-sm font-bold tracking-[0.16em] text-faint">찾 아 오 시 는 길</h2>
                   <p className="mt-6 text-base leading-[1.8] text-ink-2">{site.address}</p>
                   <div className="mt-6 flex flex-wrap gap-2">
                     <ButtonAnchor href={site.mapLinks.naver} target="_blank" rel="noreferrer" variant="ghost">
