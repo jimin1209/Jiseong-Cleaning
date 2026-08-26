@@ -16,8 +16,8 @@ export function SampleBanner() {
       <div className="mx-auto flex max-w-page items-start gap-2.5 px-5 py-2 sm:items-center sm:px-6 lg:px-8">
         <Icon.alert className="mt-0.5 size-4 shrink-0 sm:mt-0" />
         <p className="text-[0.78rem] leading-[1.6] font-semibold sm:text-[0.8125rem]">
-          <strong className="font-extrabold">검토용 샘플</strong> — 사업자등록번호 ·
-          인증번호 · 운영 시간 · 세탁 능력 · 요금은 <strong>확인 전 임시값</strong>입니다.
+          <strong className="font-extrabold">검토용 샘플</strong> — 인증번호 · 운영 시간 ·
+          세탁 능력 · 요금은 <strong>확인 전 임시값</strong>입니다.
           숫자가 <code className="font-mono">0</code> 으로 표시된 항목은 실제 값이
           아닙니다.
         </p>

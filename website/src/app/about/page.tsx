@@ -115,7 +115,7 @@ export default function AboutPage() {
 
                 {SAMPLE_CONTENT && (
                   <p className="mt-4 rounded-brand bg-warn-bg px-3.5 py-2.5 text-[0.75rem] leading-[1.6] font-semibold text-warn">
-                    대표자 · 사업자등록번호 · 팩스는 확인 전 임시값입니다.
+                    대표자 · 팩스는 확인 전 임시값입니다.
                   </p>
                 )}
 

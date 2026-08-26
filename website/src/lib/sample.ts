@@ -18,15 +18,12 @@ export const SAMPLE_CONTENT = process.env.NEXT_PUBLIC_SAMPLE_CONTENT !== "off";
 /**
  * 사업자 정보.
  *
- * ⚠️ 번호는 전부 0 이다. 실제로 존재할 수 있는 형태의 가짜 번호를 쓰지 않았다 —
- *    사업자등록번호나 인증번호를 그럴싸하게 지어내면 그게 진짜인 줄 알고 쓰인다.
- *
- * 확정 필요: 지성크리닝이 (주)지성이엔지의 사업부인지 별도 사업자인지에 따라
- * 아래 값이 모회사 것과 같아질 수도, 달라질 수도 있다.
+ * 사업자등록번호는 확인된 실제 값을 사용한다.
+ * 나머지 번호와 담당자 정보는 확정 전이므로 샘플 모드에서만 표시한다.
  */
 export const businessInfo = {
-  /** 사업자등록번호 — 확정 필요 */
-  registrationNumber: SAMPLE_CONTENT ? "000-00-00000" : null,
+  /** 사업자등록번호 — 확인된 실제 값 */
+  registrationNumber: "505-81-64376",
   /** 대표자 — 확정 필요. 사람 이름을 지어내지 않는다 */
   representative: SAMPLE_CONTENT ? "확인 필요" : null,
   /** 통신판매업 신고번호 — 온라인 판매를 하지 않으면 해당 없음일 수 있다 */

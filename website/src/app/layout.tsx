@@ -42,7 +42,7 @@ export const viewport: Viewport = {
 
 /**
  * 지역 검색을 위한 구조화 데이터.
- * 사업자등록번호·영업시간은 확정 전이라 넣지 않았다 —
+ * 영업시간은 확정 전이라 넣지 않았다 —
  * 확인되지 않은 값을 스키마에 넣으면 검색 결과에 잘못된 정보가 노출된다.
  */
 function LocalBusinessJsonLd() {
