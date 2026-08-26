@@ -41,7 +41,7 @@ export default function AboutPage() {
               />
               <div className="mt-6 flex flex-col gap-4 text-[0.9375rem] leading-[1.85] text-ink-2">
                 <p>
-                  기업·호텔·모텔·펜션·사우나의 침구와 수건, 식당·급식소의 행주와 유니폼처럼
+                  기업·호텔·모텔·펜션·사우나의 침구와 수건, 사업장의 행주와 유니폼처럼
                   사업장에서 반복적으로 발생하는 세탁물을 수거해
                   세탁하고 배달(납품)합니다. 개인 고객의 옷은 관리하지 않습니다.
                 </p>

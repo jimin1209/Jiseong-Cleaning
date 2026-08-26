@@ -19,7 +19,7 @@ import { PageHero } from "@/components/page-hero";
 export const metadata: Metadata = {
   title: "서비스",
   description:
-    "기업·호텔·모텔·펜션·사우나 세탁물 세탁, 식당·급식소 세탁물 세탁, 월 세탁 정기 계약. 관리 품목과 운영 방식을 안내합니다.",
+    "기업·호텔·모텔·펜션·사우나 세탁물 세탁, 주방 세탁물 세탁, 월 세탁 정기 계약. 관리 품목과 운영 방식을 안내합니다.",
   alternates: { canonical: "/services" },
 };
 

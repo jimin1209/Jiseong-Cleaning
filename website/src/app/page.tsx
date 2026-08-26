@@ -51,7 +51,7 @@ export default function HomePage() {
 
             <p className="mt-5 max-w-[33em] text-base leading-[1.85] text-[#C8DBF2] sm:text-[1.0625rem]">
               안전한 세탁·살균을 거쳐 약속한 날짜에 수거·배달해 드립니다.
-              기업·호텔·모텔·펜션·사우나 세탁물과 식당·급식소 세탁물을 사업장 단위로
+              기업·호텔·모텔·펜션·사우나 세탁물을 사업장 단위로
               정기 세탁합니다.
             </p>
 

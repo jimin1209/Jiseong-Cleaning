@@ -60,7 +60,7 @@ export const site = {
 
   tagline: "사업장 세탁물을 수거부터 배달까지 대신 관리합니다",
   description:
-    "경주 강동면 자체 세탁 시설을 갖춘 장애인 표준사업장. 기업·호텔·모텔·펜션·사우나 세탁물과 식당·급식소 행주를 정해진 날짜에 수거·세탁·배달(납품)합니다.",
+    "경주 강동면 자체 세탁 시설을 갖춘 장애인 표준사업장. 기업·호텔·모텔·펜션·사우나 세탁물을 정해진 날짜에 수거·세탁·배달(납품)합니다.",
 
   tel: "010-9828-3637",
   /** tel: 링크용 — 하이픈 제거 */
@@ -107,7 +107,6 @@ export const targetIndustries = [
   { label: "모텔", icon: "motel" },
   { label: "펜션", icon: "pension" },
   { label: "기업체", icon: "office" },
-  { label: "급식소 · 식당", icon: "kitchen" },
   { label: "단체 시설", icon: "group" },
 ] as const;
 
