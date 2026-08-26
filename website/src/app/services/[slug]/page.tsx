@@ -14,9 +14,7 @@ import {
   Section,
   SectionHead,
 } from "@/components/ui";
-import { PriceTable } from "@/components/price-table";
 import { getService, processSteps, services } from "@/lib/services";
-import { priceGroups, priceGroupsByService } from "@/lib/pricing";
 import { site } from "@/lib/site";
 
 /** 세 페이지 모두 빌드 시점에 정적으로 생성한다 */
@@ -48,10 +46,6 @@ export default async function ServiceDetailPage({
 
   const others = services.filter((s) => s.slug !== service.slug);
   const Glyph = Icon[service.icon];
-
-  // 이 서비스와 관련된 단가 분류만 보여준다 — 전체를 다 띄우면 읽지 않는다
-  const wanted = priceGroupsByService[service.slug] ?? [];
-  const groupsForService = priceGroups.filter((g) => wanted.includes(g.label));
 
   return (
     <>
@@ -112,24 +106,6 @@ export default async function ServiceDetailPage({
             <Alert tone="warn" className="mt-8 max-w-3xl">
               {service.priceNote}
             </Alert>
-          </Reveal>
-        </Container>
-      </Section>
-
-      {/* ═══════════════ 표준 단가 ═══════════════ */}
-      <Section tone="paper">
-        <Container>
-          <Reveal>
-            <SectionHead
-              eyebrow="표 준 단 가"
-              title="물량과 날짜에 따라 여기서 조정됩니다"
-              lede="아래는 표준 단가이고, 거래처별 계약 단가는 물량·날짜·품목 구성에 따라 따로 산정합니다."
-            />
-          </Reveal>
-          <Reveal delay={80}>
-            <div className="mt-9">
-              <PriceTable groups={groupsForService} showOptions showTerms />
-            </div>
           </Reveal>
         </Container>
       </Section>
