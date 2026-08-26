@@ -66,7 +66,7 @@ export default async function AdminInquiriesPage() {
                     "담당자 · 연락처",
                     "지역",
                     "품목",
-                    "물량 · 날짜",
+                    "물량 · 주기",
                     "문의 내용",
                   ].map((h) => (
                     <th

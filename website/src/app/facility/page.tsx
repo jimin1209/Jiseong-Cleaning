@@ -18,7 +18,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "시설 · 공정",
   description:
-    "경주 강동면 자체 세탁 시설. 안전 세탁과 살균 공정과 위생 관리 방식, 세탁일지 제공 범위를 안내합니다.",
+    "경주 천북면 자체 세탁 시설. 고온 세탁·살균 공정과 위생 관리 방식, 세탁일지 제공 범위를 안내합니다.",
   alternates: { canonical: "/facility" },
 };
 
@@ -26,22 +26,22 @@ export const metadata: Metadata = {
  * 공정 단계.
  *
  * ⚠️ 전단지에 인쇄된 이용 절차(문의·상담 → 수거 → 전문 세탁 → 배송)와
- *    「전문 세탁 장비와 전문 세탁 공정」 범위를 넘지 않는다.
+ *    「업소용 세탁 장비와 전문 세탁 공정」 범위를 넘지 않는다.
  *    검수 기록·이력 추적 같은 세부는 앞으로 만들 시스템의 설계일 뿐
  *    현재 운영 방식이 아니므로 약속으로 적지 않는다. (lib/faq.ts 상단 주석 참고)
  */
 const stages = [
   {
     title: "수거",
-    body: "상담 과정을 통해서 수거 요일을 정하고 사업장을 방문해 세탁물을 수거합니다.",
+    body: "약속된 요일에 사업장을 방문해 세탁물을 수거합니다.",
   },
   {
     title: "분류",
     body: "품목과 소재에 따라 나눕니다. 수량은 이 단계에서 확인합니다.",
   },
   {
-    title: "안전 세탁과 살균",
-    body: "전문 설비로 안전 세탁과 살균을 거칩니다. 형광증백제·표백제 등 유해성분은 쓰지 않습니다.",
+    title: "고온 세탁 · 살균",
+    body: "업소용 설비로 고온 세탁과 살균을 거칩니다. 형광증백제·표백제 등 유해성분은 쓰지 않습니다.",
   },
   {
     title: "건조",
@@ -49,19 +49,19 @@ const stages = [
   },
   {
     title: "정리",
-    body: "품목별로 정리해 배달(납품) 단위로 준비합니다.",
+    body: "품목별로 정리해 납품 단위로 준비합니다.",
   },
   {
-    title: "배달(납품)",
-    body: "정해진 요일에 사업장으로 배달(납품)합니다.",
+    title: "납품",
+    body: "정해진 요일에 사업장으로 납품합니다.",
   },
 ] as const;
 
 const hygiene = [
   {
     icon: "shield" as const,
-    title: "안전 세탁과 살균",
-    body: "세균 잔존이 문제가 되는 세탁 품목은 안전 세탁과 살균을 거칩니다.",
+    title: "고온 세탁 · 살균",
+    body: "세균 잔존이 문제가 되는 품목은 고온 세탁과 살균을 거칩니다.",
   },
   {
     icon: "check" as const,
@@ -75,8 +75,8 @@ const hygiene = [
   },
   {
     icon: "building" as const,
-    title: "전문 세탁 설비",
-    body: "경주 강동면 사업장에서 전문 장비로 세탁합니다.",
+    title: "업소용 세탁 설비",
+    body: "경주 천북면 사업장에서 업소용 장비로 처리합니다.",
   },
 ] as const;
 
@@ -85,8 +85,8 @@ export default function FacilityPage() {
     <>
       <PageHero
         eyebrow="시 설 · 공 정"
-        title="경주 강동면 사업장에서 세탁합니다"
-        lede="전문 세탁 장비와 전문 세탁 공정으로 사업장 세탁물을 세탁합니다. 아래는 수거부터 배달(납품)까지의 흐름입니다."
+        title="경주 천북면 사업장에서 처리합니다"
+        lede="업소용 세탁 장비와 전문 세탁 공정으로 사업장 세탁물을 대량 처리합니다. 아래는 수거부터 납품까지의 흐름입니다."
       />
 
       {/* ═══════════════ 사진 ═══════════════ */}
@@ -96,7 +96,7 @@ export default function FacilityPage() {
             <SectionHead
               eyebrow="시 설"
               title="설비와 작업 현장"
-              lede="전문 세탁기와 건조기, 프레스, 분류·적재 공간으로 이루어져 있습니다."
+              lede="업소용 세탁기와 건조기, 프레스, 분류·적재 공간으로 이루어져 있습니다."
             />
           </Reveal>
 
@@ -132,7 +132,7 @@ export default function FacilityPage() {
                 {
                   variant: "machines",
                   title: "세탁 설비 전경",
-                  caption: "전문 세탁기 · 건조기 라인",
+                  caption: "업소용 세탁기 · 건조기 라인",
                 },
                 {
                   variant: "inspect",
@@ -147,7 +147,7 @@ export default function FacilityPage() {
                 {
                   variant: "linen",
                   title: "정리 · 적재",
-                  caption: "배달(납품) 단위 포장",
+                  caption: "납품 단위 포장",
                 },
                 {
                   variant: "shelf",
@@ -157,7 +157,7 @@ export default function FacilityPage() {
                 {
                   variant: "truck",
                   title: "배송 차량",
-                  caption: "자체 수거 · 배달(납품) 차량",
+                  caption: "자체 수거 · 납품 차량",
                 },
               ] as const
             ).map((shot, i) => (
@@ -180,11 +180,11 @@ export default function FacilityPage() {
             <SectionHead
               eyebrow="공 정"
               title="수거된 세탁물이 거치는 순서"
-              lede="수량이나 상태에 이의가 있으면 연락해 주세요. 확인 후 안내해 드립니다."
+              lede="수량이나 상태에 이의가 있으시면 연락 주시면 확인해 안내해 드립니다."
             />
           </Reveal>
 
-          <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {stages.map((stage, i) => (
               <Reveal key={stage.title} as="li" delay={(i % 3) * 70}>
                 <Card className="flex h-full gap-4 p-6">
@@ -212,7 +212,7 @@ export default function FacilityPage() {
             <SectionHead
               eyebrow="위 생 관 리"
               title="무엇을 넣지 않고 어떤 공정을 거치는지"
-              lede="주방 세탁물과 숙박 세탁물은 음식과 피부에 닿는 물품입니다. 그 기준으로 세제와 공정을 정하고 있습니다."
+              lede="주방 리넨과 숙박 린넨은 음식과 피부에 닿는 물품입니다. 그 기준으로 세제와 공정을 정하고 있습니다."
             />
           </Reveal>
 
@@ -262,10 +262,10 @@ export default function FacilityPage() {
                       ))}
                     </dl>
                     <p className="mt-4 border-t border-line pt-3.5 text-[0.8125rem] leading-[1.7] text-muted">
-                      수거 · 배달(납품) 시간은 사업장 일정에 맞춰 상담 시 정합니다.
+                      수거 · 납품 시간은 사업장 일정에 맞춰 상담 시 정합니다.
                     </p>
                     <p className="mt-2 text-[0.75rem] font-semibold text-warn">
-                      운영 시간은 확인 전 임시값입니다.
+                      운영시간은 확인 전 임시값입니다.
                     </p>
                   </Card>
                 )}
@@ -304,7 +304,7 @@ export default function FacilityPage() {
                       </div>
                     </div>
                     <p className="mt-4 border-t border-line pt-3.5 text-[0.8125rem] leading-[1.7] text-muted">
-                      사업장 지역을 알려 주시면 가능 여부를 확인해 드립니다.
+                      사업장 지역을 알려주시면 가능 여부를 확인해 드립니다.
                     </p>
                     <p className="mt-2 text-[0.75rem] font-semibold text-warn">
                       권역은 확인 전 임시값입니다.
@@ -325,7 +325,7 @@ export default function FacilityPage() {
               <div className="flex flex-wrap items-center justify-between gap-6">
                 <SectionHead
                   title="더 자세한 내용이 필요하시면 문의해 주세요"
-                  lede="물량을 알려 주시면 맞는 방식으로 안내해 드립니다."
+                  lede="품목과 물량을 알려주시면 맞는 방식으로 안내해 드립니다."
                   className="flex-1 basis-[22rem]"
                 />
                 <div className="flex flex-wrap gap-3">

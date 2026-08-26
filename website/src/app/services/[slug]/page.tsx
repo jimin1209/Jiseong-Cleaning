@@ -73,14 +73,14 @@ export default async function ServiceDetailPage({
         }
       />
 
-      {/* ═══════════════ 관리 품목 ═══════════════ */}
+      {/* ═══════════════ 취급 품목 ═══════════════ */}
       <Section tone="white">
         <Container>
           <Reveal>
             <SectionHead
               eyebrow="취 급 품 목"
-              title="지성크리닝에서 관리하는 품목입니다"
-              lede="목록에 없는 품목도 상담 가능합니다. 커튼·카펫처럼 크기와 소재에 따라 달라지는 세탁 품목은 별도로 협의하여 진행합니다."
+              title="이 서비스로 처리하는 품목입니다"
+              lede="목록에 없는 품목도 상담 가능합니다. 커튼·카펫처럼 크기와 소재에 따라 달라지는 품목은 별도 협의로 진행합니다."
             />
           </Reveal>
 
@@ -122,8 +122,8 @@ export default async function ServiceDetailPage({
           <Reveal>
             <SectionHead
               eyebrow="표 준 단 가"
-              title="물량과 날짜에 따라 여기서 조정됩니다"
-              lede="아래는 표준 단가이고, 거래처별 계약 단가는 물량·날짜·품목 구성에 따라 따로 산정합니다."
+              title="물량과 주기에 따라 여기서 조정됩니다"
+              lede="아래는 표준 단가이고, 거래처별 계약 단가는 물량·주기·품목 구성에 따라 따로 산정합니다."
             />
           </Reveal>
           <Reveal delay={80}>
@@ -163,12 +163,12 @@ export default async function ServiceDetailPage({
           <Reveal>
             <SectionHead
               eyebrow="이 용 절 차"
-              title="처음 상담부터 처음 배달(납품)까지 세 단계"
-              lede="날짜를 정하고 나면 그 일정에 맞춰 수거와 배달(납품)이 이어집니다."
+              title="첫 통화부터 첫 납품까지 네 단계"
+              lede="주기를 정하고 나면 그 일정에 맞춰 수거와 납품이 이어집니다."
             />
           </Reveal>
 
-          <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {processSteps.map((step, i) => (
               <Reveal key={step.title} as="li" delay={i * 60}>
                 <Card className="h-full p-6">
@@ -194,7 +194,7 @@ export default async function ServiceDetailPage({
             <Card className="p-8 sm:p-11">
               <div className="flex flex-wrap items-center justify-between gap-6">
                 <SectionHead
-                  title="물량만 알려 주시면 견적을 드립니다"
+                  title="물량만 알려주시면 견적을 드립니다"
                   lede="담당자가 확인 후 연락드립니다."
                   className="flex-1 basis-[22rem]"
                 />

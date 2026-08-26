@@ -37,7 +37,7 @@ const label: Record<string, string> = {
   region: "사업장 지역",
   items: "세탁 품목",
   volume: "예상 물량",
-  cycle: "희망 수거 날짜",
+  cycle: "희망 수거 주기",
   message: "문의 내용",
 };
 
@@ -120,7 +120,7 @@ export async function sendInquiryMail(
       from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
       to: process.env.INQUIRY_TO,
       replyTo: input.email || undefined,
-      subject: `[견적 문의] ${input.company} (${input.industry}) · ${input.contactName}`,
+      subject: `[견적문의] ${input.company} (${input.industry}) · ${input.contactName}`,
       text,
       html,
     });

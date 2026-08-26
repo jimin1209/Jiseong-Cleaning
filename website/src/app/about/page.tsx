@@ -15,7 +15,7 @@ import { businessInfo, certification, SAMPLE_CONTENT } from "@/lib/sample";
 import { site, targetIndustries } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "회사 소개",
+  title: "회사소개",
   description:
     "지성크리닝은 (주)지성이엔지가 운영하는 세탁 사업 부문이며 장애인 표준사업장으로 운영됩니다. 소재지와 연락처를 안내합니다.",
   alternates: { canonical: "/about" },
@@ -27,7 +27,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="회 사 소 개"
         title="제조 법인이 운영하는 세탁 사업 부문입니다"
-        lede="지성크리닝은 도로 안전 장비를 제조하는 (주)지성이엔지의 세탁 사업 부문입니다. 경주 강동면 사업장에서 전문 세탁 장비로 사업장 세탁물을 안전하게 세탁합니다."
+        lede="지성크리닝은 도로 안전 장비를 제조하는 (주)지성이엔지의 세탁 사업 부문입니다. 경주 천북면 사업장에서 업소용 세탁 장비로 사업장 세탁물을 처리합니다."
       />
 
       {/* ═══════════════ 개요 ═══════════════ */}
@@ -37,22 +37,22 @@ export default function AboutPage() {
             <Reveal>
               <SectionHead
                 eyebrow="사 업 개 요"
-                title="사업장 세탁물 관리를 대신 맡습니다"
+                title="사업장 린넨 관리를 대신 맡습니다"
               />
               <div className="mt-6 flex flex-col gap-4 text-[0.9375rem] leading-[1.85] text-ink-2">
                 <p>
-                  기업·호텔·모텔·펜션·사우나의 침구와 수건, 식당·급식소의 행주와 유니폼처럼
-                  사업장에서 반복적으로 발생하는 세탁물을 수거해
-                  세탁하고 배달(납품)합니다. 개인 고객의 옷은 관리하지 않습니다.
+                  호텔·모텔·펜션의 침구와 수건, 식당·급식소의 행주와 유니폼처럼
+                  사업장에서 반복적으로 발생하는 세탁물을 대량으로 수거해
+                  세탁하고 납품합니다. 개인 고객의 옷은 취급하지 않습니다.
                 </p>
                 <p>
-                  사업장이 세탁 업체를 고를 때 가장 신경 쓰는 것은 세탁물이 제때
-                  돌아오는지입니다. 그래서 지성크리닝은 사업장에서 약속한 요일과
-                  날짜에 맞춰 정기적으로 수거하고 배달(납품)합니다.
+                  사업장이 세탁업체를 고를 때 가장 신경 쓰는 것은 세탁물이 제때
+                  돌아오는지입니다. 그래서 지성크리닝은 사업장에서 원하시는 요일과
+                  주기에 맞춰 정기적으로 수거하고 납품합니다.
                 </p>
                 <p>
-                  세탁은 경상북도 경주시 강동면 모서안길 44 사업장에서 전문 세탁
-                  장비로 세탁합니다. 관리 품목과 물량, 수거 날짜는 사업장 사정에
+                  세탁은 경상북도 경주시 천북면 모서안길 44 사업장에서 업소용 세탁
+                  장비로 처리합니다. 취급 품목과 물량, 수거 주기는 사업장 사정에
                   맞춰 상담해 정합니다.
                 </p>
               </div>
@@ -80,7 +80,7 @@ export default function AboutPage() {
                   {businessInfo.registrationNumber && (
                     <>
                       <dt className="text-[0.8125rem] font-bold text-muted">
-                        사업자등록번호
+                        사업자번호
                       </dt>
                       <dd className="m-0 text-ink-2" data-numeric>
                         {businessInfo.registrationNumber}
@@ -107,15 +107,15 @@ export default function AboutPage() {
                     </>
                   )}
 
-                  <dt className="text-[0.8125rem] font-bold text-muted">관리</dt>
+                  <dt className="text-[0.8125rem] font-bold text-muted">취급</dt>
                   <dd className="m-0 text-ink-2">
-                    숙박 세탁물 · 주방 세탁물 · 월 세탁 정기 계약
+                    숙박 린넨 · 주방 리넨 · 월세탁 정기 계약
                   </dd>
                 </dl>
 
                 {SAMPLE_CONTENT && (
                   <p className="mt-4 rounded-brand bg-warn-bg px-3.5 py-2.5 text-[0.75rem] leading-[1.6] font-semibold text-warn">
-                    대표자 · 사업자등록번호 · 팩스는 확인 전 임시값입니다.
+                    대표자 · 사업자번호 · 팩스는 확인 전 임시값입니다.
                   </p>
                 )}
 
@@ -193,7 +193,7 @@ export default function AboutPage() {
             <SectionHead
               eyebrow="거 래 대 상"
               title="사업장 고객만 거래합니다"
-              lede="가정(아파트 · 빌라) 세탁물은 관리하지 않습니다. 정기 세탁과 수거에 맞춰 설비와 일정을 운영하고 있기 때문입니다."
+              lede="가정(아파트 · 빌라) 세탁물은 취급하지 않습니다. 대량 처리와 정기 수거에 맞춰 설비와 일정을 운영하고 있기 때문입니다."
             />
           </Reveal>
 
@@ -216,8 +216,8 @@ export default function AboutPage() {
 
           <Reveal delay={140}>
             <Alert tone="warn" className="mt-8 max-w-3xl">
-              수거·배달(납품) 가능 권역은 경주 인근을 기준으로 운영합니다. 사업장 지역을
-              알려 주시면 가능 여부를 확인해 드립니다.
+              수거·납품 가능 권역은 경주 인근을 기준으로 운영합니다. 사업장 지역을
+              알려주시면 가능 여부를 확인해 드립니다.
             </Alert>
           </Reveal>
         </Container>
@@ -231,7 +231,7 @@ export default function AboutPage() {
               <div className="flex flex-wrap items-center justify-between gap-6">
                 <SectionHead
                   title="거래를 검토 중이시면 연락 주세요"
-                  lede="품목과 물량, 희망 날짜를 알려 주시면 조건을 정리해 드립니다."
+                  lede="품목과 물량, 희망 주기를 알려주시면 조건을 정리해 드립니다."
                   className="flex-1 basis-[22rem]"
                 />
                 <div className="flex flex-wrap gap-3">

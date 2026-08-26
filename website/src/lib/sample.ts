@@ -37,7 +37,7 @@ export const businessInfo = {
 
 /**
  * 운영 시간 — 확정 필요.
- * 일반적인 세탁공장 운영 시간을 넣어 뒀을 뿐 실제 값이 아니다.
+ * 일반적인 세탁공장 운영시간을 넣어 뒀을 뿐 실제 값이 아니다.
  */
 export const businessHours = SAMPLE_CONTENT
   ? {
@@ -60,14 +60,14 @@ export const certification = SAMPLE_CONTENT
   : null;
 
 /**
- * 세탁 능력 — 확정 필요.
+ * 처리 능력 — 확정 필요.
  * 설비 사양을 확인하기 전이라 실측값이 아니다.
  */
 export const capacity = SAMPLE_CONTENT
   ? [
-      { label: "일일 세탁 물량", value: "0,000", unit: "장" },
-      { label: "전문 세탁 설비", value: "0", unit: "대" },
-      { label: "수거 · 배달(납품) 차량", value: "0", unit: "대" },
+      { label: "일 처리 물량", value: "0,000", unit: "장" },
+      { label: "업소용 세탁 설비", value: "0", unit: "대" },
+      { label: "수거 · 납품 차량", value: "0", unit: "대" },
       { label: "세탁 소요", value: "0", unit: "일" },
     ]
   : null;

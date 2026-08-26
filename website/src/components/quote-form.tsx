@@ -206,7 +206,7 @@ export function QuoteForm() {
             name="region"
             label="사업장 지역"
             required
-            hint="수거·배달(납품) 가능 여부를 지역 기준으로 확인합니다."
+            hint="수거·납품 가능 여부를 지역 기준으로 확인합니다."
             error={err.region}
           >
             <input
@@ -264,7 +264,7 @@ export function QuoteForm() {
           <Field
             name="volume"
             label="주당 예상 물량"
-            hint="대략만 적어 주셔도 상담이 가능합니다."
+            hint="대략만 적어주셔도 상담이 가능합니다."
             error={err.volume}
           >
             <input
@@ -278,7 +278,7 @@ export function QuoteForm() {
             />
           </Field>
 
-          <Field name="cycle" label="희망 수거 날짜" error={err.cycle}>
+          <Field name="cycle" label="희망 수거 주기" error={err.cycle}>
             <select
               id="cycle"
               name="cycle"
@@ -302,7 +302,7 @@ export function QuoteForm() {
             name="message"
             rows={4}
             defaultValue={str("message")}
-            placeholder="현재 이용 중인 방식이나 불편한 점을 적어 주시면 상담에 도움이 됩니다."
+            placeholder="현재 이용 중인 방식이나 불편한 점을 적어주시면 상담에 도움이 됩니다."
             className={`${inputClass} min-h-26 resize-y leading-[1.7] ${err.message ? errorClass : ""}`}
             {...invalid("message")}
           />

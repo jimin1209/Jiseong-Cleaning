@@ -43,7 +43,7 @@ export async function submitQuote(
     return {
       status: "error",
       errors: {
-        form: "문의 접수 중 문제가 발생했습니다. 전화로 연락 주시면 바로 상담해 드립니다.",
+        form: "접수 처리 중 문제가 발생했습니다. 전화로 연락 주시면 바로 상담해 드립니다.",
       },
       values,
     };
