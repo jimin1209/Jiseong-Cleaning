@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { CopyEditRoot } from "@/components/copy-edit-root";
 import { T } from "@/components/copy-text";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -88,19 +89,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko">
       <body className="pb-[4.75rem] lg:pb-0">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-brand focus:bg-white focus:px-4 focus:py-2.5 focus:font-bold focus:text-navy focus:shadow-raised"
-        >
-          <T k="layout.skip" />
-        </a>
-        {/* 상단 샘플 경고 배너는 떼기로 했다(회의) — 컴포넌트·SAMPLE_CONTENT 스위치는 더미 관리용으로 유지 */}
-        <SiteHeader />
-        <main id="main">{children}</main>
-        <SiteFooter />
-        <MobileCtaBar />
-        {/* 어느 페이지에서든 스크롤 위치와 무관하게 문의 경로가 보이게 한다 */}
-        <FloatingContact />
+        {/* 편집 모드 뿌리 — /admin/edit 밖에서는 패스스루라 화면 결과가 동일하다.
+            헤더·푸터·플로팅까지 편집 대상이라 페이지가 아닌 레이아웃 수준에서 감싼다 */}
+        <CopyEditRoot>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-brand focus:bg-white focus:px-4 focus:py-2.5 focus:font-bold focus:text-navy focus:shadow-raised"
+          >
+            <T k="layout.skip" />
+          </a>
+          {/* 상단 샘플 경고 배너는 떼기로 했다(회의) — 컴포넌트·SAMPLE_CONTENT 스위치는 더미 관리용으로 유지 */}
+          <SiteHeader />
+          <main id="main">{children}</main>
+          <SiteFooter />
+          <MobileCtaBar />
+          {/* 어느 페이지에서든 스크롤 위치와 무관하게 문의 경로가 보이게 한다 */}
+          <FloatingContact />
+        </CopyEditRoot>
         <LocalBusinessJsonLd />
       </body>
     </html>
