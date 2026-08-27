@@ -88,7 +88,6 @@ export const nav = [
   { href: "/", label: "사업 개요" },
   { href: "/about", label: "회사 소개" },
   { href: "/services", label: "세탁 서비스" },
-  { href: "/quote", label: "견적 문의" },
 ] as const;
 
 /** 히어로와 회사 소개에서 쓰는 신뢰 근거 */
