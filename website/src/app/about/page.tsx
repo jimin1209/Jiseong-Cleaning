@@ -11,7 +11,7 @@ import {
   Section,
   SectionHead,
 } from "@/components/ui";
-import { businessInfo, certification, SAMPLE_CONTENT } from "@/lib/sample";
+import { businessInfo, SAMPLE_CONTENT } from "@/lib/sample";
 import { site, targetIndustries } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -157,22 +157,10 @@ export default function AboutPage() {
                   <strong className="block text-[1.0625rem] font-extrabold tracking-[-0.02em] text-white">
                     장애인 표준사업장
                   </strong>
-                  {certification ? (
-                    <span className="mt-1 block text-[0.8125rem] leading-[1.6] text-[#A6C5E8]">
-                      {certification.issuer}
-                      <br />
-                      <span data-numeric>
-                        {certification.number} · {certification.date}
-                      </span>
-                      <span className="mt-1 block text-[0.6875rem] text-[#C08A4A]">
-                        인증번호 · 인증일은 확인 전 임시값
-                      </span>
-                    </span>
-                  ) : (
-                    <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
-                      인증기관 · 인증번호 확인 후 표기
-                    </span>
-                  )}
+                  {/* 인증번호는 표기하지 않는다 — 회의 결정(인증 사실만 표기) */}
+                  <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
+                    장애인 표준사업장 인증
+                  </span>
                 </span>
               </div>
             </Reveal>

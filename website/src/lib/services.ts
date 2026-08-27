@@ -77,35 +77,3 @@ export const processSteps = [
   },
 ] as const;
 
-/** 견적 폼 품목 선택지 — 폼(S3) 개편 전까지 유지. 최종 정리는 병합 후 */
-export const inquiryItemOptions = [
-  "시트 · 이불 커버",
-  "베개 커버",
-  "수건 · 타월",
-  "목욕 가운",
-  "행주 · 주방타월",
-  "앞치마 · 조리복",
-  "유니폼",
-  "식탁보 · 냅킨",
-  "기타",
-] as const;
-
-export const inquiryIndustryOptions = [
-  "호텔",
-  "모텔",
-  "펜션",
-  "숙박시설",
-  "기업체",
-  "급식소 · 식당",
-  "헬스장",
-  "단체시설",
-  "기타",
-] as const;
-
-export const inquiryCycleOptions = [
-  "주 1회",
-  "주 2회",
-  "주 3회 이상",
-  "월 1~2회",
-  "협의 필요",
-] as const;
