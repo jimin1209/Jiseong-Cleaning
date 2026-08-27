@@ -243,9 +243,7 @@ export default function HomePage() {
                     장애인 표준사업장
                   </strong>
                   <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
-                    {certification
-                      ? `${certification.issuer} · ${certification.number}`
-                      : "인증기관 · 인증번호 확인 후 표기"}
+                    {certification?.issuer ?? "인증기관"}
                   </span>
                 </span>
               </div>

@@ -150,19 +150,9 @@ export default function AboutPage() {
                   <strong className="block text-[1.0625rem] font-extrabold tracking-[-0.02em] text-white">
                     장애인 표준사업장
                   </strong>
-                  {certification ? (
-                    <span className="mt-1 block text-[0.8125rem] leading-[1.6] text-[#A6C5E8]">
-                      {certification.issuer}
-                      <br />
-                      <span data-numeric>
-                        {certification.number} · {certification.date}
-                      </span>
-                    </span>
-                  ) : (
-                    <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
-                      인증기관 · 인증번호 확인 후 표기
-                    </span>
-                  )}
+                  <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
+                    {certification?.issuer ?? "인증기관"}
+                  </span>
                 </span>
               </div>
             </Reveal>
