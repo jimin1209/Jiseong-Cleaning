@@ -52,6 +52,16 @@ function blobKey(id: number) {
 
 async function blobStore() {
   const { getStore } = await import("@netlify/blobs");
+  // 런타임이 컨텍스트를 안 넣어줄 때의 수동 연결 (inquiries.ts 와 동일 — MissingBlobsEnvironmentError 대응)
+  const siteID = process.env.SITE_ID ?? process.env.NETLIFY_SITE_ID;
+  if (process.env.NETLIFY_BLOBS_TOKEN && siteID) {
+    return getStore({
+      name: STORE_NAME,
+      consistency: "strong",
+      siteID,
+      token: process.env.NETLIFY_BLOBS_TOKEN,
+    });
+  }
   return getStore({ name: STORE_NAME, consistency: "strong" });
 }
 
