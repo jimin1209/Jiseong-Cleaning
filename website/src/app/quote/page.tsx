@@ -4,7 +4,7 @@ import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { ButtonAnchor, Card, Container, Section, SectionHead } from "@/components/ui";
-import { businessHours, SAMPLE_CONTENT } from "@/lib/sample";
+import { businessHours } from "@/lib/sample";
 import { processSteps } from "@/lib/services";
 import { site } from "@/lib/site";
 
@@ -100,11 +100,6 @@ export default function QuotePage() {
                       카카오맵
                     </ButtonAnchor>
                   </div>
-                  {SAMPLE_CONTENT && (
-                    <p className="mt-5 border-t border-line pt-4 text-[0.75rem] leading-[1.6] text-warn">
-                      지도 임베드는 도메인 확정 후 API 키를 발급받아 이 자리에 넣습니다.
-                    </p>
-                  )}
                 </Card>
               </Reveal>
             </div>
