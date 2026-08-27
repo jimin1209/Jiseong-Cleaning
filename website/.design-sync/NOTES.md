@@ -26,3 +26,6 @@
 - **컴포넌트 추가 시**: 앱 전용(서버 결합) 컴포넌트면 componentSrcMap null 에 추가할 것. dtsPropsFor 는 수기 유지라 실소스와 표류 가능(IconBubble·Card 에서 이미 1회 발생) — 새 prop 추가 시 함께 갱신.
 - 더미 데이터(sample.ts)가 실값으로 바뀌면 프리뷰 문구(후기·슬라이드)가 자동으로 바뀜 — 재캡처 시 시트 차이는 정상.
 - SiteHeader 'Narrow' 셀은 컨테이너 420px vs 뷰포트 900px 미디어쿼리 불일치 아티팩트라 제거(Default 만 유지)
+
+## Known adherence warns (재동기화 시 새 경고 아님 — 조치 금지)
+- **`--tw-*` 상태 변형 선언 11건** (claude.ai/design 검사기 지적, 2026-08-28): `.hover\:…:hover`, `.focus\:…:focus`, `:where(.divide-y>…)` 내부의 `--tw-*` 할당. Tailwind가 hover/focus 를 구현하는 방식 자체라 `:root`/`[data-*]` 이동 시 hover 리프트·focus 링이 깨짐. 테마 토큰 아님 → 이동 대상 아님. `:root` 중립값 등록 우회도 검사기가 선언 위치를 보므로 무효(시도 후 되돌림). **컴파일 번들 수정 금지** — 실렌더·사용 무영향. 근본 해소는 원본 빌드 설정(Tailwind v4 출력) 차원의 문제로, 해소하려면 Tailwind 설정에서 상태 변형 커스텀 프로퍼티 출력 방식이 바뀌어야 하나 사이트 실사용에 이득이 없어 보류.
