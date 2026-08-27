@@ -21,12 +21,15 @@ export function Reveal({
   children,
   as: As = "div" as ElementType,
   delay = 0,
+  grow = false,
   className = "",
 }: {
-  children: ReactNode;
+  children?: ReactNode;
   as?: ElementType;
   /** 밀리초. 목록에서 순차 등장시킬 때 index * 70 정도가 자연스럽다 */
   delay?: number;
+  /** 상승 대신 왼쪽에서 자라난다 — 절차 연결선처럼 가로선에 쓴다 */
+  grow?: boolean;
   className?: string;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -70,7 +73,7 @@ export function Reveal({
   }, [delay]);
 
   return (
-    <As ref={ref} className={className}>
+    <As ref={ref} data-reveal-grow={grow ? "" : undefined} className={className}>
       {children}
     </As>
   );

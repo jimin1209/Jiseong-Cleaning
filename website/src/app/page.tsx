@@ -1,9 +1,12 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { AutoSlider } from "@/components/auto-slider";
 import { BrandMark } from "@/components/brand-mark";
 import { ContactAction } from "@/components/contact-action";
 import { Icon } from "@/components/icons";
 import { Reveal } from "@/components/reveal";
+import { RotatingWords } from "@/components/rotating-words";
+import { ScheduleCard } from "@/components/schedule-card";
 import {
   Badge,
   ButtonLink,
@@ -17,25 +20,77 @@ import {
 import { processSteps, services } from "@/lib/services";
 import { site, targetIndustries, trustPoints } from "@/lib/site";
 
+/* ── 디자인 보강(D4·D5·D7) 데이터 — 문구는 병합 방안 표의 교체 목록 그대로 ── */
+
+/** D5 로테이팅 키워드 — 첫 항목이 기본형(확정 문구·스크린리더용) */
+const rotatingWords = [
+  "사업장 세탁물을",
+  "호텔 시트를",
+  "펜션 이불을",
+  "사우나 수건을",
+] as const;
+
+/** D7 마퀴 배지 키워드 */
+const marqueeBadges = [
+  "정기 수거",
+  "전문 세탁",
+  "살균 공정",
+  "건조 정리",
+  "약속한 날짜 배송",
+  "월 단위 정기 계약",
+  "사업장 전용",
+] as const;
+
+/** D4 히어로 거품 — 위치·크기·주기·투명도는 디자인 원본 그대로 */
+const bubbles = [
+  { left: "9%", size: 14, dur: "17s", delay: "-3s", alpha: [0.35, 0.06], pale: false },
+  { left: "22%", size: 8, dur: "13s", delay: "-9s", alpha: [0.32, 0.05], pale: false },
+  { left: "38%", size: 20, dur: "21s", delay: "-14s", alpha: [0.3, 0.04], pale: true },
+  { left: "55%", size: 10, dur: "15s", delay: "-6s", alpha: [0.3, 0.05], pale: false },
+  { left: "71%", size: 16, dur: "19s", delay: "-11s", alpha: [0.28, 0.04], pale: true },
+  { left: "86%", size: 7, dur: "12s", delay: "-1s", alpha: [0.3, 0.05], pale: false },
+] as const;
+
 export default function HomePage() {
   return (
     <>
       {/* ═══════════════ 히어로 ═══════════════ */}
       <section className="relative overflow-hidden bg-[linear-gradient(150deg,#0E2450_0%,#14306E_42%,#1B4FA8_100%)] text-white">
-        {/* 시안 글로우 — 장식이므로 클릭을 막는다 */}
+        {/* 시안 글로우 — 장식이므로 클릭을 막는다. 14초 주기로 부유한다(D3) */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-[8%] -top-[22%] aspect-square w-[min(46rem,72vw)] bg-[radial-gradient(circle_at_50%_50%,rgb(0_174_239/0.30)_0%,rgb(0_174_239/0)_62%)]"
+          className="jc-glow pointer-events-none absolute -right-[8%] -top-[22%] aspect-square w-[min(46rem,72vw)] bg-[radial-gradient(circle_at_50%_50%,rgb(0_174_239/0.30)_0%,rgb(0_174_239/0)_62%)]"
         />
-        {/* 심볼 워터마크 */}
-        <BrandMark
-          tone="glow"
-          className="pointer-events-none absolute -right-[26%] top-1/2 w-[min(38rem,90vw)] -translate-y-1/2 opacity-[0.13] sm:-right-[6%] sm:opacity-[0.16]"
-        />
+        {/* 심볼 워터마크 — 위치는 바깥 div, 회전(D2)은 안쪽에. transform 이 겹치면 위치가 무너진다 */}
+        <div className="pointer-events-none absolute -right-[26%] top-1/2 w-[min(38rem,90vw)] -translate-y-1/2 sm:-right-[6%]">
+          <BrandMark tone="glow" className="jc-spin w-full opacity-[0.13] sm:opacity-[0.16]" />
+        </div>
+        {/* 아래에서 떠오르는 거품(D4) — 세탁 모티프 장식 */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          {bubbles.map(({ left, size, dur, delay, alpha, pale }) => (
+            <span
+              key={left}
+              className="jc-bub"
+              style={
+                {
+                  left,
+                  width: size,
+                  height: size,
+                  background: `radial-gradient(circle at 35% 35%, rgb(${
+                    pale ? "166 217 250" : "255 255 255"
+                  } / ${alpha[0]}), rgb(${pale ? "166 217 250" : "255 255 255"} / ${alpha[1]}))`,
+                  "--bub-dur": dur,
+                  "--bub-delay": delay,
+                } as CSSProperties
+              }
+            />
+          ))}
+        </div>
 
         <Container className="relative">
-          {/* 히어로 진입은 CSS 애니메이션이다 — JS 가 실패해도 내용이 보인다 */}
-          <div className="hero-enter max-w-[42rem] py-16 sm:py-20 lg:py-28">
+          <div className="flex flex-wrap items-center gap-10 py-16 sm:py-20 lg:gap-14 lg:py-24">
+            {/* 히어로 진입은 CSS 애니메이션이다 — JS 가 실패해도 내용이 보인다 */}
+            <div className="hero-enter min-w-0 max-w-[42rem] flex-[1_1_30rem]">
             <p className="mb-5 inline-flex items-center gap-2.5 text-[0.78rem] font-bold tracking-[0.13em] text-pale">
               <span className="h-0.5 w-6 rounded-full bg-ci-cyan" aria-hidden="true" />
               사업장 세탁 전문
@@ -44,7 +99,8 @@ export default function HomePage() {
             <h1 className="text-[2.125rem] leading-[1.22] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.375rem]">
               수거부터 배송까지
               <br />
-              사업장 세탁물을{" "}
+              {/* 대상어 로테이션(D5) — 기본형 "사업장 세탁물을"만 스크린리더에 읽힌다 */}
+              <RotatingWords words={rotatingWords} />{" "}
               <em className="not-italic text-[#6FD6FF]">대신 관리해 드립니다</em>
             </h1>
 
@@ -74,8 +130,64 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
+            </div>
+
+            {/* 글래스 일정 카드(D6) — 정기 운영 리듬의 예시 화면 */}
+            <div className="jc-hero-card min-w-0 max-w-[25rem] flex-[1_1_19rem]">
+              <ScheduleCard />
+            </div>
           </div>
         </Container>
+
+        {/* 마퀴 배지 스트립(D7) — 공정 키워드가 왼쪽으로 흐른다. 뒤쪽 절반은 이음새용 복제 */}
+        <div className="relative overflow-hidden border-t border-white/10 py-[13px] [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
+          <div className="jc-marquee flex [animation-duration:34s]">
+            {[0, 1].map((half) => (
+              <div key={half} aria-hidden={half === 1 || undefined} className="flex items-center">
+                {marqueeBadges.map((label) => (
+                  <span key={label} className="mr-11 flex items-center gap-11">
+                    <span className="whitespace-nowrap text-[0.8125rem] font-bold tracking-[0.12em] text-[#C8DBF2]/75">
+                      {label}
+                    </span>
+                    {/* eslint-disable-next-line @next/next/no-img-element -- 13px 장식 심볼이라 최적화 대상이 아니다 */}
+                    <img
+                      src="/brand/jiseong-symbol-mono-white.svg"
+                      alt=""
+                      width={13}
+                      height={15}
+                      className="opacity-45"
+                    />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 웨이브 섹션 전환(D8) — 이중 물결이 다음 섹션의 흰 배경으로 이어진다 */}
+        <div aria-hidden="true" className="relative h-16 overflow-hidden">
+          <svg
+            viewBox="0 0 2880 80"
+            preserveAspectRatio="none"
+            className="jc-wave absolute -bottom-px left-0 h-16 w-[200%] opacity-35"
+          >
+            <path
+              fill="#FFFFFF"
+              opacity="0.4"
+              d="M0,46 C240,78 480,10 720,38 C960,66 1200,14 1440,46 C1680,78 1920,10 2160,38 C2400,66 2640,14 2880,46 L2880,80 L0,80 Z"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 2880 80"
+            preserveAspectRatio="none"
+            className="jc-wave-2 absolute -bottom-px left-0 h-16 w-[200%]"
+          >
+            <path
+              fill="#FFFFFF"
+              d="M0,52 C240,84 480,20 720,44 C960,68 1200,24 1440,52 C1680,84 1920,20 2160,44 C2400,68 2640,24 2880,52 L2880,80 L0,80 Z"
+            />
+          </svg>
+        </div>
       </section>
 
       {/* ═══════════════ 자동 슬라이드 배너 ═══════════════ */}
@@ -102,7 +214,12 @@ export default function HomePage() {
             const Glyph = Icon[service.icon];
             return (
               <Reveal key={service.slug} delay={70}>
-                <Card className="group mx-auto mt-11 flex max-w-2xl flex-col p-8 transition-all duration-200 ease-brand hover:-translate-y-0.5 hover:border-pale hover:shadow-raised sm:p-10">
+                {/* 상단 CI 그라디언트 바 + hover 리프트(D9) */}
+                <Card className="group relative mx-auto mt-11 flex max-w-2xl flex-col overflow-hidden p-8 transition-all duration-[250ms] ease-brand hover:-translate-y-[5px] hover:border-pale hover:shadow-[0_18px_40px_-12px_rgb(20_48_110/0.22)] sm:p-10">
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--color-ci-deep),var(--color-ci-cyan))]"
+                  />
                   <IconBubble className="mb-5">
                     <Glyph className="size-6" />
                   </IconBubble>
@@ -144,16 +261,23 @@ export default function HomePage() {
             />
           </Reveal>
 
-          {/* 순서가 정보이므로 번호를 쓴다 */}
-          <ol className="relative mt-11 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {/* 데스크톱 연결선 */}
+          {/* 순서가 정보이므로 번호를 쓴다. jc-process 가 카드 하이라이트 시차의 기준(D10) */}
+          <ol className="jc-process relative mt-11 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {/* 데스크톱 연결선 — 화면에 들어오면 왼쪽부터 자라난다(D10) */}
             <div
               aria-hidden="true"
-              className="absolute left-0 right-0 top-[3.4rem] hidden h-px bg-[linear-gradient(90deg,transparent,var(--color-pale)_12%,var(--color-pale)_88%,transparent)] lg:block"
-            />
+              className="absolute left-0 right-0 top-[3.4rem] hidden lg:block"
+            >
+              <Reveal
+                grow
+                delay={250}
+                className="h-px bg-[linear-gradient(90deg,transparent,var(--color-pale)_12%,var(--color-pale)_88%,transparent)]"
+              />
+            </div>
             {processSteps.map((step, i) => (
               <Reveal key={step.title} as="li" delay={i * 70} className="relative">
-                <Card className="h-full p-6">
+                {/* 1→2→3→4 가 8.8초 주기로 순차 강조된다 — 시차는 globals.css */}
+                <Card className="jc-step h-full p-6">
                   <span
                     className="mb-4 flex size-9 items-center justify-center rounded-full bg-navy text-sm font-extrabold text-white"
                     data-numeric
