@@ -206,7 +206,7 @@ export function QuoteForm() {
             name="region"
             label="사업장 지역"
             required
-            hint="수거·납품 가능 여부를 지역 기준으로 확인합니다."
+            hint="수거·배송 가능 여부를 지역 기준으로 확인합니다."
             error={err.region}
           >
             <input

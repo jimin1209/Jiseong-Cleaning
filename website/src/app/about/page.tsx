@@ -17,7 +17,7 @@ import { site, targetIndustries } from "@/lib/site";
 export const metadata: Metadata = {
   title: "회사소개",
   description:
-    "지성크리닝은 (주)지성이엔지가 운영하는 세탁 사업 부문이며 장애인 표준사업장으로 운영됩니다. 소재지와 연락처를 안내합니다.",
+    "지성크리닝은 우수조달업체 (주)지성이엔지에서 운영하는 세탁 사업 부문이며 장애인 표준사업장으로 운영됩니다. 소재지와 연락처를 안내합니다.",
   alternates: { canonical: "/about" },
 };
 
@@ -26,8 +26,8 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="회 사 소 개"
-        title="제조 법인이 운영하는 세탁 사업 부문입니다"
-        lede="지성크리닝은 도로 안전 장비를 제조하는 (주)지성이엔지의 세탁 사업 부문입니다. 경주 천북면 사업장에서 업소용 세탁 장비로 사업장 세탁물을 처리합니다."
+        title="(주)지성이엔지 지성크리닝"
+        lede="우수조달업체 (주)지성이엔지에서 운영하는 세탁 사업 부문입니다."
       />
 
       {/* ═══════════════ 개요 ═══════════════ */}
@@ -37,23 +37,17 @@ export default function AboutPage() {
             <Reveal>
               <SectionHead
                 eyebrow="사 업 개 요"
-                title="사업장 린넨 관리를 대신 맡습니다"
+                title="사업장 세탁물을 관리해 드리겠습니다."
               />
               <div className="mt-6 flex flex-col gap-4 text-[0.9375rem] leading-[1.85] text-ink-2">
                 <p>
-                  호텔·모텔·펜션의 침구와 수건, 식당·급식소의 행주와 유니폼처럼
                   사업장에서 반복적으로 발생하는 세탁물을 대량으로 수거해
-                  세탁하고 납품합니다. 개인 고객의 옷은 취급하지 않습니다.
+                  세탁하고 배송합니다. 세탁물이 제때 돌아오도록 약속한 날짜에
+                  맞춰 정기적으로 수거하고 배송합니다.
                 </p>
                 <p>
-                  사업장이 세탁업체를 고를 때 가장 신경 쓰는 것은 세탁물이 제때
-                  돌아오는지입니다. 그래서 지성크리닝은 사업장에서 원하시는 요일과
-                  주기에 맞춰 정기적으로 수거하고 납품합니다.
-                </p>
-                <p>
-                  세탁은 경상북도 경주시 천북면 모서안길 44 사업장에서 업소용 세탁
-                  장비로 처리합니다. 취급 품목과 물량, 수거 주기는 사업장 사정에
-                  맞춰 상담해 정합니다.
+                  세탁은 자체 세탁 시설에서 전문 세탁 장비로 처리합니다.
+                  품목과 물량, 수거 주기는 사업장 사정에 맞춰 상담해 정합니다.
                 </p>
               </div>
             </Reveal>
@@ -109,7 +103,7 @@ export default function AboutPage() {
 
                   <dt className="text-[0.8125rem] font-bold text-muted">취급</dt>
                   <dd className="m-0 text-ink-2">
-                    숙박 린넨 · 주방 리넨 · 월세탁 정기 계약
+                    사업장 세탁물 정기 수거 · 세탁 · 배송
                   </dd>
                 </dl>
 
@@ -192,8 +186,8 @@ export default function AboutPage() {
           <Reveal>
             <SectionHead
               eyebrow="거 래 대 상"
-              title="사업장 고객만 거래합니다"
-              lede="가정(아파트 · 빌라) 세탁물은 취급하지 않습니다. 대량 처리와 정기 수거에 맞춰 설비와 일정을 운영하고 있기 때문입니다."
+              title="사업장 고객과 거래합니다"
+              lede="대량 처리와 정기 수거에 맞춰 설비와 일정을 운영하고 있습니다."
             />
           </Reveal>
 
@@ -216,7 +210,7 @@ export default function AboutPage() {
 
           <Reveal delay={140}>
             <Alert tone="warn" className="mt-8 max-w-3xl">
-              수거·납품 가능 권역은 경주 인근을 기준으로 운영합니다. 사업장 지역을
+              수거·배송 가능 권역은 경주 인근을 기준으로 운영합니다. 사업장 지역을
               알려주시면 가능 여부를 확인해 드립니다.
             </Alert>
           </Reveal>
@@ -246,6 +240,17 @@ export default function AboutPage() {
                 </div>
               </div>
             </Card>
+          </Reveal>
+
+          {/* 파트너 문구 — 페이지 끝에 1회만 쓴다. 다른 곳에 반복하지 않는다 */}
+          <Reveal delay={80}>
+            <p className="mt-10 text-center text-[0.9375rem] leading-[1.8] text-ink-2">
+              &lsquo;안전한 시공 및 점검으로 신뢰받는 기업&rsquo;
+              <br />
+              <strong className="font-bold text-navy">
+                (주)지성이엔지의 파트너 지성크리닝입니다.
+              </strong>
+            </p>
           </Reveal>
         </Container>
       </Section>

@@ -11,8 +11,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "견적 · 상담 문의",
-  description:
-    "업체명과 품목, 주당 물량을 알려주시면 담당자가 확인해 견적을 드립니다. 전화 054-621-5002.",
+  description: `업체명과 연락처를 남겨주시면 담당자가 확인 후 연락드립니다. 전화 ${site.tel}.`,
   alternates: { canonical: "/quote" },
 };
 
@@ -21,8 +20,8 @@ export default function QuotePage() {
     <>
       <PageHero
         eyebrow="견 적 · 상 담 문 의"
-        title="물량과 주기만 알려주시면 바로 견적을 드립니다"
-        lede="담당자가 확인 후 연락드립니다. 급하시면 전화가 가장 빠릅니다."
+        title="확인 후 연락드립니다."
+        lede="급하시면 전화가 가장 빠릅니다."
       />
 
       <Section tone="white">
@@ -37,7 +36,7 @@ export default function QuotePage() {
             <Reveal delay={100} className="flex flex-col gap-4">
               <div className="rounded-brand bg-navy px-6 py-7 text-white">
                 <p className="text-[0.6875rem] font-bold tracking-[0.16em] text-pale">
-                  상 담 및 견 적 문 의
+                  전 화 문 의
                 </p>
                 <a
                   href={site.telHref}
@@ -165,7 +164,7 @@ export default function QuotePage() {
               <Icon.pin className="size-5 shrink-0 text-sky" />
               <span>
                 <strong className="font-bold text-navy">{site.address}</strong> ·
-                가정(아파트 · 빌라) 세탁물은 취급하지 않으며 사업장 고객만 거래합니다.
+                사업장 고객과 거래합니다.
               </span>
             </div>
           </Reveal>
