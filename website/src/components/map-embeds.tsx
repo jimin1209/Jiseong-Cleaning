@@ -5,6 +5,8 @@ import { useCallback, useState } from "react";
 
 type MapEmbedsProps = {
   address: string;
+  latitude: number;
+  longitude: number;
   naverHref: string;
   kakaoHref: string;
   naverKey?: string;
@@ -17,13 +19,6 @@ type NaverMaps = {
   Map: new (element: HTMLElement, options: { center: unknown; zoom: number }) => unknown;
   LatLng: new (latitude: number, longitude: number) => unknown;
   Marker: new (options: { map: unknown; position: unknown }) => unknown;
-  Service: {
-    Status: { OK: string };
-    geocode: (
-      options: { query: string },
-      callback: (status: string, response: { v2?: { addresses?: Array<{ x: string; y: string }> } }) => void,
-    ) => void;
-  };
 };
 
 type KakaoMaps = {
@@ -31,15 +26,6 @@ type KakaoMaps = {
   LatLng: new (latitude: number, longitude: number) => unknown;
   Map: new (element: HTMLElement, options: { center: unknown; level: number }) => unknown;
   Marker: new (options: { map: unknown; position: unknown }) => unknown;
-  services: {
-    Status: { OK: string };
-    Geocoder: new () => {
-      addressSearch: (
-        address: string,
-        callback: (result: Array<{ x: string; y: string }>, status: string) => void,
-      ) => void;
-    };
-  };
 };
 
 declare global {
@@ -62,7 +48,7 @@ function MapFallback({ href, label }: { href: string; label: string }) {
   );
 }
 
-export function MapEmbeds({ address, naverHref, kakaoHref, naverKey, kakaoKey }: MapEmbedsProps) {
+export function MapEmbeds({ address, latitude, longitude, naverHref, kakaoHref, naverKey, kakaoKey }: MapEmbedsProps) {
   const [naverState, setNaverState] = useState<LoadState>(naverKey ? "loading" : "error");
   const [kakaoState, setKakaoState] = useState<LoadState>(kakaoKey ? "loading" : "error");
 
@@ -71,15 +57,11 @@ export function MapEmbeds({ address, naverHref, kakaoHref, naverKey, kakaoKey }:
     const element = document.getElementById("naver-map");
     if (!maps || !element) return setNaverState("error");
 
-    maps.Service.geocode({ query: address }, (status, response) => {
-      const result = response.v2?.addresses?.[0];
-      if (status !== maps.Service.Status.OK || !result) return setNaverState("error");
-      const position = new maps.LatLng(Number(result.y), Number(result.x));
-      const map = new maps.Map(element, { center: position, zoom: 17 });
-      new maps.Marker({ map, position });
-      setNaverState("ready");
-    });
-  }, [address]);
+    const position = new maps.LatLng(latitude, longitude);
+    const map = new maps.Map(element, { center: position, zoom: 17 });
+    new maps.Marker({ map, position });
+    setNaverState("ready");
+  }, [latitude, longitude]);
 
   const initializeKakao = useCallback(() => {
     const maps = window.kakao?.maps;
@@ -87,17 +69,12 @@ export function MapEmbeds({ address, naverHref, kakaoHref, naverKey, kakaoKey }:
     if (!maps || !element) return setKakaoState("error");
 
     maps.load(() => {
-      const geocoder = new maps.services.Geocoder();
-      geocoder.addressSearch(address, (result, status) => {
-        const first = result[0];
-        if (status !== maps.services.Status.OK || !first) return setKakaoState("error");
-        const position = new maps.LatLng(Number(first.y), Number(first.x));
-        const map = new maps.Map(element, { center: position, level: 3 });
-        new maps.Marker({ map, position });
-        setKakaoState("ready");
-      });
+      const position = new maps.LatLng(latitude, longitude);
+      const map = new maps.Map(element, { center: position, level: 3 });
+      new maps.Marker({ map, position });
+      setKakaoState("ready");
     });
-  }, [address]);
+  }, [latitude, longitude]);
 
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-2">
@@ -125,8 +102,8 @@ export function MapEmbeds({ address, naverHref, kakaoHref, naverKey, kakaoKey }:
         </div>
       </article>
 
-      {naverKey && <Script src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(naverKey)}&submodules=geocoder`} strategy="afterInteractive" onLoad={initializeNaver} onError={() => setNaverState("error")} />}
-      {kakaoKey && <Script src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(kakaoKey)}&libraries=services&autoload=false`} strategy="afterInteractive" onLoad={initializeKakao} onError={() => setKakaoState("error")} />}
+      {naverKey && <Script src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(naverKey)}`} strategy="afterInteractive" onLoad={initializeNaver} onError={() => setNaverState("error")} />}
+      {kakaoKey && <Script src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(kakaoKey)}&autoload=false`} strategy="afterInteractive" onLoad={initializeKakao} onError={() => setKakaoState("error")} />}
     </div>
   );
 }

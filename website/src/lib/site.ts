@@ -69,6 +69,10 @@ export const site = {
   address: "경상북도 경주시 강동면 모서안길 44 지성크리닝",
   addressShort: "경주시 강동면 모서안길 44",
   region: "경상북도 경주시",
+  coordinates: {
+    latitude: 35.947502279717,
+    longitude: 129.24826589865,
+  },
 
   /** 모회사 본사 주소 — jiseong.co.kr 푸터에서 확인한 실제 값(2026-08-17) */
   parentAddress: "경상북도 경주시 용강동 승삼신리길 80",

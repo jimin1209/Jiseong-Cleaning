@@ -99,6 +99,8 @@ export default function QuotePage() {
 
             <MapEmbeds
               address={site.addressShort}
+              latitude={site.coordinates.latitude}
+              longitude={site.coordinates.longitude}
               naverHref={site.mapLinks.naver}
               kakaoHref={site.mapLinks.kakao}
               naverKey={process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}
