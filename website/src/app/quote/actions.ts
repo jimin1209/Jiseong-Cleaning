@@ -17,14 +17,10 @@ export async function submitQuote(
 ): Promise<QuoteState> {
   const values: Record<string, string | string[]> = {
     company: String(formData.get("company") ?? ""),
-    industry: String(formData.get("industry") ?? ""),
     contactName: String(formData.get("contactName") ?? ""),
     phone: String(formData.get("phone") ?? ""),
     email: String(formData.get("email") ?? ""),
     region: String(formData.get("region") ?? ""),
-    items: formData.getAll("items").map(String),
-    volume: String(formData.get("volume") ?? ""),
-    cycle: String(formData.get("cycle") ?? ""),
     message: String(formData.get("message") ?? ""),
     consent: formData.get("consent") ? "on" : "",
   };
