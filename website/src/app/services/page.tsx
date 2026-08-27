@@ -19,7 +19,7 @@ import { PageHero } from "@/components/page-hero";
 export const metadata: Metadata = {
   title: "서비스",
   description:
-    "호텔·모텔·펜션 린넨 세탁, 식당·급식소 주방 리넨 세탁, 월세탁 정기 계약. 취급 품목과 운영 방식을 안내합니다.",
+    "호텔·모텔·펜션 세탁물 세탁, 식당·급식소 주방 세탁물 세탁, 월세탁 정기 계약. 취급 품목과 운영 방식을 안내합니다.",
   alternates: { canonical: "/services" },
 };
 
@@ -28,7 +28,7 @@ export default function ServicesPage() {
     <>
       <PageHero
         eyebrow="서 비 스"
-        title="사업장 규모와 주기에 맞춰 세 가지로 운영합니다"
+        title="사업장 규모, 품목과 물량에 따라 주기적으로 관리해 드립니다"
         lede="어느 쪽이 맞는지 판단이 어려우시면 현재 이용 중인 방식과 월 물량만 알려주세요. 비교해서 제안해 드립니다."
       />
 

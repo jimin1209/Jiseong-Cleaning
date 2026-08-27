@@ -80,7 +80,7 @@ export function SiteHeader() {
               className="hidden rounded-brand leading-tight md:block"
             >
               <span className="block text-[0.65rem] font-bold tracking-[0.1em] text-muted">
-                상담 및 견적 문의
+                전화 문의
               </span>
               <span
                 className="block text-[1.1875rem] font-extrabold tracking-[-0.02em] text-navy"

@@ -66,8 +66,8 @@ export const certification = SAMPLE_CONTENT
 export const capacity = SAMPLE_CONTENT
   ? [
       { label: "일 처리 물량", value: "0,000", unit: "장" },
-      { label: "업소용 세탁 설비", value: "0", unit: "대" },
-      { label: "수거 · 납품 차량", value: "0", unit: "대" },
+      { label: "전문 세탁 설비", value: "0", unit: "대" },
+      { label: "수거 · 배송 차량", value: "0", unit: "대" },
       { label: "세탁 소요", value: "0", unit: "일" },
     ]
   : null;
