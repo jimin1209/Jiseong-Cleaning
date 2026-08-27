@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FaqJsonLd, FaqList } from "@/components/faq-list";
 import { Icon } from "@/components/icons";
+import { MapEmbeds } from "@/components/map-embeds";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { ButtonAnchor, Card, Container, Section, SectionHead } from "@/components/ui";
@@ -103,6 +104,14 @@ export default function QuotePage() {
                 </Card>
               </Reveal>
             </div>
+
+            <MapEmbeds
+              address={site.addressShort}
+              naverHref={site.mapLinks.naver}
+              kakaoHref={site.mapLinks.kakao}
+              naverKey={process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}
+              kakaoKey={process.env.NEXT_PUBLIC_KAKAO_MAP_JAVASCRIPT_KEY}
+            />
           </div>
         </Container>
       </Section>
