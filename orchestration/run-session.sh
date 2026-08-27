@@ -24,6 +24,9 @@ if [ ! -e "$WT/website/node_modules" ]; then
   ln -s "$REPO/website/node_modules" "$WT/website/node_modules"
 fi
 
+# 폰트 생성 (pretendard.css 는 gitignore — prebuild 훅이 만들지만 미리 준비)
+(cd "$WT/website" && npm run setup:fonts >/dev/null 2>&1) || true
+
 echo "[$(date '+%F %T')] $SID 소환 — 브랜치 $BRANCH, 워크트리 $WT" | tee -a "$LOG"
 
 cd "$WT/website"
