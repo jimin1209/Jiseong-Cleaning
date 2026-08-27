@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrandLockup } from "./brand-mark";
 import { ContactSplitLink } from "./contact-action";
 import { Icon } from "./icons";
@@ -12,6 +12,7 @@ import { nav, site } from "@/lib/site";
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   // Esc 로도 닫힌다 — 열린 메뉴가 화면을 덮으므로 탈출 경로가 있어야 한다
@@ -25,7 +26,17 @@ export function SiteHeader() {
   }, [open]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      // 진행 바는 스크롤마다 움직이므로 리렌더 대신 스타일을 직접 쓴다
+      const bar = progressRef.current;
+      if (bar) {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - window.innerHeight;
+        bar.style.width =
+          max > 0 ? `${Math.min(100, (window.scrollY / max) * 100)}%` : "0%";
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -111,6 +122,13 @@ export function SiteHeader() {
           </div>
         </div>
       </Container>
+
+      {/* 스크롤 진행 바 — 헤더 그림자 선 바로 아래, 읽은 만큼 CI 그라디언트로 채워진다 */}
+      <div
+        ref={progressRef}
+        aria-hidden="true"
+        className="absolute -bottom-0.5 left-0 h-0.5 w-0 rounded-r-sm bg-[linear-gradient(90deg,var(--color-ci-deep),var(--color-ci-cyan))]"
+      />
 
       {/* 모바일 메뉴 */}
       <div
