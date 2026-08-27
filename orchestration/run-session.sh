@@ -19,9 +19,9 @@ if [ ! -d "$WT" ]; then
   git -C "$REPO" worktree add "$WT" -b "$BRANCH" "$BASE"
 fi
 
-# node_modules 공유 (심링크) — 각 워크트리에서 next build 가능하게
+# node_modules 하드링크 복사 — Turbopack이 레포 밖 심링크를 거부함(S1 핸드오프 4절)
 if [ ! -e "$WT/website/node_modules" ]; then
-  ln -s "$REPO/website/node_modules" "$WT/website/node_modules"
+  cp -al "$REPO/website/node_modules" "$WT/website/node_modules"
 fi
 
 # 폰트 생성 (pretendard.css 는 gitignore — prebuild 훅이 만들지만 미리 준비)
