@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { T } from "./copy-text";
 
 /**
  * 히어로 글래스 일정 카드 (디자인 보강 D6).
@@ -28,10 +29,10 @@ export function ScheduleCard() {
       <div className="rounded-brand border border-white/16 bg-white/7 p-6 pb-5 shadow-[0_24px_48px_-24px_rgb(4_12_32/0.55)] backdrop-blur-[10px]">
         <div className="flex items-center justify-between gap-3">
           <p className="text-[0.8125rem] font-extrabold tracking-[0.06em] text-white">
-            정기 수거 · 배송 일정
+            <T k="schedule.title" />
           </p>
           <span className="whitespace-nowrap rounded-full bg-white/10 px-2.5 py-1 text-[0.6875rem] font-bold text-pale shadow-[inset_0_0_0_1px_rgb(255_255_255/0.18)]">
-            주 2회 수거 예시
+            <T k="schedule.badge" />
           </span>
         </div>
 
@@ -44,7 +45,7 @@ export function ScheduleCard() {
                   day === "일" ? "text-[#7E93B5]" : "text-[#A6C5E8]"
                 }`}
               >
-                {day}
+                <T k={`schedule.week.${i}`} />
               </span>
               <span
                 className={`relative mx-auto mt-2 block size-[34px] rounded-brand ${
@@ -76,11 +77,11 @@ export function ScheduleCard() {
         <div className="mt-3 flex gap-4 text-[0.6875rem] font-semibold text-[#A6C5E8]">
           <span className="inline-flex items-center gap-1.5">
             <span className="size-[9px] rounded-full bg-ci-cyan" />
-            수거
+            <T k="schedule.legend.pickup" />
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="size-[9px] rounded-full shadow-[inset_0_0_0_2px_#fff]" />
-            배송
+            <T k="schedule.legend.delivery" />
           </span>
         </div>
 
@@ -94,14 +95,14 @@ export function ScheduleCard() {
             <span className="jc-dot absolute left-[3%] top-1/2 size-2.5 -translate-y-1/2 rounded-full bg-white shadow-[0_0_12px_2px_rgb(111_214_255/0.8)]" />
           </div>
           <div className="mt-2.5 flex justify-between text-[0.6875rem] font-semibold text-[#A6C5E8]">
-            <span>사업장 수거</span>
-            <span className="text-center">세탁 · 살균</span>
-            <span className="text-right">사업장 배송</span>
+            <span><T k="schedule.flow.pickup" /></span>
+            <span className="text-center"><T k="schedule.flow.wash" /></span>
+            <span className="text-right"><T k="schedule.flow.delivery" /></span>
           </div>
         </div>
 
         <p className="mt-4 text-[0.6875rem] text-[#8AA4C6]">
-          요일과 주기는 상담으로 정합니다 · 예시 화면
+          <T k="schedule.footnote" />
         </p>
       </div>
     </div>

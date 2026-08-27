@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DeviceSplit } from "@/components/contact-action";
+import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { QuoteForm } from "@/components/quote-form";
@@ -21,8 +22,8 @@ export default function QuotePage() {
   return (
     <>
       <PageHero
-        eyebrow="견 적 · 상 담 문 의"
-        title="확인 후 연락드립니다."
+        eyebrow={<T k="quote.hero.eyebrow" />}
+        title={<T k="quote.hero.title" />}
       />
 
       <Section tone="white">
@@ -37,7 +38,7 @@ export default function QuotePage() {
             <Reveal delay={100} className="flex flex-col gap-4">
               <div className="rounded-brand bg-navy px-6 py-7 text-white">
                 <p className="text-[0.6875rem] font-bold tracking-[0.16em] text-pale">
-                  전 화 문 의
+                  <T k="quote.telCard.heading" />
                 </p>
                 {/* 기기별 분기(명세 9-3·9-4) — 이미 견적 페이지라 PC 는 링크 없이 번호만 보여준다 */}
                 <DeviceSplit
@@ -61,27 +62,27 @@ export default function QuotePage() {
                 />
                 {/* 운영시간은 실값 확정 전 — 임시값 노출 대신 폼 안내로 단순화 */}
                 <p className="mt-3.5 text-sm leading-[1.7] text-[#A6C5E8]">
-                  통화가 어려운 시간에는 아래 폼으로 남겨주시면 회신드립니다.
+                  <T k="quote.telCard.note" />
                 </p>
               </div>
 
               <Card className="p-6">
                 <h2 className="text-[0.6875rem] font-bold tracking-[0.16em] text-faint">
-                  사 업 장 정 보
+                  <T k="quote.bizCard.heading" />
                 </h2>
                 <dl className="mt-4 grid grid-cols-[4rem_minmax(0,1fr)] gap-x-3.5 gap-y-3 text-[0.875rem]">
-                  <dt className="text-[0.78rem] font-bold text-muted">상호</dt>
+                  <dt className="text-[0.78rem] font-bold text-muted"><T k="quote.bizCard.name" /></dt>
                   <dd className="m-0 text-ink-2">{site.name}</dd>
-                  <dt className="text-[0.78rem] font-bold text-muted">운영</dt>
+                  <dt className="text-[0.78rem] font-bold text-muted"><T k="quote.bizCard.operator" /></dt>
                   <dd className="m-0 text-ink-2">{site.parent}</dd>
-                  <dt className="text-[0.78rem] font-bold text-muted">주소</dt>
+                  <dt className="text-[0.78rem] font-bold text-muted"><T k="quote.bizCard.address" /></dt>
                   <dd className="m-0 text-ink-2">{site.address}</dd>
                 </dl>
               </Card>
 
               <Card className="p-6">
                 <h2 className="text-[0.6875rem] font-bold tracking-[0.16em] text-faint">
-                  접 수 후 진 행
+                  <T k="quote.stepsCard.heading" />
                 </h2>
                 <ol className="mt-4 flex flex-col gap-3">
                   {processSteps.map((step, i) => (
@@ -93,7 +94,7 @@ export default function QuotePage() {
                         {i + 1}
                       </span>
                       <span className="text-[0.875rem] font-semibold text-ink-2">
-                        {step.title}
+                        <T k={`process.${i}.title`} />
                       </span>
                     </li>
                   ))}
@@ -103,7 +104,7 @@ export default function QuotePage() {
               {/* 임베드 지도는 API 키가 필요하므로, 키 없이 되는 길찾기 링크를 먼저 붙였다 */}
               <Card className="p-6">
                 <h2 className="text-[0.6875rem] font-bold tracking-[0.16em] text-faint">
-                  찾 아 오 는 길
+                  <T k="quote.mapCard.heading" />
                 </h2>
                 <p className="mt-3 text-[0.9375rem] leading-[1.7] text-ink-2">
                   {site.address}
@@ -117,7 +118,7 @@ export default function QuotePage() {
                     size="sm"
                   >
                     <Icon.pin className="size-4" />
-                    네이버 지도
+                    <T k="quote.mapCard.naver" />
                   </ButtonAnchor>
                   <ButtonAnchor
                     href={site.mapLinks.kakao}
@@ -127,13 +128,13 @@ export default function QuotePage() {
                     size="sm"
                   >
                     <Icon.pin className="size-4" />
-                    카카오맵
+                    <T k="quote.mapCard.kakao" />
                   </ButtonAnchor>
                 </div>
                 {/* 내부 안내이므로 샘플 모드에서만 보인다 */}
                 {SAMPLE_CONTENT && (
                   <p className="mt-4 border-t border-line pt-3.5 text-[0.75rem] leading-[1.6] text-warn">
-                    지도 임베드는 도메인 확정 후 API 키를 발급받아 이 자리에 넣습니다.
+                    <T k="quote.mapCard.notice" />
                   </p>
                 )}
               </Card>
@@ -148,7 +149,10 @@ export default function QuotePage() {
         <Section tone="tint" className="!py-14 sm:!py-16">
           <Container>
             <Reveal>
-              <SectionHead eyebrow="이 용 후 기" title="먼저 이용하신 사업장의 후기입니다" />
+              <SectionHead
+                eyebrow={<T k="quote.reviews.eyebrow" />}
+                title={<T k="quote.reviews.title" />}
+              />
             </Reveal>
           </Container>
           <div className="mt-9">

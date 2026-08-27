@@ -52,7 +52,8 @@ export function SectionHead({
   align = "left",
   className = "",
 }: {
-  eyebrow?: string;
+  /* 문구 데이터화(copy.ts)로 <T> 요소도 받는다 — 렌더 결과는 동일 */
+  eyebrow?: ReactNode;
   title: ReactNode;
   lede?: ReactNode;
   tone?: "light" | "dark";
@@ -176,7 +177,8 @@ export function TelButton({
   block,
   className,
 }: {
-  tel: string;
+  /* 문구 데이터화(copy.ts)로 <T> 요소도 받는다 — 렌더 결과는 동일 */
+  tel: ReactNode;
   telHref: string;
 } & ButtonLook & { className?: string }) {
   return (

@@ -1,3 +1,4 @@
+import { T } from "./copy-text";
 import { ButtonLink, TelButton } from "./ui";
 import { site } from "@/lib/site";
 
@@ -12,13 +13,13 @@ export function MobileCtaBar() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 flex gap-2 border-t border-line bg-white/95 px-3.5 py-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] backdrop-blur-md lg:hidden">
       <TelButton
-        tel="전화 문의"
+        tel={<T k="mobileCta.telLabel" />}
         telHref={site.telHref}
         block
         className="flex-1 text-sm"
       />
       <ButtonLink href="/quote" block className="flex-1 text-sm">
-        견적 문의
+        <T k="mobileCta.quoteLabel" />
       </ButtonLink>
     </div>
   );

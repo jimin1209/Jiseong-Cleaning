@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { T } from "@/components/copy-text";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MobileCtaBar } from "@/components/mobile-cta-bar";
@@ -91,7 +92,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-brand focus:bg-white focus:px-4 focus:py-2.5 focus:font-bold focus:text-navy focus:shadow-raised"
         >
-          본문으로 건너뛰기
+          <T k="layout.skip" />
         </a>
         {/* 상단 샘플 경고 배너는 떼기로 했다(회의) — 컴포넌트·SAMPLE_CONTENT 스위치는 더미 관리용으로 유지 */}
         <SiteHeader />

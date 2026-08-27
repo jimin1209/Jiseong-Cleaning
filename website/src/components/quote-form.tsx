@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
+import { T, useCopy } from "./copy-text";
 import { Icon } from "./icons";
 import { Alert, Button } from "./ui";
 import { submitQuote } from "@/app/quote/actions";
@@ -24,9 +25,10 @@ function Field({
   children,
 }: {
   name: string;
-  label: string;
+  /* 문구 데이터화(copy.ts)로 <T> 요소도 받는다 — 렌더 결과는 동일 */
+  label: React.ReactNode;
   required?: boolean;
-  hint?: string;
+  hint?: React.ReactNode;
   error?: string;
   children: React.ReactNode;
 }) {
@@ -64,7 +66,7 @@ function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" size="lg" block disabled={pending}>
-      {pending ? "접수 중…" : "견적 문의 보내기"}
+      {pending ? <T k="quoteForm.pending" /> : <T k="quoteForm.submit" />}
     </Button>
   );
 }
@@ -76,6 +78,8 @@ export function QuoteForm() {
     submitQuote,
     initialQuoteState,
   );
+  // placeholder 는 속성 문자열이라 <T> 대신 get() 으로 읽는다
+  const { get } = useCopy();
 
   const v = state.values;
   const err = state.errors;
@@ -92,22 +96,22 @@ export function QuoteForm() {
         <span className="flex size-14 items-center justify-center rounded-full bg-ok-bg text-ok">
           <Icon.check className="size-7" />
         </span>
-        <h2 className="mt-5 text-[1.375rem] text-navy">접수되었습니다</h2>
+        <h2 className="mt-5 text-[1.375rem] text-navy"><T k="quoteForm.success.title" /></h2>
         <p className="mt-3 text-[0.9375rem] leading-[1.8] text-ink-2">
-          담당자가 확인 후 연락드리겠습니다.
+          <T k="quoteForm.success.body" />
           {state.id != null && (
             <>
               {" "}
-              접수번호는{" "}
+              <T k="quoteForm.success.idPre" />{" "}
               <strong className="font-bold text-navy" data-numeric>
                 #{state.id}
               </strong>
-              입니다.
+              <T k="quoteForm.success.idPost" />
             </>
           )}
         </p>
         <p className="mt-5 text-sm text-muted">
-          급하시면 전화가 가장 빠릅니다.{" "}
+          <T k="quoteForm.success.callNote" />{" "}
           <a href={site.telHref} className="font-bold text-brand" data-numeric>
             {site.tel}
           </a>
@@ -129,32 +133,32 @@ export function QuoteForm() {
       )}
       {Object.keys(err).length > 0 && !err.form && (
         <Alert tone="danger" className="mb-6">
-          입력하지 않은 항목이 있습니다. 표시된 칸을 확인해 주세요.
+          <T k="quoteForm.errorSummary" />
         </Alert>
       )}
 
       <div className="flex flex-col gap-5">
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field name="company" label="업체명" required error={err.company}>
+          <Field name="company" label={<T k="quoteForm.company.label" />} required error={err.company}>
             <input
               id="company"
               name="company"
               type="text"
               defaultValue={str("company")}
-              placeholder="예) 보문관광호텔"
+              placeholder={get("quoteForm.company.placeholder")}
               className={`${inputClass} ${err.company ? errorClass : ""}`}
               {...invalid("company")}
             />
           </Field>
 
-          <Field name="contactName" label="성함" required error={err.contactName}>
+          <Field name="contactName" label={<T k="quoteForm.contactName.label" />} required error={err.contactName}>
             <input
               id="contactName"
               name="contactName"
               type="text"
               autoComplete="name"
               defaultValue={str("contactName")}
-              placeholder="예) 김지성"
+              placeholder={get("quoteForm.contactName.placeholder")}
               className={`${inputClass} ${err.contactName ? errorClass : ""}`}
               {...invalid("contactName")}
             />
@@ -162,7 +166,7 @@ export function QuoteForm() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field name="phone" label="연락처" required error={err.phone}>
+          <Field name="phone" label={<T k="quoteForm.phone.label" />} required error={err.phone}>
             <input
               id="phone"
               name="phone"
@@ -170,7 +174,7 @@ export function QuoteForm() {
               inputMode="tel"
               autoComplete="tel"
               defaultValue={str("phone")}
-              placeholder="010-0000-0000"
+              placeholder={get("quoteForm.phone.placeholder")}
               className={`${inputClass} ${err.phone ? errorClass : ""}`}
               data-numeric
               {...invalid("phone")}
@@ -179,8 +183,8 @@ export function QuoteForm() {
 
           <Field
             name="email"
-            label="이메일"
-            hint="견적서를 메일로 받으실 경우 적어주세요."
+            label={<T k="quoteForm.email.label" />}
+            hint={<T k="quoteForm.email.hint" />}
             error={err.email}
           >
             <input
@@ -189,7 +193,7 @@ export function QuoteForm() {
               type="email"
               autoComplete="email"
               defaultValue={str("email")}
-              placeholder="manager@example.com"
+              placeholder={get("quoteForm.email.placeholder")}
               className={`${inputClass} ${err.email ? errorClass : ""}`}
               {...invalid("email")}
             />
@@ -198,9 +202,9 @@ export function QuoteForm() {
 
         <Field
           name="region"
-          label="주소"
+          label={<T k="quoteForm.region.label" />}
           required
-          hint="수거·배송 가능 여부를 지역 기준으로 확인합니다."
+          hint={<T k="quoteForm.region.hint" />}
           error={err.region}
         >
           <input
@@ -208,19 +212,19 @@ export function QuoteForm() {
             name="region"
             type="text"
             defaultValue={str("region")}
-            placeholder="예) 경주시 보문로"
+            placeholder={get("quoteForm.region.placeholder")}
             className={`${inputClass} ${err.region ? errorClass : ""}`}
             {...invalid("region")}
           />
         </Field>
 
-        <Field name="message" label="문의 내용" error={err.message}>
+        <Field name="message" label={<T k="quoteForm.message.label" />} error={err.message}>
           <textarea
             id="message"
             name="message"
             rows={4}
             defaultValue={str("message")}
-            placeholder="현재 이용 중인 방식이나 불편한 점을 적어주시면 상담에 도움이 됩니다."
+            placeholder={get("quoteForm.message.placeholder")}
             className={`${inputClass} min-h-26 resize-y leading-[1.7] ${err.message ? errorClass : ""}`}
             {...invalid("message")}
           />
@@ -241,16 +245,14 @@ export function QuoteForm() {
             />
             <span className="text-[0.8125rem] leading-[1.7] text-ink-2">
               <strong className="font-bold text-ink">
-                개인정보 수집 · 이용에 동의합니다.
+                <T k="quoteForm.consent.title" />
               </strong>
               <span className="text-danger" aria-hidden="true">
                 {" "}
                 *
               </span>
               <br />
-              수집 항목 : 업체명 · 성함 · 연락처 · 주소 · 이메일
-              &nbsp;/&nbsp; 목적 : 견적 상담 및 회신 &nbsp;/&nbsp; 보유 기간 : 상담
-              종료 후 1년
+              <T k="quoteForm.consent.detail" />
             </span>
           </label>
           {err.consent && (

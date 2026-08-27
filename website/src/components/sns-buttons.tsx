@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { T } from "./copy-text";
 import { Icon } from "./icons";
 import { snsLinks } from "@/lib/sample";
 
@@ -71,7 +72,7 @@ export function SnsButtons({
             tone === "dark" ? "text-[#C08A4A]" : "text-warn"
           }`}
         >
-          SNS 채널은 준비 중입니다
+          <T k="sns.notice" />
         </span>
       )}
     </div>

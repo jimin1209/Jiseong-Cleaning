@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactAction } from "@/components/contact-action";
+import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { Reveal } from "@/components/reveal";
 import { ScheduleCard } from "@/components/schedule-card";
@@ -38,9 +39,9 @@ export default function ServicesPage() {
   return (
     <>
       <PageHero
-        eyebrow="서 비 스"
-        title="사업장 규모, 품목과 물량에 따라 주기적으로 관리해 드립니다"
-        lede="품목과 물량, 수거 주기만 알려주시면 사업장에 맞는 방식으로 제안해 드립니다."
+        eyebrow={<T k="services.hero.eyebrow" />}
+        title={<T k="services.hero.title" />}
+        lede={<T k="services.hero.lede" />}
       />
 
       {/* ═══════════════ 통합 서비스 소개 ═══════════════ */}
@@ -51,16 +52,16 @@ export default function ServicesPage() {
               <div className="flex flex-wrap items-center gap-9">
                 <div className="min-w-0 flex-[1_1_26rem]">
                   <p className="mb-3.5 text-xs font-bold tracking-[0.18em] text-brand">
-                    하나의 서비스, 사업장마다 다른 리듬
+                    <T k="services.core.eyebrow" />
                   </p>
                   <h2 className="text-[clamp(1.5rem,3vw,2.25rem)] leading-[1.42] tracking-[-0.03em] text-navy">
-                    {service.summary}
+                    <T k={`service.${service.slug}.summary`} />
                   </h2>
                 </div>
                 <ul className="flex flex-[0_1_18.75rem] flex-wrap content-center gap-2">
-                  {targetIndustries.map((t) => (
+                  {targetIndustries.map((t, i) => (
                     <li key={t.label}>
-                      <Chip>{t.label}</Chip>
+                      <Chip><T k={`industries.${i}.label`} /></Chip>
                     </li>
                   ))}
                 </ul>
@@ -70,7 +71,7 @@ export default function ServicesPage() {
 
           <Reveal delay={100}>
             <Alert tone="warn" className="mx-auto mt-6 max-w-3xl">
-              {service.priceNote}
+              <T k={`service.${service.slug}.priceNote`} />
             </Alert>
           </Reveal>
         </Container>
@@ -80,7 +81,10 @@ export default function ServicesPage() {
       <Section tone="tint">
         <Container>
           <Reveal>
-            <SectionHead eyebrow="운 영 방 식" title="이렇게 운영합니다" />
+            <SectionHead
+              eyebrow={<T k="services.ops.eyebrow" />}
+              title={<T k="services.ops.title" />}
+            />
           </Reveal>
 
           <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -92,8 +96,12 @@ export default function ServicesPage() {
                     <IconBubble size="sm" className="mb-4">
                       <Glyph className="size-5" />
                     </IconBubble>
-                    <h3 className="text-[1.0625rem] text-navy">{point.title}</h3>
-                    <p className="mt-2.5 text-sm leading-[1.75] text-ink-2">{point.body}</p>
+                    <h3 className="text-[1.0625rem] text-navy">
+                      <T k={`service.${service.slug}.points.${i}.title`} />
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-[1.75] text-ink-2">
+                      <T k={`service.${service.slug}.points.${i}.body`} />
+                    </p>
                   </Card>
                 </Reveal>
               );
@@ -115,8 +123,8 @@ export default function ServicesPage() {
             <SectionHead
               tone="dark"
               align="center"
-              eyebrow="주 간 리 듬"
-              title="사업장의 한 주에 세탁의 박자를 맞춥니다"
+              eyebrow={<T k="services.rhythm.eyebrow" />}
+              title={<T k="services.rhythm.title" />}
             />
           </Reveal>
 
@@ -133,7 +141,10 @@ export default function ServicesPage() {
       <Section tone="white">
         <Container>
           <Reveal>
-            <SectionHead eyebrow="업 종 별" title="이런 사업장과 함께합니다" />
+            <SectionHead
+              eyebrow={<T k="services.byIndustry.eyebrow" />}
+              title={<T k="services.byIndustry.title" />}
+            />
           </Reveal>
 
           <ul className="mt-9 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
@@ -144,12 +155,12 @@ export default function ServicesPage() {
                   <div className="h-full rounded-brand border border-line bg-white px-[1.375rem] py-5">
                     <Chip>
                       <Glyph className="size-[0.9375rem] shrink-0" />
-                      {t.label}
+                      <T k={`industries.${i}.label`} />
                     </Chip>
                     {/* 한 줄 소개는 확정 전 더미(sample.ts) — 꺼지면 칩만 남는다 */}
                     {industryNotes?.[t.label] && (
                       <p className="mt-3 text-sm leading-[1.7] text-ink-2">
-                        {industryNotes[t.label]}
+                        <T k={`industries.${i}.note`} />
                       </p>
                     )}
                   </div>
@@ -166,12 +177,12 @@ export default function ServicesPage() {
           <Reveal>
             <div className="flex flex-wrap items-center justify-between gap-6">
               <SectionHead
-                title="확인 후 연락드립니다."
+                title={<T k="services.cta.title" />}
                 className="flex-1 basis-[24rem]"
               />
               <div className="flex flex-wrap gap-3">
                 <ButtonLink href="/quote" size="lg">
-                  견적 문의하기
+                  <T k="services.cta.quoteCta" />
                   <Icon.arrowRight className="size-4" />
                 </ButtonLink>
                 <ContactAction kind="tel" variant="ghost" size="lg">
