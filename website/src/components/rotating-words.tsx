@@ -54,10 +54,29 @@ export function RotatingWords({ wordKeys }: { wordKeys: readonly string[] }) {
     fit();
     window.addEventListener("resize", fit);
 
+    /** 현재 단어만 보이는 상태로 강제 정렬 — 백그라운드 탭 복귀 시 호출 */
+    const normalize = () => {
+      items.forEach((word, i) => {
+        word.style.transition = "none";
+        word.style.opacity = i === index ? "1" : "0";
+        word.style.transform = i === index ? "translateY(0)" : "translateY(0.6em)";
+      });
+      fit();
+      requestAnimationFrame(() =>
+        items.forEach((word) => {
+          word.style.transition = `opacity 0.5s ${ease}, transform 0.5s ${ease}`;
+        }),
+      );
+    };
+
     const timer = setInterval(() => {
+      // 숨겨진 탭에서는 rAF 가 멈춰 "보여라" 콜백이 밀렸다가 복귀 순간 한꺼번에
+      // 실행돼 단어가 전부 겹쳐 보인다 — 숨김 중에는 순환 자체를 쉰다
+      if (document.hidden) return;
       const current = items[index];
       index = (index + 1) % items.length;
       const next = items[index];
+      const target = index;
       current.style.opacity = "0";
       current.style.transform = "translateY(-0.6em)";
       fit();
@@ -65,6 +84,8 @@ export function RotatingWords({ wordKeys }: { wordKeys: readonly string[] }) {
       next.style.transform = "translateY(0.6em)";
       requestAnimationFrame(() =>
         requestAnimationFrame(() => {
+          // 밀린 콜백이 뒤늦게 실행돼도 지금 차례가 아니면 건드리지 않는다
+          if (target !== index) return;
           next.style.transition = `opacity 0.5s ${ease}, transform 0.5s ${ease}`;
           next.style.opacity = "1";
           next.style.transform = "translateY(0)";
@@ -72,9 +93,15 @@ export function RotatingWords({ wordKeys }: { wordKeys: readonly string[] }) {
       );
     }, 2600);
 
+    const onVisible = () => {
+      if (!document.hidden) normalize();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+
     return () => {
       clearInterval(timer);
       window.removeEventListener("resize", fit);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, [words]);
 
