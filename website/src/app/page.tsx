@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { AutoSlider } from "@/components/auto-slider";
 import { BrandMark } from "@/components/brand-mark";
+import { ContactAction } from "@/components/contact-action";
 import { Icon } from "@/components/icons";
 import { Reveal } from "@/components/reveal";
 import {
   Badge,
-  ButtonAnchor,
   ButtonLink,
   Card,
   Chip,
@@ -56,10 +57,11 @@ export default function HomePage() {
                 견적 문의하기
                 <Icon.arrowRight className="size-4" />
               </ButtonLink>
-              <ButtonAnchor href={site.telHref} variant="onNavyGhost" size="lg">
+              {/* 전화 버튼 기기별 분기 — PC 는 /quote, 모바일은 즉시 발신 (명세 9-3·9-4) */}
+              <ContactAction kind="tel" variant="onNavyGhost" size="lg">
                 <Icon.phone className="size-[1.0625rem]" />
                 <span data-numeric>{site.tel}</span>
-              </ButtonAnchor>
+              </ContactAction>
             </div>
 
             <ul className="mt-9 flex flex-wrap gap-2.5">
@@ -75,6 +77,14 @@ export default function HomePage() {
           </div>
         </Container>
       </section>
+
+      {/* ═══════════════ 자동 슬라이드 배너 ═══════════════ */}
+      {/* 배치는 히어로 아래(지시 기본값) — 회사소개로 옮기려면 이 블록만 이동하면 된다 */}
+      <Section tone="white" className="!py-10 sm:!py-12">
+        <Container>
+          <AutoSlider />
+        </Container>
+      </Section>
 
       {/* ═══════════════ 서비스 ═══════════════ */}
       <Section tone="white" id="services">
@@ -235,10 +245,10 @@ export default function HomePage() {
                   견적 문의하기
                   <Icon.arrowRight className="size-4" />
                 </ButtonLink>
-                <ButtonAnchor href={site.telHref} variant="ghost" size="lg">
+                <ContactAction kind="tel" variant="ghost" size="lg">
                   <Icon.phone className="size-[1.0625rem]" />
                   <span data-numeric>{site.tel}</span>
-                </ButtonAnchor>
+                </ContactAction>
               </div>
               <p className="mt-6 flex flex-wrap items-center justify-center gap-2 text-sm text-muted">
                 <Icon.pin className="size-4 text-sky" />

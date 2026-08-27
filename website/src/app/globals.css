@@ -152,6 +152,19 @@
   .hero-enter > *:nth-child(5) {
     animation-delay: 280ms;
   }
+
+  /*
+   * 후기 마퀴 — 카드 목록을 두 번 렌더한 트랙이 -50% 지점까지 흐른 뒤
+   * 처음으로 되감겨 이음새 없이 반복된다. 마우스를 올리면 읽을 수 있게 멈춘다.
+   */
+  .jc-marquee {
+    width: max-content;
+    animation: jc-marquee 42s linear infinite;
+  }
+
+  .jc-marquee:hover {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes jc-rise {
@@ -162,6 +175,12 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes jc-marquee {
+  to {
+    transform: translateX(-50%);
   }
 }
 
@@ -179,6 +198,11 @@
   }
 
   .hero-enter > * {
+    animation: none;
+  }
+
+  /* 마퀴는 멈춘 상태로 보인다 */
+  .jc-marquee {
     animation: none;
   }
 }

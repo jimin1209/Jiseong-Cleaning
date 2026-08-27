@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { DeviceSplit } from "@/components/contact-action";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { QuoteForm } from "@/components/quote-form";
+import { ReviewMarquee } from "@/components/review-marquee";
 import { Reveal } from "@/components/reveal";
-import { ButtonAnchor, Card, Container, Section } from "@/components/ui";
-import { SAMPLE_CONTENT } from "@/lib/sample";
+import { SnsButtons } from "@/components/sns-buttons";
+import { ButtonAnchor, Card, Container, Section, SectionHead } from "@/components/ui";
+import { reviews, SAMPLE_CONTENT } from "@/lib/sample";
 import { processSteps } from "@/lib/services";
 import { site } from "@/lib/site";
 
@@ -37,13 +40,26 @@ export default function QuotePage() {
                 <p className="text-[0.6875rem] font-bold tracking-[0.16em] text-pale">
                   전 화 문 의
                 </p>
-                <a
-                  href={site.telHref}
-                  className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
-                  data-numeric
-                >
-                  {site.tel}
-                </a>
+                {/* 기기별 분기(명세 9-3·9-4) — 이미 견적 페이지라 PC 는 링크 없이 번호만 보여준다 */}
+                <DeviceSplit
+                  pc={
+                    <span
+                      className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
+                      data-numeric
+                    >
+                      {site.tel}
+                    </span>
+                  }
+                  mobile={
+                    <a
+                      href={site.telHref}
+                      className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
+                      data-numeric
+                    >
+                      {site.tel}
+                    </a>
+                  }
+                />
                 {/* 운영시간은 실값 확정 전 — 임시값 노출 대신 폼 안내로 단순화 */}
                 <p className="mt-3.5 text-sm leading-[1.7] text-[#A6C5E8]">
                   통화가 어려운 시간에는 아래 폼으로 남겨주시면 회신드립니다.
@@ -126,6 +142,25 @@ export default function QuotePage() {
           </div>
         </Container>
       </Section>
+
+      {/* ═══════════════ 이용 후기 ═══════════════ */}
+      {/* 폼 아래 마퀴(명세 4-3·9-1) — 문구는 회사 초안 수령 전 더미라 sample.ts 가 끄면 섹션째 빠진다 */}
+      {reviews && (
+        <Section tone="tint" className="!py-14 sm:!py-16">
+          <Container>
+            <Reveal>
+              <SectionHead eyebrow="이 용 후 기" title="이용 후기" />
+            </Reveal>
+          </Container>
+          <div className="mt-9">
+            <ReviewMarquee />
+          </div>
+          {/* SNS 버튼은 후기 부근에도 둔다 (명세 9-6) */}
+          <Container className="mt-7">
+            <SnsButtons className="-ml-2" />
+          </Container>
+        </Section>
+      )}
 
       <Section tone="white" className="!py-14">
         <Container>
