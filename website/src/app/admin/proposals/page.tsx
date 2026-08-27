@@ -217,7 +217,14 @@ export default async function AdminProposalsPage({
   const id = typeof rawId === "string" ? Number(rawId) : NaN;
   const detail = Number.isInteger(id) ? await getCopyDraft(id) : null;
 
-  const drafts = detail ? [] : await listCopyDrafts();
+  let drafts: Awaited<ReturnType<typeof listCopyDrafts>> = [];
+  let storeError = false;
+  try {
+    drafts = detail ? [] : await listCopyDrafts();
+  } catch (err) {
+    console.error("[admin/proposals] 저장소 조회 실패", err);
+    storeError = true;
+  }
 
   return (
     <div className="min-h-screen bg-paper py-10">
@@ -238,6 +245,11 @@ export default async function AdminProposalsPage({
           </Link>
         </header>
 
+      {storeError && (
+        <p className="mb-4 rounded-brand bg-warn-bg px-4 py-3 text-sm font-semibold text-warn">
+          저장소 연결 오류 — 목록을 불러오지 못했습니다. (접수·안 데이터는 저장소 복구 후 다시 표시됩니다)
+        </p>
+      )}
         {detail ? <DraftDetail draft={detail} /> : <DraftList drafts={drafts} />}
 
         <p className="mt-5 text-[0.78rem] leading-[1.7] text-muted">

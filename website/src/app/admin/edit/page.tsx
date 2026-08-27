@@ -45,11 +45,25 @@ export default async function AdminEditPage({
     ? (raw as keyof typeof PAGES)
     : "home";
 
-  const [drafts, total] = await Promise.all([listCopyDrafts(), countCopyDrafts()]);
+  // 저장소 장애여도 편집 화면은 떠야 한다 (안 저장 시점에 다시 시도된다)
+  let drafts: Awaited<ReturnType<typeof listCopyDrafts>> = [];
+  let total = 0;
+  let storeError = false;
+  try {
+    [drafts, total] = await Promise.all([listCopyDrafts(), countCopyDrafts()]);
+  } catch (err) {
+    console.error("[admin/edit] 저장소 조회 실패", err);
+    storeError = true;
+  }
   const Preview = PAGES[page];
 
   return (
     <>
+      {storeError && (
+        <p className="mb-4 rounded-brand bg-warn-bg px-4 py-3 text-sm font-semibold text-warn">
+          저장소 연결 오류 — 목록을 불러오지 못했습니다. (접수·안 데이터는 저장소 복구 후 다시 표시됩니다)
+        </p>
+      )}
       <EditorPanel page={page} drafts={drafts} total={total} />
       <Preview />
     </>

@@ -23,7 +23,16 @@ function formatDate(iso: string) {
 }
 
 export default async function AdminInquiriesPage() {
-  const [inquiries, total] = await Promise.all([listInquiries(), countInquiries()]);
+  // 저장소 장애가 페이지 전체를 죽이지 않게 한다 — 실패 시 빈 목록 + 경고
+  let inquiries: Awaited<ReturnType<typeof listInquiries>> = [];
+  let total = 0;
+  let storeError = false;
+  try {
+    [inquiries, total] = await Promise.all([listInquiries(), countInquiries()]);
+  } catch (err) {
+    console.error("[admin/inquiries] 저장소 조회 실패", err);
+    storeError = true;
+  }
 
   return (
     <div className="min-h-screen bg-paper py-10">
@@ -51,6 +60,11 @@ export default async function AdminInquiriesPage() {
           </a>
         </header>
 
+      {storeError && (
+        <p className="mb-4 rounded-brand bg-warn-bg px-4 py-3 text-sm font-semibold text-warn">
+          저장소 연결 오류 — 목록을 불러오지 못했습니다. (접수·안 데이터는 저장소 복구 후 다시 표시됩니다)
+        </p>
+      )}
         {inquiries.length === 0 ? (
           <div className="rounded-brand border border-line bg-white p-10 text-center text-muted shadow-card">
             아직 접수된 문의가 없습니다.
