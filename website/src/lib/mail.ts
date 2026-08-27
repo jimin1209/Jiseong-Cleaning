@@ -9,7 +9,7 @@ import { site } from "./site";
  * 저장(lib/inquiries.ts)은 이미 끝난 뒤에 호출되므로 메일 실패가 접수를 막지 않는다.
  *
  * 계정이 정해지면 .env 에 아래 5개만 채우면 그 시점부터 발송된다.
- *   SMTP_HOST · SMTP_PORT · SMTP_USER · SMTP_PASS · INQUIRY_TO
+ *   SMTP_HOST · SMTP_PORT · SMTP_USER · SMTP_PASS (수신자는 기본값 내장 — INQUIRY_TO/INQUIRY_CC 로 변경 가능)
  *
  * 회사 메일·네이버·구글 모두 SMTP를 지원하므로 별도 서비스 가입이 필요 없다.
  */
@@ -19,12 +19,13 @@ export type MailResult =
   | { sent: false; reason: "not-configured" }
   | { sent: false; reason: "error"; message: string };
 
+/** 수신자 — 확정 주소(2026-08-28). env 로 오버라이드 가능 */
+const INQUIRY_TO_DEFAULT = "jwk@jiseong.co.kr";
+const INQUIRY_CC_DEFAULT = "chk@jiseong.co.kr, cjm@jiseong.co.kr";
+
 function isConfigured() {
   return Boolean(
-    process.env.SMTP_HOST &&
-      process.env.SMTP_USER &&
-      process.env.SMTP_PASS &&
-      process.env.INQUIRY_TO,
+    process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS,
   );
 }
 
@@ -110,7 +111,8 @@ export async function sendInquiryMail(
 
     await transport.sendMail({
       from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
-      to: process.env.INQUIRY_TO,
+      to: process.env.INQUIRY_TO ?? INQUIRY_TO_DEFAULT,
+      cc: process.env.INQUIRY_CC ?? INQUIRY_CC_DEFAULT,
       replyTo: input.email || undefined,
       subject: `[견적문의] ${input.company} · ${input.contactName}`,
       text,

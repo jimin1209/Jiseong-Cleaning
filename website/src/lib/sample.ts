@@ -21,6 +21,7 @@
  *   - serviceAreas    서비스 권역
  *   - smsBody         SMS 자동 작성 문구 — 문구 확정 대기(명세 G3)
  *   - reviews         후기 카드 — 회사 측 초안 대기(명세 G4)
+ *   - industryNotes   서비스 페이지 업종별 한 줄 소개 — 회의 확정 대기
  *   - slides 의 지성이엔지 자리 2장 — 원본 배너 이미지 수급 대기(명세 8-6)
  *   - snsLinks        인스타그램·네이버 블로그 — 계정 개설 대기(명세 9-6)
  */
@@ -124,6 +125,22 @@ export const reviews: Review[] | null = SAMPLE_CONTENT
       { name: "최○○님", biz: "헬스장", quote: "수건 상태가 늘 한결같아요" },
       { name: "정○○님", biz: "모텔", quote: "수거와 배송이 빨라서 편해요" },
     ]
+  : null;
+
+/**
+ * 서비스 페이지 업종별 한 줄 소개 — 회의 확정 대기.
+ * 키는 site.ts `targetIndustries` 의 label 과 맞춘다.
+ * 꺼져 있으면 업종 칩만 남고 소개 문장은 빠진다.
+ */
+export const industryNotes: Record<string, string> | null = SAMPLE_CONTENT
+  ? {
+      호텔: "객실 회전에 맞춘 주기",
+      모텔: "매일 도는 객실 물량",
+      펜션: "주말 성수기 이불·시트",
+      사우나: "수건 대량 순환",
+      헬스장: "운동 수건·운동복",
+      단체시설: "기숙사·연수원 침구",
+    }
   : null;
 
 export type Slide = {
