@@ -3,6 +3,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MobileCtaBar } from "@/components/mobile-cta-bar";
+import { FloatingContact } from "@/components/floating-contact";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -97,6 +98,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main">{children}</main>
         <SiteFooter />
         <MobileCtaBar />
+        {/* 어느 페이지에서든 스크롤 위치와 무관하게 문의 경로가 보이게 한다 */}
+        <FloatingContact />
         <LocalBusinessJsonLd />
       </body>
     </html>

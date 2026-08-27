@@ -118,7 +118,7 @@ const buttonSizes = {
   lg: "px-7 py-4 text-base",
 } as const;
 
-type ButtonLook = {
+export type ButtonLook = {
   variant?: keyof typeof buttonVariants;
   size?: keyof typeof buttonSizes;
   block?: boolean;
