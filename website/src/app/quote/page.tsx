@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { FaqJsonLd, FaqList } from "@/components/faq-list";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { QuoteForm } from "@/components/quote-form";
 import { Reveal } from "@/components/reveal";
-import { ButtonAnchor, Card, Container, Section, SectionHead } from "@/components/ui";
-import { businessHours, SAMPLE_CONTENT } from "@/lib/sample";
+import { ButtonAnchor, Card, Container, Section } from "@/components/ui";
+import { SAMPLE_CONTENT } from "@/lib/sample";
 import { processSteps } from "@/lib/services";
 import { site } from "@/lib/site";
 
@@ -45,20 +44,10 @@ export default function QuotePage() {
                 >
                   {site.tel}
                 </a>
-                {businessHours ? (
-                  <div className="mt-3.5 text-sm leading-[1.75] text-[#A6C5E8]">
-                    <p data-numeric>{businessHours.weekday}</p>
-                    <p data-numeric>{businessHours.saturday}</p>
-                    <p>{businessHours.holiday}</p>
-                    <p className="mt-2 text-[0.75rem] text-[#C08A4A]">
-                      운영시간은 확인 전 임시값입니다.
-                    </p>
-                  </div>
-                ) : (
-                  <p className="mt-3.5 text-sm leading-[1.7] text-[#A6C5E8]">
-                    통화가 어려운 시간에는 아래 폼으로 남겨주시면 회신드립니다.
-                  </p>
-                )}
+                {/* 운영시간은 실값 확정 전 — 임시값 노출 대신 폼 안내로 단순화 */}
+                <p className="mt-3.5 text-sm leading-[1.7] text-[#A6C5E8]">
+                  통화가 어려운 시간에는 아래 폼으로 남겨주시면 회신드립니다.
+                </p>
               </div>
 
               <Card className="p-6">
@@ -136,25 +125,6 @@ export default function QuotePage() {
             </Reveal>
           </div>
         </Container>
-      </Section>
-
-      {/* ═══════════════ 자주 묻는 질문 (전체) ═══════════════ */}
-      <Section tone="tint" id="faq">
-        <Container>
-          <Reveal>
-            <SectionHead
-              eyebrow="자 주 묻 는 질 문"
-              title="문의 전에 확인하실 수 있는 것들"
-              lede="여기에 없는 내용은 전화나 폼으로 물어보시면 바로 답해 드립니다."
-            />
-          </Reveal>
-          <Reveal delay={80}>
-            <div className="mt-9">
-              <FaqList />
-            </div>
-          </Reveal>
-        </Container>
-        <FaqJsonLd />
       </Section>
 
       <Section tone="white" className="!py-14">

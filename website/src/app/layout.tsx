@@ -3,7 +3,6 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MobileCtaBar } from "@/components/mobile-cta-bar";
-import { SampleBanner } from "@/components/sample-banner";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -93,7 +92,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           본문으로 건너뛰기
         </a>
-        <SampleBanner />
+        {/* 상단 샘플 경고 배너는 떼기로 했다(회의) — 컴포넌트·SAMPLE_CONTENT 스위치는 더미 관리용으로 유지 */}
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
