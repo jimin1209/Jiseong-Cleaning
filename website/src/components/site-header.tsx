@@ -41,6 +41,11 @@ export function SiteHeader() {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  const handleMenuClick = () => {
+    setOpen(false);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+
   return (
     <header
       className={`sticky top-0 z-50 bg-white/90 backdrop-blur-md backdrop-saturate-150 transition-shadow duration-200 ${
@@ -51,6 +56,8 @@ export function SiteHeader() {
         <div className="flex h-16 items-center gap-6 lg:h-[4.75rem]">
           <Link
             href="/"
+            scroll
+            onClick={handleMenuClick}
             className="shrink-0 rounded-brand"
             aria-label={`${site.name} 홈`}
           >
@@ -62,11 +69,13 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
+                scroll
+                onClick={handleMenuClick}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className={`rounded-brand px-3.5 py-2 text-[0.9375rem] font-semibold transition-colors duration-150 ${
+                className={`rounded-brand px-3.5 py-2 text-[0.9375rem] font-semibold transition-all duration-150 ${
                   isActive(item.href)
-                    ? "bg-tint text-navy"
-                    : "text-ink-2 hover:bg-tint hover:text-navy"
+                    ? "translate-y-px bg-navy text-white shadow-[inset_0_2px_4px_rgb(0_0_0/0.2)]"
+                    : "bg-transparent text-ink-2 hover:bg-tint hover:text-navy"
                 }`}
               >
                 {item.label}
@@ -121,10 +130,13 @@ export function SiteHeader() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    scroll
+                    onClick={handleMenuClick}
                     aria-current={isActive(item.href) ? "page" : undefined}
-                    className={`block border-b border-line py-3.5 text-base font-semibold last:border-b-0 ${
-                      isActive(item.href) ? "text-brand" : "text-ink-2"
+                    className={`block border-b border-line px-3 py-3.5 text-base font-semibold last:border-b-0 ${
+                      isActive(item.href)
+                        ? "rounded-brand bg-navy text-white shadow-[inset_0_2px_4px_rgb(0_0_0/0.2)]"
+                        : "bg-transparent text-ink-2"
                     }`}
                   >
                     {item.label}
