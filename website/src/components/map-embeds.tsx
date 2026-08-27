@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type MapEmbedsProps = {
   address: string;
@@ -51,30 +51,64 @@ function MapFallback({ href, label }: { href: string; label: string }) {
 export function MapEmbeds({ address, latitude, longitude, naverHref, kakaoHref, naverKey, kakaoKey }: MapEmbedsProps) {
   const [naverState, setNaverState] = useState<LoadState>(naverKey ? "loading" : "error");
   const [kakaoState, setKakaoState] = useState<LoadState>(kakaoKey ? "loading" : "error");
+  const naverInitialized = useRef(false);
+  const kakaoInitialized = useRef(false);
+  const kakaoLoadRequested = useRef(false);
 
   const initializeNaver = useCallback(() => {
+    if (naverInitialized.current) return true;
     const maps = window.naver?.maps;
     const element = document.getElementById("naver-map");
-    if (!maps || !element) return setNaverState("error");
+    if (!maps || !element) return false;
 
     const position = new maps.LatLng(latitude, longitude);
     const map = new maps.Map(element, { center: position, zoom: 17 });
     new maps.Marker({ map, position });
+    naverInitialized.current = true;
     setNaverState("ready");
+    return true;
   }, [latitude, longitude]);
 
   const initializeKakao = useCallback(() => {
+    if (kakaoInitialized.current || kakaoLoadRequested.current) return true;
     const maps = window.kakao?.maps;
     const element = document.getElementById("kakao-map");
-    if (!maps || !element) return setKakaoState("error");
+    if (!maps || !element) return false;
 
+    kakaoLoadRequested.current = true;
     maps.load(() => {
       const position = new maps.LatLng(latitude, longitude);
       const map = new maps.Map(element, { center: position, level: 3 });
       new maps.Marker({ map, position });
+      kakaoInitialized.current = true;
       setKakaoState("ready");
     });
+    return true;
   }, [latitude, longitude]);
+
+  useEffect(() => {
+    let attempts = 0;
+    const initializeAvailableMaps = () => {
+      attempts += 1;
+      if (naverKey) initializeNaver();
+      if (kakaoKey) initializeKakao();
+
+      if (attempts >= 48) {
+        if (naverKey && !naverInitialized.current) setNaverState("error");
+        if (kakaoKey && !kakaoInitialized.current) setKakaoState("error");
+        window.clearInterval(timer);
+      } else if (
+        (!naverKey || naverInitialized.current) &&
+        (!kakaoKey || kakaoInitialized.current)
+      ) {
+        window.clearInterval(timer);
+      }
+    };
+
+    const timer = window.setInterval(initializeAvailableMaps, 250);
+    initializeAvailableMaps();
+    return () => window.clearInterval(timer);
+  }, [initializeKakao, initializeNaver, kakaoKey, naverKey]);
 
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-2">
