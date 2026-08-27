@@ -21,7 +21,7 @@ export function SiteFooter() {
               </a>
             </address>
             <p className="mt-3 leading-[1.85]">
-              지성크리닝은{" "}
+              지성크리닝은 우수조달업체{" "}
               <a
                 href={site.parentUrl}
                 className="text-pale hover:text-white"
@@ -30,7 +30,7 @@ export function SiteFooter() {
               >
                 {site.parent}
               </a>
-              가 운영하는 세탁 서비스입니다.
+              에서 운영하는 세탁 서비스입니다.
             </p>
           </div>
 
@@ -38,11 +38,12 @@ export function SiteFooter() {
             <h2 className="mb-4 text-xs font-bold tracking-[0.14em] text-[#6E8CB4]">
               서 비 스
             </h2>
+            {/* 서비스가 한 건으로 통합돼 링크도 /services 하나만 둔다 */}
             <ul className="flex flex-col gap-2.5">
               {services.map((s) => (
                 <li key={s.slug}>
                   <Link
-                    href={`/services/${s.slug}`}
+                    href="/services"
                     className="text-[0.9375rem] text-[#C3D6EC] hover:text-white"
                   >
                     {s.short}
@@ -58,7 +59,6 @@ export function SiteFooter() {
             </h2>
             <ul className="flex flex-col gap-2.5">
               {[
-                { href: "/facility", label: "시설 · 공정" },
                 { href: "/about", label: "회사소개" },
                 { href: "/about#standard-workplace", label: "장애인 표준사업장" },
                 { href: "/quote", label: "견적 문의" },
