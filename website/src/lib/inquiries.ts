@@ -47,6 +47,16 @@ function blobKey(id: number, createdAt: string) {
 
 async function blobStore() {
   const { getStore } = await import("@netlify/blobs");
+  // 런타임이 컨텍스트를 못 넣어주는 경우를 대비한 수동 연결 경로 —
+  // Netlify 환경변수에 NETLIFY_BLOBS_TOKEN(개인 액세스 토큰)을 넣으면 이 경로로 붙는다
+  if (process.env.NETLIFY_BLOBS_TOKEN && process.env.SITE_ID) {
+    return getStore({
+      name: STORE_NAME,
+      consistency: "strong",
+      siteID: process.env.SITE_ID,
+      token: process.env.NETLIFY_BLOBS_TOKEN,
+    });
+  }
   return getStore({ name: STORE_NAME, consistency: "strong" });
 }
 

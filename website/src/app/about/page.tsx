@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContactAction } from "@/components/contact-action";
+import { ContactAction, DeviceSplit } from "@/components/contact-action";
 import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
@@ -85,9 +85,19 @@ export default function AboutPage() {
 
                   <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.tel" /></dt>
                   <dd className="m-0">
-                    <a href={site.telHref} className="font-bold text-brand" data-numeric>
-                      {site.tel}
-                    </a>
+                    {/* PC 에선 죽은 tel: 링크가 되므로 표기만, 모바일만 발신 (명세 9-3·9-4) */}
+                    <DeviceSplit
+                      pc={
+                        <span className="font-bold text-brand" data-numeric>
+                          {site.tel}
+                        </span>
+                      }
+                      mobile={
+                        <a href={site.telHref} className="font-bold text-brand" data-numeric>
+                          {site.tel}
+                        </a>
+                      }
+                    />
                   </dd>
 
                   {businessInfo.fax && (
