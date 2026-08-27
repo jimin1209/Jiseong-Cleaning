@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { BrandLockup } from "./brand-mark";
+import { ContactSplitLink } from "./contact-action";
+import { SnsButtons } from "./sns-buttons";
 import { Container } from "./ui";
 import { businessInfo, SAMPLE_CONTENT } from "@/lib/sample";
 import { services } from "@/lib/services";
@@ -16,12 +18,13 @@ export function SiteFooter() {
               {site.address}
               <br />
               대표전화{" "}
-              <a href={site.telHref} className="text-pale hover:text-white" data-numeric>
-                {site.tel}
-              </a>
+              {/* 기기별 분기 — PC 는 /quote, 모바일은 즉시 발신 (명세 9-3·9-4) */}
+              <ContactSplitLink kind="tel" className="text-pale hover:text-white">
+                <span data-numeric>{site.tel}</span>
+              </ContactSplitLink>
             </address>
             <p className="mt-3 leading-[1.85]">
-              지성크리닝은{" "}
+              지성크리닝은 우수조달업체{" "}
               <a
                 href={site.parentUrl}
                 className="text-pale hover:text-white"
@@ -30,19 +33,22 @@ export function SiteFooter() {
               >
                 {site.parent}
               </a>
-              가 운영하는 세탁 서비스입니다.
+              에서 운영하는 세탁 서비스입니다.
             </p>
+            {/* SNS — 계정 개설 전이라 누르면 "준비 중" 안내가 뜬다 (명세 9-6) */}
+            <SnsButtons tone="dark" className="mt-4 -ml-2" />
           </div>
 
           <nav className="min-w-36 shrink-0" aria-label="서비스">
             <h2 className="mb-4 text-xs font-bold tracking-[0.14em] text-[#6E8CB4]">
               서 비 스
             </h2>
+            {/* 서비스가 한 건으로 통합돼 링크도 /services 하나만 둔다 */}
             <ul className="flex flex-col gap-2.5">
               {services.map((s) => (
                 <li key={s.slug}>
                   <Link
-                    href={`/services/${s.slug}`}
+                    href="/services"
                     className="text-[0.9375rem] text-[#C3D6EC] hover:text-white"
                   >
                     {s.short}
@@ -58,7 +64,6 @@ export function SiteFooter() {
             </h2>
             <ul className="flex flex-col gap-2.5">
               {[
-                { href: "/facility", label: "시설 · 공정" },
                 { href: "/about", label: "회사소개" },
                 { href: "/about#standard-workplace", label: "장애인 표준사업장" },
                 { href: "/quote", label: "견적 문의" },

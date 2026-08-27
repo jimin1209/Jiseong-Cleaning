@@ -1,9 +1,4 @@
 import { z } from "zod";
-import {
-  inquiryCycleOptions,
-  inquiryIndustryOptions,
-  inquiryItemOptions,
-} from "./services";
 
 /**
  * 견적 문의 검증 스키마.
@@ -17,15 +12,11 @@ const trimmed = (max: number) => z.string().trim().max(max);
 export const inquirySchema = z.object({
   company: trimmed(100).min(1, "업체명을 입력해 주세요."),
 
-  industry: z.enum(inquiryIndustryOptions, {
-    message: "업종을 선택해 주세요.",
-  }),
-
-  contactName: trimmed(50).min(1, "담당자 성명을 입력해 주세요."),
+  contactName: trimmed(50).min(1, "성함을 입력해 주세요."),
 
   phone: trimmed(30)
     .min(1, "연락처를 입력해 주세요.")
-    // 010-0000-0000 / 054-621-5002 / 01000000000 을 모두 허용한다
+    // 010-0000-0000 / 054-000-0000 / 01000000000 을 모두 허용한다
     .regex(
       /^0\d{1,2}-?\d{3,4}-?\d{4}$/,
       "연락처를 010-0000-0000 형식으로 입력해 주세요.",
@@ -33,13 +24,7 @@ export const inquirySchema = z.object({
 
   email: z.union([z.literal(""), z.string().trim().email("이메일 형식을 확인해 주세요.")]),
 
-  region: trimmed(120).min(1, "사업장 지역을 입력해 주세요."),
-
-  items: z.array(z.enum(inquiryItemOptions)).default([]),
-
-  volume: trimmed(300),
-
-  cycle: z.union([z.literal(""), z.enum(inquiryCycleOptions)]),
+  region: trimmed(120).min(1, "주소를 입력해 주세요."),
 
   message: trimmed(2000),
 
@@ -52,18 +37,14 @@ export const inquirySchema = z.object({
 
 export type InquiryInput = z.infer<typeof inquirySchema>;
 
-/** FormData → 검증. 체크박스 복수 선택을 배열로 모아 준다. */
+/** FormData → 검증 */
 export function parseInquiryForm(formData: FormData) {
   const raw = {
     company: formData.get("company") ?? "",
-    industry: formData.get("industry") ?? "",
     contactName: formData.get("contactName") ?? "",
     phone: formData.get("phone") ?? "",
     email: formData.get("email") ?? "",
     region: formData.get("region") ?? "",
-    items: formData.getAll("items").map(String),
-    volume: formData.get("volume") ?? "",
-    cycle: formData.get("cycle") ?? "",
     message: formData.get("message") ?? "",
     consent: formData.get("consent") ?? false,
   };

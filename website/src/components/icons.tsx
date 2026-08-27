@@ -46,6 +46,11 @@ export const Icon = {
       <path d="m9 18 6-6-6-6" />
     </Base>
   ),
+  chevronLeft: (p: P) => (
+    <Base strokeWidth={2.2} {...p}>
+      <path d="m15 18-6-6 6-6" />
+    </Base>
+  ),
   menu: (p: P) => (
     <Base strokeWidth={2} {...p}>
       <path d="M3 6h18M3 12h18M3 18h18" />
@@ -186,6 +191,41 @@ export const Icon = {
       <path d="M2.8 20.2c0-3.4 2.8-5.6 6.2-5.6s6.2 2.2 6.2 5.6" />
       <circle cx="18" cy="9" r="2.3" />
       <path d="M17 14.8c2.7-.3 4.9 1.6 4.9 4.6" />
+    </Base>
+  ),
+
+  /* 문의 채널 · SNS */
+  chat: (p: P) => (
+    <Base {...p}>
+      <path d="M21 11.6a8.4 8.4 0 0 1-8.5 8.3c-1.5 0-3-.4-4.2-1.1L3 20l1.3-5A8.4 8.4 0 1 1 21 11.6Z" />
+    </Base>
+  ),
+  sms: (p: P) => (
+    <Base {...p}>
+      <path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" />
+      <path d="M8 8.5h8M8 12h5" />
+    </Base>
+  ),
+  bot: (p: P) => (
+    <Base {...p}>
+      <rect x="4.5" y="8" width="15" height="11" rx="2" />
+      <path d="M12 8V4.5M12 4.5h.01" />
+      <path d="M9.3 12.8v1.4M14.7 12.8v1.4" />
+      <path d="M9.5 16.5h5" />
+    </Base>
+  ),
+  instagram: (p: P) => (
+    <Base {...p}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
+      <circle cx="12" cy="12" r="3.8" />
+      <path d="M17.2 6.8h.01" />
+    </Base>
+  ),
+  /** 네이버 블로그 — 정식 브랜드 로고 확정 전 임시 글쓰기 픽토그램 */
+  blog: (p: P) => (
+    <Base {...p}>
+      <path d="M12 4.5H6a2 2 0 0 0-2 2V18a2 2 0 0 0 2 2h11.5a2 2 0 0 0 2-2v-6" />
+      <path d="M18.3 3.7a2 2 0 0 1 2.8 2.8l-7.6 7.6-3.6.8.8-3.6Z" />
     </Base>
   ),
 } as const;

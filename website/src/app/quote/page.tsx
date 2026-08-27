@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { FaqJsonLd, FaqList } from "@/components/faq-list";
+import { DeviceSplit } from "@/components/contact-action";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { QuoteForm } from "@/components/quote-form";
+import { ReviewMarquee } from "@/components/review-marquee";
 import { Reveal } from "@/components/reveal";
+import { SnsButtons } from "@/components/sns-buttons";
 import { ButtonAnchor, Card, Container, Section, SectionHead } from "@/components/ui";
-import { businessHours, SAMPLE_CONTENT } from "@/lib/sample";
+import { reviews, SAMPLE_CONTENT } from "@/lib/sample";
 import { processSteps } from "@/lib/services";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "견적 · 상담 문의",
-  description:
-    "업체명과 품목, 주당 물량을 알려주시면 담당자가 확인해 견적을 드립니다. 전화 054-621-5002.",
+  description: `업체명과 연락처를 남겨주시면 담당자가 확인 후 연락드립니다. 전화 ${site.tel}.`,
   alternates: { canonical: "/quote" },
 };
 
@@ -21,8 +22,7 @@ export default function QuotePage() {
     <>
       <PageHero
         eyebrow="견 적 · 상 담 문 의"
-        title="물량과 주기만 알려주시면 바로 견적을 드립니다"
-        lede="담당자가 확인 후 연락드립니다. 급하시면 전화가 가장 빠릅니다."
+        title="확인 후 연락드립니다."
       />
 
       <Section tone="white">
@@ -37,29 +37,32 @@ export default function QuotePage() {
             <Reveal delay={100} className="flex flex-col gap-4">
               <div className="rounded-brand bg-navy px-6 py-7 text-white">
                 <p className="text-[0.6875rem] font-bold tracking-[0.16em] text-pale">
-                  상 담 및 견 적 문 의
+                  전 화 문 의
                 </p>
-                <a
-                  href={site.telHref}
-                  className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
-                  data-numeric
-                >
-                  {site.tel}
-                </a>
-                {businessHours ? (
-                  <div className="mt-3.5 text-sm leading-[1.75] text-[#A6C5E8]">
-                    <p data-numeric>{businessHours.weekday}</p>
-                    <p data-numeric>{businessHours.saturday}</p>
-                    <p>{businessHours.holiday}</p>
-                    <p className="mt-2 text-[0.75rem] text-[#C08A4A]">
-                      운영시간은 확인 전 임시값입니다.
-                    </p>
-                  </div>
-                ) : (
-                  <p className="mt-3.5 text-sm leading-[1.7] text-[#A6C5E8]">
-                    통화가 어려운 시간에는 아래 폼으로 남겨주시면 회신드립니다.
-                  </p>
-                )}
+                {/* 기기별 분기(명세 9-3·9-4) — 이미 견적 페이지라 PC 는 링크 없이 번호만 보여준다 */}
+                <DeviceSplit
+                  pc={
+                    <span
+                      className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
+                      data-numeric
+                    >
+                      {site.tel}
+                    </span>
+                  }
+                  mobile={
+                    <a
+                      href={site.telHref}
+                      className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
+                      data-numeric
+                    >
+                      {site.tel}
+                    </a>
+                  }
+                />
+                {/* 운영시간은 실값 확정 전 — 임시값 노출 대신 폼 안내로 단순화 */}
+                <p className="mt-3.5 text-sm leading-[1.7] text-[#A6C5E8]">
+                  통화가 어려운 시간에는 아래 폼으로 남겨주시면 회신드립니다.
+                </p>
               </div>
 
               <Card className="p-6">
@@ -139,24 +142,24 @@ export default function QuotePage() {
         </Container>
       </Section>
 
-      {/* ═══════════════ 자주 묻는 질문 (전체) ═══════════════ */}
-      <Section tone="tint" id="faq">
-        <Container>
-          <Reveal>
-            <SectionHead
-              eyebrow="자 주 묻 는 질 문"
-              title="문의 전에 확인하실 수 있는 것들"
-              lede="여기에 없는 내용은 전화나 폼으로 물어보시면 바로 답해 드립니다."
-            />
-          </Reveal>
-          <Reveal delay={80}>
-            <div className="mt-9">
-              <FaqList />
-            </div>
-          </Reveal>
-        </Container>
-        <FaqJsonLd />
-      </Section>
+      {/* ═══════════════ 이용 후기 ═══════════════ */}
+      {/* 폼 아래 마퀴(명세 4-3·9-1) — 문구는 회사 초안 수령 전 더미라 sample.ts 가 끄면 섹션째 빠진다 */}
+      {reviews && (
+        <Section tone="tint" className="!py-14 sm:!py-16">
+          <Container>
+            <Reveal>
+              <SectionHead eyebrow="이 용 후 기" title="먼저 이용하신 사업장의 후기입니다" />
+            </Reveal>
+          </Container>
+          <div className="mt-9">
+            <ReviewMarquee />
+          </div>
+          {/* SNS 버튼은 후기 부근에도 둔다 (명세 9-6) */}
+          <Container className="mt-7">
+            <SnsButtons className="-ml-2" />
+          </Container>
+        </Section>
+      )}
 
       <Section tone="white" className="!py-14">
         <Container>
@@ -164,8 +167,7 @@ export default function QuotePage() {
             <div className="flex flex-wrap items-center gap-4 text-[0.9375rem] text-ink-2">
               <Icon.pin className="size-5 shrink-0 text-sky" />
               <span>
-                <strong className="font-bold text-navy">{site.address}</strong> ·
-                가정(아파트 · 빌라) 세탁물은 취급하지 않으며 사업장 고객만 거래합니다.
+                <strong className="font-bold text-navy">{site.address}</strong>
               </span>
             </div>
           </Reveal>

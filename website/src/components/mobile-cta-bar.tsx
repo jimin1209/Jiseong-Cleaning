@@ -12,7 +12,7 @@ export function MobileCtaBar() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 flex gap-2 border-t border-line bg-white/95 px-3.5 py-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] backdrop-blur-md lg:hidden">
       <TelButton
-        tel="전화 상담"
+        tel="전화 문의"
         telHref={site.telHref}
         block
         className="flex-1 text-sm"

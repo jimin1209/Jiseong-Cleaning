@@ -118,7 +118,7 @@ const buttonSizes = {
   lg: "px-7 py-4 text-base",
 } as const;
 
-type ButtonLook = {
+export type ButtonLook = {
   variant?: keyof typeof buttonVariants;
   size?: keyof typeof buttonSizes;
   block?: boolean;
@@ -307,5 +307,3 @@ export function Alert({
   );
 }
 
-/* 사진 자리표시자는 IllustrationCard(components/illustration.tsx)로 대체됐다.
-   실사 촬영이 끝나면 그 컴포넌트 자리를 next/image 로 바꾼다. */

@@ -30,28 +30,20 @@ function isConfigured() {
 
 const label: Record<string, string> = {
   company: "업체명",
-  industry: "업종",
-  contactName: "담당자",
+  contactName: "성함",
   phone: "연락처",
   email: "이메일",
-  region: "사업장 지역",
-  items: "세탁 품목",
-  volume: "예상 물량",
-  cycle: "희망 수거 주기",
+  region: "주소",
   message: "문의 내용",
 };
 
 function toRows(input: InquiryInput): [string, string][] {
   return [
     ["company", input.company],
-    ["industry", input.industry],
     ["contactName", input.contactName],
     ["phone", input.phone],
     ["email", input.email || "—"],
     ["region", input.region],
-    ["items", input.items.length ? input.items.join(", ") : "—"],
-    ["volume", input.volume || "—"],
-    ["cycle", input.cycle || "—"],
     ["message", input.message || "—"],
   ].map(([k, v]) => [label[k] ?? k, v]);
 }
@@ -120,7 +112,7 @@ export async function sendInquiryMail(
       from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
       to: process.env.INQUIRY_TO,
       replyTo: input.email || undefined,
-      subject: `[견적문의] ${input.company} (${input.industry}) · ${input.contactName}`,
+      subject: `[견적문의] ${input.company} · ${input.contactName}`,
       text,
       html,
     });

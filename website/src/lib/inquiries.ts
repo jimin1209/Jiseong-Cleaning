@@ -18,7 +18,6 @@ import type { InquiryInput } from "./schema";
 export type Inquiry = InquiryInput & {
   id: number;
   createdAt: string;
-  itemsText: string;
 };
 
 /** Netlify 빌드·런타임에서 자동으로 설정되는 환경변수 */
@@ -35,7 +34,6 @@ function toInquiry(id: number, createdAt: string, input: InquiryInput): Inquiry 
     ...input,
     id,
     createdAt,
-    itemsText: input.items.join(", "),
     consent: true,
   };
 }
@@ -108,6 +106,8 @@ async function getDb(): Promise<SqliteDb> {
   mkdirSync(path.dirname(file), { recursive: true });
 
   db = new DatabaseSync(file);
+  // industry·items·volume·cycle 컬럼은 폼에서 빠졌지만 기존 접수 데이터 보존을 위해
+  // 스키마에 남긴다(마이그레이션 금지). 새 접수는 빈 문자열로 채운다.
   db.exec(`
     CREATE TABLE IF NOT EXISTS inquiries (
       id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -156,14 +156,14 @@ async function saveToSqlite(input: InquiryInput): Promise<number> {
     .run(
       new Date().toISOString(),
       input.company,
-      input.industry,
+      "", // industry — 폼에서 삭제된 컬럼, NOT NULL 이라 빈 값으로 채운다
       input.contactName,
       input.phone,
       input.email,
       input.region,
-      input.items.join(", "),
-      input.volume,
-      input.cycle,
+      "", // items
+      "", // volume
+      "", // cycle
       input.message,
     );
 
@@ -182,15 +182,10 @@ async function listFromSqlite(limit: number): Promise<Inquiry[]> {
     id: r.id,
     createdAt: r.created_at,
     company: r.company,
-    industry: r.industry as InquiryInput["industry"],
     contactName: r.contact_name,
     phone: r.phone,
     email: r.email,
     region: r.region,
-    items: r.items ? (r.items.split(", ") as InquiryInput["items"]) : [],
-    itemsText: r.items,
-    volume: r.volume,
-    cycle: r.cycle as InquiryInput["cycle"],
     message: r.message,
     consent: true,
   }));
