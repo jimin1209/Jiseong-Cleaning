@@ -1,0 +1,66 @@
+{
+  "projectId": "7f8ef3f4-65c1-43f2-b60a-71a273eaf086",
+  "shape": "package",
+  "pkg": "website",
+  "globalName": "JiseongDS",
+  "srcDir": "src/components",
+  "tsconfig": ".design-sync/tsconfig.sync.json",
+  "buildCmd": "npm run build",
+  "cssEntry": ".css-sync/app.css",
+  "extraFonts": [
+    ".design-sync/fonts-src/pretendard.css"
+  ],
+  "componentSrcMap": {
+    "QuoteForm": null
+  },
+  "libOverrides": {
+    "source-kit.mjs": "Next.js 앱 형태 — null 제외 파일을 synth 엔트리에서 제외, 브라우저 process 심"
+  },
+  "dtsPropsFor": {
+    "Container": "children: React.ReactNode; className?: string;",
+    "Section": "children: React.ReactNode; tone?: 'paper' | 'white' | 'tint' | 'navy'; id?: string; className?: string;",
+    "SectionHead": "eyebrow?: string; title: React.ReactNode; lede?: React.ReactNode; tone?: 'light' | 'dark'; align?: 'left' | 'center'; className?: string;",
+    "ButtonLink": "variant?: 'primary' | 'tel' | 'ghost' | 'onNavy' | 'onNavyGhost'; size?: 'sm' | 'md' | 'lg'; block?: boolean; className?: string; children?: React.ReactNode; href: string;",
+    "ButtonAnchor": "variant?: 'primary' | 'tel' | 'ghost' | 'onNavy' | 'onNavyGhost'; size?: 'sm' | 'md' | 'lg'; block?: boolean; className?: string; children?: React.ReactNode; href?: string; target?: string; rel?: string;",
+    "Button": "variant?: 'primary' | 'tel' | 'ghost' | 'onNavy' | 'onNavyGhost'; size?: 'sm' | 'md' | 'lg'; block?: boolean; className?: string; children?: React.ReactNode; disabled?: boolean; type?: 'button' | 'submit';",
+    "TelButton": "tel: string; telHref: string; variant?: 'primary' | 'tel' | 'ghost' | 'onNavy' | 'onNavyGhost'; size?: 'sm' | 'md' | 'lg'; block?: boolean; className?: string;",
+    "Badge": "children: React.ReactNode; tone?: 'solid' | 'outline' | 'onNavy'; className?: string;",
+    "Chip": "children: React.ReactNode; className?: string;",
+    "Card": "children: React.ReactNode; as?: React.ElementType; className?: string;",
+    "IconBubble": "children: React.ReactNode; size?: 'sm' | 'md'; className?: string;",
+    "Alert": "tone: 'ok' | 'warn' | 'danger'; title?: React.ReactNode; children: React.ReactNode; className?: string;",
+    "PageHero": "eyebrow: string; title: React.ReactNode; lede?: React.ReactNode; aside?: React.ReactNode;",
+    "Reveal": "children?: React.ReactNode; as?: React.ElementType; delay?: number; grow?: boolean; className?: string;",
+    "BrandMark": "tone?: 'light' | 'dark' | 'glow'; className?: string;",
+    "BrandLockup": "tone?: 'light' | 'dark' | 'glow'; showParent?: boolean; className?: string;",
+    "RotatingWords": "words: readonly string[];",
+    "SnsButtons": "tone?: 'light' | 'dark'; className?: string;",
+    "DeviceSplit": "pc: React.ReactNode; mobile: React.ReactNode;",
+    "ContactAction": "kind: 'tel' | 'sms'; children: React.ReactNode; variant?: 'primary' | 'tel' | 'ghost' | 'onNavy' | 'onNavyGhost'; size?: 'sm' | 'md' | 'lg'; block?: boolean; className?: string;",
+    "ContactSplitLink": "kind: 'tel' | 'sms'; children: React.ReactNode; className?: string; pcClassName?: string; mobileClassName?: string;",
+    "AutoSlider": "",
+    "ReviewMarquee": "",
+    "ScheduleCard": "",
+    "FloatingContact": "",
+    "SiteHeader": "",
+    "SiteFooter": "",
+    "MobileCtaBar": "",
+    "SampleBanner": ""
+  },
+  "overrides": {
+    "FloatingContact": {
+      "cardMode": "single",
+      "primaryStory": "Docked"
+    },
+    "SiteHeader": {
+      "cardMode": "column"
+    },
+    "TelButton": {
+      "cardMode": "column"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md",
+  "guidelinesGlob": [
+    "docs/design-guides/**/*.md"
+  ]
+}
