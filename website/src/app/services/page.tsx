@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
+import { ContactAction } from "@/components/contact-action";
 import { Icon } from "@/components/icons";
 import { Reveal } from "@/components/reveal";
 import {
   Alert,
-  ButtonAnchor,
   ButtonLink,
   Card,
   Chip,
@@ -108,10 +108,10 @@ export default function ServicesPage() {
                   견적 문의하기
                   <Icon.arrowRight className="size-4" />
                 </ButtonLink>
-                <ButtonAnchor href={site.telHref} variant="ghost" size="lg">
+                <ContactAction kind="tel" variant="ghost" size="lg">
                   <Icon.phone className="size-[1.0625rem]" />
                   <span data-numeric>{site.tel}</span>
-                </ButtonAnchor>
+                </ContactAction>
               </div>
             </div>
           </Reveal>
