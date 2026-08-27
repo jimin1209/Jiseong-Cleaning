@@ -35,7 +35,13 @@ export async function submitQuote(
   try {
     id = await saveInquiry(parsed.data);
   } catch (err) {
+    // 저장이 실패해도 접수를 버리지 않는다 — 메일이 나가면 내용은 전달된 것이다.
+    // (Netlify Blobs 장애·미설정 시에도 SMTP 만 살아 있으면 접수가 유실되지 않는다)
     console.error("[inquiry] 저장 실패", err);
+    const mailed = await sendInquiryMail(parsed.data, 0);
+    if (mailed.sent) {
+      return { status: "ok", errors: {}, values: {} };
+    }
     return {
       status: "error",
       errors: {

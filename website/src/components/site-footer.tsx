@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandLockup } from "./brand-mark";
+import { T } from "./copy-text";
 import { ContactSplitLink } from "./contact-action";
 import { SnsButtons } from "./sns-buttons";
 import { Container } from "./ui";
@@ -17,23 +18,23 @@ export function SiteFooter() {
             <address className="not-italic leading-[1.85]">
               {site.address}
               <br />
-              대표전화{" "}
+              <T k="footer.telLabel" />{" "}
               {/* 기기별 분기 — PC 는 /quote, 모바일은 즉시 발신 (명세 9-3·9-4) */}
               <ContactSplitLink kind="tel" className="text-pale hover:text-white">
                 <span data-numeric>{site.tel}</span>
               </ContactSplitLink>
             </address>
             <p className="mt-3 leading-[1.85]">
-              지성크리닝은 우수조달업체{" "}
+              <T k="footer.operator.pre" />{" "}
               <a
                 href={site.parentUrl}
                 className="text-pale hover:text-white"
                 target="_blank"
                 rel="noreferrer"
               >
-                {site.parent}
+                <T k="footer.operator.parent" />
               </a>
-              에서 운영하는 세탁 서비스입니다.
+              <T k="footer.operator.post" />
             </p>
             {/* SNS — 계정 개설 전이라 누르면 "준비 중" 안내가 뜬다 (명세 9-6) */}
             <SnsButtons tone="dark" className="mt-4 -ml-2" />
@@ -41,7 +42,7 @@ export function SiteFooter() {
 
           <nav className="min-w-36 shrink-0" aria-label="서비스">
             <h2 className="mb-4 text-xs font-bold tracking-[0.14em] text-[#6E8CB4]">
-              서 비 스
+              <T k="footer.services.heading" />
             </h2>
             {/* 서비스가 한 건으로 통합돼 링크도 /services 하나만 둔다 */}
             <ul className="flex flex-col gap-2.5">
@@ -51,7 +52,7 @@ export function SiteFooter() {
                     href="/services"
                     className="text-[0.9375rem] text-[#C3D6EC] hover:text-white"
                   >
-                    {s.short}
+                    <T k={`service.${s.slug}.short`} />
                   </Link>
                 </li>
               ))}
@@ -60,20 +61,20 @@ export function SiteFooter() {
 
           <nav className="min-w-36 shrink-0" aria-label="안내">
             <h2 className="mb-4 text-xs font-bold tracking-[0.14em] text-[#6E8CB4]">
-              안 내
+              <T k="footer.info.heading" />
             </h2>
             <ul className="flex flex-col gap-2.5">
               {[
-                { href: "/about", label: "회사소개" },
-                { href: "/about#standard-workplace", label: "장애인 표준사업장" },
-                { href: "/quote", label: "견적 문의" },
+                { href: "/about", k: "footer.info.0" },
+                { href: "/about#standard-workplace", k: "footer.info.1" },
+                { href: "/quote", k: "footer.info.2" },
               ].map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
                     className="text-[0.9375rem] text-[#C3D6EC] hover:text-white"
                   >
-                    {l.label}
+                    <T k={l.k} />
                   </Link>
                 </li>
               ))}
@@ -84,26 +85,30 @@ export function SiteFooter() {
         {/* 사업자 정보 — 법적 지위(사업부/별도 사업자) 확정 전이라 임시값 */}
         <div className="flex flex-wrap gap-x-6 gap-y-1.5 pt-6 text-[0.8125rem] text-[#8AA4C6]">
           {businessInfo.representative && (
-            <span>대표자 {businessInfo.representative}</span>
+            <span><T k="footer.biz.representative" /> {businessInfo.representative}</span>
           )}
           {businessInfo.registrationNumber && (
             <span data-numeric>
-              사업자등록번호 {businessInfo.registrationNumber}
+              <T k="footer.biz.registration" /> {businessInfo.registrationNumber}
             </span>
           )}
           {businessInfo.mailOrderNumber && (
             <span data-numeric>
-              통신판매업 {businessInfo.mailOrderNumber}
+              <T k="footer.biz.mailOrder" /> {businessInfo.mailOrderNumber}
             </span>
           )}
-          {businessInfo.fax && <span data-numeric>팩스 {businessInfo.fax}</span>}
+          {businessInfo.fax && (
+            <span data-numeric>
+              <T k="footer.biz.fax" /> {businessInfo.fax}
+            </span>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-x-6 gap-y-2.5 pt-3 text-[0.8125rem] text-[#6E8CB4]">
-          <span>© {new Date().getFullYear()} 지성크리닝 · {site.parent}</span>
+          <span>© {new Date().getFullYear()} <T k="footer.copyright" /></span>
           {SAMPLE_CONTENT && (
             <span className="text-[#C08A4A]">
-              사업자 정보는 확인 전 임시값입니다
+              <T k="footer.sampleNotice" />
             </span>
           )}
         </div>

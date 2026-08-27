@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ContactAction } from "@/components/contact-action";
+import { ContactAction, DeviceSplit } from "@/components/contact-action";
+import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
@@ -25,9 +26,9 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        eyebrow="회 사 소 개"
-        title="(주)지성이엔지 지성크리닝"
-        lede="우수조달업체 (주)지성이엔지에서 운영하는 세탁 사업 부문입니다."
+        eyebrow={<T k="about.hero.eyebrow" />}
+        title={<T k="about.hero.title" />}
+        lede={<T k="about.hero.lede" />}
       />
 
       {/* ═══════════════ 개요 ═══════════════ */}
@@ -36,18 +37,15 @@ export default function AboutPage() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14">
             <Reveal>
               <SectionHead
-                eyebrow="사 업 개 요"
-                title="사업장 세탁물을 관리해 드리겠습니다."
+                eyebrow={<T k="about.overview.eyebrow" />}
+                title={<T k="about.overview.title" />}
               />
               <div className="mt-6 flex flex-col gap-4 text-[0.9375rem] leading-[1.85] text-ink-2">
                 <p>
-                  사업장에서 반복적으로 발생하는 세탁물을 대량으로 수거해
-                  세탁하고 배송합니다. 세탁물이 제때 돌아오도록 약속한 날짜에
-                  맞춰 정기적으로 수거하고 배송합니다.
+                  <T k="about.overview.p1" />
                 </p>
                 <p>
-                  세탁은 자체 세탁 시설에서 전문 세탁 장비로 처리합니다.
-                  품목과 물량, 수거 주기는 사업장 사정에 맞춰 상담해 정합니다.
+                  <T k="about.overview.p2" />
                 </p>
               </div>
             </Reveal>
@@ -55,18 +53,18 @@ export default function AboutPage() {
             <Reveal delay={100}>
               <Card className="p-7">
                 <h2 className="text-[0.6875rem] font-bold tracking-[0.16em] text-faint">
-                  사 업 자 정 보
+                  <T k="about.info.heading" />
                 </h2>
                 <dl className="mt-5 grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-4 gap-y-3.5 text-[0.9375rem]">
-                  <dt className="text-[0.8125rem] font-bold text-muted">상호</dt>
+                  <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.name" /></dt>
                   <dd className="m-0 text-ink-2">{site.name}</dd>
 
-                  <dt className="text-[0.8125rem] font-bold text-muted">운영</dt>
+                  <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.operator" /></dt>
                   <dd className="m-0 text-ink-2">{site.parent}</dd>
 
                   {businessInfo.representative && (
                     <>
-                      <dt className="text-[0.8125rem] font-bold text-muted">대표자</dt>
+                      <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.representative" /></dt>
                       <dd className="m-0 text-ink-2">{businessInfo.representative}</dd>
                     </>
                   )}
@@ -74,7 +72,7 @@ export default function AboutPage() {
                   {businessInfo.registrationNumber && (
                     <>
                       <dt className="text-[0.8125rem] font-bold text-muted">
-                        사업자번호
+                        <T k="about.info.registration" />
                       </dt>
                       <dd className="m-0 text-ink-2" data-numeric>
                         {businessInfo.registrationNumber}
@@ -82,39 +80,49 @@ export default function AboutPage() {
                     </>
                   )}
 
-                  <dt className="text-[0.8125rem] font-bold text-muted">소재지</dt>
+                  <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.address" /></dt>
                   <dd className="m-0 text-ink-2">{site.address}</dd>
 
-                  <dt className="text-[0.8125rem] font-bold text-muted">대표전화</dt>
+                  <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.tel" /></dt>
                   <dd className="m-0">
-                    <a href={site.telHref} className="font-bold text-brand" data-numeric>
-                      {site.tel}
-                    </a>
+                    {/* PC 에선 죽은 tel: 링크가 되므로 표기만, 모바일만 발신 (명세 9-3·9-4) */}
+                    <DeviceSplit
+                      pc={
+                        <span className="font-bold text-brand" data-numeric>
+                          {site.tel}
+                        </span>
+                      }
+                      mobile={
+                        <a href={site.telHref} className="font-bold text-brand" data-numeric>
+                          {site.tel}
+                        </a>
+                      }
+                    />
                   </dd>
 
                   {businessInfo.fax && (
                     <>
-                      <dt className="text-[0.8125rem] font-bold text-muted">팩스</dt>
+                      <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.fax" /></dt>
                       <dd className="m-0 text-ink-2" data-numeric>
                         {businessInfo.fax}
                       </dd>
                     </>
                   )}
 
-                  <dt className="text-[0.8125rem] font-bold text-muted">취급</dt>
+                  <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.handlingLabel" /></dt>
                   <dd className="m-0 text-ink-2">
-                    사업장 세탁물 정기 수거 · 세탁 · 배송
+                    <T k="about.info.handling" />
                   </dd>
                 </dl>
 
                 {SAMPLE_CONTENT && (
                   <p className="mt-4 rounded-brand bg-warn-bg px-3.5 py-2.5 text-[0.75rem] leading-[1.6] font-semibold text-warn">
-                    대표자 · 사업자번호 · 팩스는 확인 전 임시값입니다.
+                    <T k="about.info.sampleNotice" />
                   </p>
                 )}
 
                 <p className="mt-5 border-t border-line pt-5 text-[0.8125rem] leading-[1.8] text-muted">
-                  모회사 본사
+                  <T k="about.info.parentHq" />
                   <br />
                   {site.parentAddress}
                   <br />
@@ -124,7 +132,7 @@ export default function AboutPage() {
                     rel="noreferrer"
                     className="font-semibold text-brand"
                   >
-                    jiseong.co.kr
+                    <T k="about.info.parentSite" />
                   </a>
                 </p>
               </Card>
@@ -140,9 +148,9 @@ export default function AboutPage() {
             <Reveal className="min-w-0 flex-1 basis-[26rem]">
               <SectionHead
                 tone="dark"
-                eyebrow="사 회 적 가 치"
-                title="장애인 표준사업장으로 운영합니다"
-                lede="지성크리닝은 장애인에게 안정적인 일자리를 제공하고 사회적 가치를 실현하기 위해 장애인 표준사업장으로 운영되고 있습니다."
+                eyebrow={<T k="about.social.eyebrow" />}
+                title={<T k="about.social.title" />}
+                lede={<T k="about.social.lede" />}
               />
               {/*
                 전단지에 인쇄된 문장(위 lede)만 쓴다.
@@ -155,11 +163,11 @@ export default function AboutPage() {
                 <Icon.seal className="size-8 shrink-0 text-[#6FD6FF]" />
                 <span>
                   <strong className="block text-[1.0625rem] font-extrabold tracking-[-0.02em] text-white">
-                    장애인 표준사업장
+                    <T k="about.social.badgeTitle" />
                   </strong>
                   {/* 인증번호는 표기하지 않는다 — 회의 결정(인증 사실만 표기) */}
                   <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
-                    장애인 표준사업장 인증
+                    <T k="about.social.badgeSub" />
                   </span>
                 </span>
               </div>
@@ -173,15 +181,15 @@ export default function AboutPage() {
         <Container>
           <Reveal>
             <SectionHead
-              eyebrow="거 래 대 상"
-              title="사업장 고객과 거래합니다"
-              lede="대량 처리와 정기 수거에 맞춰 설비와 일정을 운영하고 있습니다."
+              eyebrow={<T k="about.clients.eyebrow" />}
+              title={<T k="about.clients.title" />}
+              lede={<T k="about.clients.lede" />}
             />
           </Reveal>
 
           <Reveal delay={80}>
             <ul className="mt-8 flex flex-wrap gap-2.5">
-              {targetIndustries.map((t) => {
+              {targetIndustries.map((t, i) => {
                 const Glyph = Icon[t.icon];
                 return (
                   <li
@@ -189,7 +197,7 @@ export default function AboutPage() {
                     className="inline-flex items-center gap-2.5 rounded-brand border border-line bg-paper px-5 py-3.5 text-[0.9375rem] font-bold text-navy"
                   >
                     <Glyph className="size-[1.1875rem] shrink-0 text-sky" />
-                    {t.label}
+                    <T k={`industries.${i}.label`} />
                   </li>
                 );
               })}
@@ -198,8 +206,7 @@ export default function AboutPage() {
 
           <Reveal delay={140}>
             <Alert tone="warn" className="mt-8 max-w-3xl">
-              수거·배송 가능 권역은 경주 인근을 기준으로 운영합니다. 사업장 지역을
-              알려주시면 가능 여부를 확인해 드립니다.
+              <T k="about.clients.alert" />
             </Alert>
           </Reveal>
         </Container>
@@ -212,13 +219,13 @@ export default function AboutPage() {
             <Card className="p-8 sm:p-11">
               <div className="flex flex-wrap items-center justify-between gap-6">
                 <SectionHead
-                  title="거래를 검토 중이시면 연락 주세요"
-                  lede="품목과 물량, 희망 주기를 알려주시면 조건을 정리해 드립니다."
+                  title={<T k="about.cta.title" />}
+                  lede={<T k="about.cta.lede" />}
                   className="flex-1 basis-[22rem]"
                 />
                 <div className="flex flex-wrap gap-3">
                   <ButtonLink href="/quote" size="lg">
-                    견적 문의하기
+                    <T k="about.cta.quoteCta" />
                     <Icon.arrowRight className="size-4" />
                   </ButtonLink>
                   <ContactAction kind="tel" variant="ghost" size="lg">
@@ -233,10 +240,10 @@ export default function AboutPage() {
           {/* 파트너 문구 — 페이지 끝에 1회만 쓴다. 다른 곳에 반복하지 않는다 */}
           <Reveal delay={80}>
             <p className="mt-10 text-center text-[0.9375rem] leading-[1.8] text-ink-2">
-              &lsquo;안전한 시공 및 점검으로 신뢰받는 기업&rsquo;
+              <T k="about.partner.quote" />
               <br />
               <strong className="font-bold text-navy">
-                (주)지성이엔지의 파트너 지성크리닝입니다.
+                <T k="about.partner.line" />
               </strong>
             </p>
           </Reveal>

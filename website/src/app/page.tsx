@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { AutoSlider } from "@/components/auto-slider";
 import { BrandMark } from "@/components/brand-mark";
+import { T } from "@/components/copy-text";
 import { ContactAction } from "@/components/contact-action";
 import { Icon } from "@/components/icons";
 import { Reveal } from "@/components/reveal";
@@ -22,23 +23,23 @@ import { site, targetIndustries, trustPoints } from "@/lib/site";
 
 /* ── 디자인 보강(D4·D5·D7) 데이터 — 문구는 병합 방안 표의 교체 목록 그대로 ── */
 
-/** D5 로테이팅 키워드 — 첫 항목이 기본형(확정 문구·스크린리더용) */
-const rotatingWords = [
-  "사업장 세탁물을",
-  "호텔 시트를",
-  "펜션 이불을",
-  "사우나 수건을",
+/** D5 로테이팅 키워드 — 문구는 copy.ts, 첫 키가 기본형(확정 문구·스크린리더용) */
+const rotatingWordKeys = [
+  "home.hero.rotating.0",
+  "home.hero.rotating.1",
+  "home.hero.rotating.2",
+  "home.hero.rotating.3",
 ] as const;
 
-/** D7 마퀴 배지 키워드 */
-const marqueeBadges = [
-  "정기 수거",
-  "전문 세탁",
-  "살균 공정",
-  "건조 정리",
-  "약속한 날짜 배송",
-  "월 단위 정기 계약",
-  "사업장 전용",
+/** D7 마퀴 배지 키워드 — 문구는 copy.ts */
+const marqueeBadgeKeys = [
+  "home.marquee.0",
+  "home.marquee.1",
+  "home.marquee.2",
+  "home.marquee.3",
+  "home.marquee.4",
+  "home.marquee.5",
+  "home.marquee.6",
 ] as const;
 
 /** D4 히어로 거품 — 위치·크기·주기·투명도는 디자인 원본 그대로 */
@@ -93,24 +94,24 @@ export default function HomePage() {
             <div className="hero-enter min-w-0 max-w-[42rem] flex-[1_1_30rem]">
             <p className="mb-5 inline-flex items-center gap-2.5 text-[0.78rem] font-bold tracking-[0.13em] text-pale">
               <span className="h-0.5 w-6 rounded-full bg-ci-cyan" aria-hidden="true" />
-              사업장 세탁 전문
+              <T k="home.hero.eyebrow" />
             </p>
 
             <h1 className="text-[2.125rem] leading-[1.22] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.375rem]">
-              수거부터 배송까지
+              <T k="home.hero.title1" />
               <br />
               {/* 대상어 로테이션(D5) — 기본형 "사업장 세탁물을"만 스크린리더에 읽힌다 */}
-              <RotatingWords words={rotatingWords} />{" "}
-              <em className="not-italic text-[#6FD6FF]">대신 관리해 드립니다</em>
+              <RotatingWords wordKeys={rotatingWordKeys} />{" "}
+              <em className="not-italic text-[#6FD6FF]"><T k="home.hero.titleEm" /></em>
             </h1>
 
             <p className="mt-5 max-w-[33em] text-base leading-[1.85] text-[#C8DBF2] sm:text-[1.0625rem]">
-              약속한 날짜에 수거하고, 세탁·살균을 거쳐 배송합니다.
+              <T k="home.hero.sub" />
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href="/quote" variant="onNavy" size="lg">
-                견적 문의하기
+                <T k="home.hero.quoteCta" />
                 <Icon.arrowRight className="size-4" />
               </ButtonLink>
               {/* 전화 버튼 기기별 분기 — PC 는 /quote, 모바일은 즉시 발신 (명세 9-3·9-4) */}
@@ -121,11 +122,11 @@ export default function HomePage() {
             </div>
 
             <ul className="mt-9 flex flex-wrap gap-2.5">
-              {trustPoints.map((point) => (
+              {trustPoints.map((point, i) => (
                 <li key={point}>
                   <Badge tone="onNavy" className="py-2">
                     <Icon.check className="size-3.5 text-[#6FD6FF]" />
-                    {point}
+                    <T k={`home.hero.trust.${i}`} />
                   </Badge>
                 </li>
               ))}
@@ -144,10 +145,10 @@ export default function HomePage() {
           <div className="jc-marquee flex [animation-duration:34s]">
             {[0, 1].map((half) => (
               <div key={half} aria-hidden={half === 1 || undefined} className="flex items-center">
-                {marqueeBadges.map((label) => (
-                  <span key={label} className="mr-11 flex items-center gap-11">
+                {marqueeBadgeKeys.map((k) => (
+                  <span key={k} className="mr-11 flex items-center gap-11">
                     <span className="whitespace-nowrap text-[0.8125rem] font-bold tracking-[0.12em] text-[#C8DBF2]/75">
-                      {label}
+                      <T k={k} />
                     </span>
                     {/* eslint-disable-next-line @next/next/no-img-element -- 13px 장식 심볼이라 최적화 대상이 아니다 */}
                     <img
@@ -203,9 +204,9 @@ export default function HomePage() {
         <Container>
           <Reveal>
             <SectionHead
-              eyebrow="서 비 스"
-              title="사업장 규모, 품목과 물량에 따라 주기적으로 관리해 드립니다"
-              lede="품목과 물량, 수거 주기만 알려주시면 사업장에 맞는 방식으로 제안해 드립니다."
+              eyebrow={<T k="home.services.eyebrow" />}
+              title={<T k="home.services.title" />}
+              lede={<T k="home.services.lede" />}
             />
           </Reveal>
 
@@ -224,15 +225,15 @@ export default function HomePage() {
                     <Glyph className="size-6" />
                   </IconBubble>
 
-                  <h3 className="text-[1.1875rem] text-navy">{service.title}</h3>
+                  <h3 className="text-[1.1875rem] text-navy"><T k={`service.${service.slug}.title`} /></h3>
                   <p className="mt-2.5 text-[0.9375rem] leading-[1.8] text-ink-2">
-                    {service.summary}
+                    <T k={`service.${service.slug}.summary`} />
                   </p>
 
                   <ul className="mt-4 flex flex-wrap gap-1.5">
-                    {service.forWhom.map((w) => (
+                    {service.forWhom.map((w, wi) => (
                       <li key={w}>
-                        <Chip className="text-xs">{w}</Chip>
+                        <Chip className="text-xs"><T k={`service.${service.slug}.forWhom.${wi}`} /></Chip>
                       </li>
                     ))}
                   </ul>
@@ -241,7 +242,7 @@ export default function HomePage() {
                     href="/services"
                     className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-bold text-brand transition-all duration-150 group-hover:gap-2.5 hover:text-brand-hover"
                   >
-                    자세히 보기
+                    <T k="home.services.detail" />
                     <Icon.chevronRight className="size-4" />
                   </Link>
                 </Card>
@@ -256,8 +257,8 @@ export default function HomePage() {
         <Container>
           <Reveal>
             <SectionHead
-              eyebrow="이 용 절 차"
-              title="첫 상담부터 배송까지"
+              eyebrow={<T k="home.process.eyebrow" />}
+              title={<T k="home.process.title" />}
             />
           </Reveal>
 
@@ -284,8 +285,8 @@ export default function HomePage() {
                   >
                     {i + 1}
                   </span>
-                  <h3 className="text-[1.0625rem] text-navy">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-[1.7] text-muted">{step.body}</p>
+                  <h3 className="text-[1.0625rem] text-navy"><T k={`process.${i}.title`} /></h3>
+                  <p className="mt-2 text-sm leading-[1.7] text-muted"><T k={`process.${i}.body`} /></p>
                 </Card>
               </Reveal>
             ))}
@@ -298,13 +299,13 @@ export default function HomePage() {
         <Container>
           <Reveal>
             <SectionHead
-              eyebrow="이 런 곳 에 적 합 합 니 다"
-              title="확인 후 연락드립니다."
+              eyebrow={<T k="home.industries.eyebrow" />}
+              title={<T k="home.industries.title" />}
             />
           </Reveal>
           <Reveal delay={80}>
             <ul className="mt-7 flex flex-wrap gap-2.5">
-              {targetIndustries.map((t) => {
+              {targetIndustries.map((t, i) => {
                 const Glyph = Icon[t.icon];
                 return (
                   <li
@@ -312,14 +313,14 @@ export default function HomePage() {
                     className="inline-flex items-center gap-2.5 rounded-brand border border-line bg-white px-5 py-3.5 text-[0.9375rem] font-bold text-navy"
                   >
                     <Glyph className="size-[1.1875rem] shrink-0 text-sky" />
-                    {t.label}
+                    <T k={`industries.${i}.label`} />
                   </li>
                 );
               })}
             </ul>
             <div className="mt-7">
               <ButtonLink href="/quote">
-                바로 문의하기
+                <T k="home.industries.cta" />
                 <Icon.arrowRight className="size-4" />
               </ButtonLink>
             </div>
@@ -334,9 +335,9 @@ export default function HomePage() {
             <Reveal className="min-w-0 flex-1 basis-[26rem]">
               <SectionHead
                 tone="dark"
-                title="장애인 표준사업장으로 운영합니다"
+                title={<T k="home.social.title" />}
                 /* 전단지에 인쇄된 문장 그대로. 방침을 덧붙이지 않는다 */
-                lede="지성크리닝은 장애인에게 안정적인 일자리를 제공하고 사회적 가치를 실현하기 위해 장애인 표준사업장으로 운영되고 있습니다."
+                lede={<T k="home.social.lede" />}
               />
             </Reveal>
 
@@ -345,7 +346,7 @@ export default function HomePage() {
               <div className="inline-flex items-center gap-3.5 rounded-brand bg-white/10 px-6 py-5 shadow-[inset_0_0_0_1px_rgb(255_255_255/0.22)]">
                 <Icon.seal className="size-8 shrink-0 text-[#6FD6FF]" />
                 <strong className="text-[1.0625rem] font-extrabold tracking-[-0.02em] text-white">
-                  장애인 표준사업장 인증
+                  <T k="home.social.badge" />
                 </strong>
               </div>
             </Reveal>
@@ -360,13 +361,13 @@ export default function HomePage() {
             <Card className="overflow-hidden p-8 text-center sm:p-12">
               <SectionHead
                 align="center"
-                eyebrow="견 적 · 상 담 문 의"
-                title="확인 후 연락드립니다."
+                eyebrow={<T k="home.cta.eyebrow" />}
+                title={<T k="home.cta.title" />}
                 className="mx-auto"
               />
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <ButtonLink href="/quote" size="lg">
-                  견적 문의하기
+                  <T k="home.cta.quoteCta" />
                   <Icon.arrowRight className="size-4" />
                 </ButtonLink>
                 <ContactAction kind="tel" variant="ghost" size="lg">
