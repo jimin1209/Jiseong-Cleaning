@@ -111,6 +111,12 @@ export function SiteFooter() {
               <T k="footer.sampleNotice" />
             </span>
           )}
+          <Link
+            href="/admin"
+            className="ml-auto transition-colors duration-150 hover:text-white"
+          >
+            관리자
+          </Link>
         </div>
       </Container>
     </footer>

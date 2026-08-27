@@ -1,16 +1,18 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { ADMIN_SESSION_COOKIE, adminSessionToken } from "@/lib/admin-session";
 
 /**
- * /admin 보호 — HTTP Basic 인증.
+ * /admin 보호 — 로그인 쿠키(기본) + HTTP Basic(호환).
  *
  * 문의 목록에는 거래처 담당자의 연락처가 들어가므로 공개돼서는 안 된다.
- * 정식 관리자 인증(설계서 4.2 · 역할별 권한)은 발주 시스템 쪽에서 만들 예정이고,
- * 홍보 사이트의 문의 조회는 그때까지 이 한 겹으로 막는다.
+ * 브라우저 팝업(Basic)은 매번 입력이 번거로워 /admin/login 페이지에서
+ * 30일 쿠키를 발급한다. 곧바로 URL 로 들어오는 curl·기존 북마크를 위해
+ * Basic 헤더도 계속 받아준다.
  *
  * ADMIN_USER / ADMIN_PASSWORD 가 설정되지 않으면 접근을 전부 거부한다.
  * (기본 비밀번호를 두면 그게 그대로 운영에 올라간다)
  */
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const user = process.env.ADMIN_USER;
   const password = process.env.ADMIN_PASSWORD;
 
@@ -21,8 +23,22 @@ export function proxy(request: NextRequest) {
     );
   }
 
-  const header = request.headers.get("authorization");
+  const { pathname } = request.nextUrl;
 
+  // 로그인 화면과 그 서버 액션은 인증 없이 열려야 한다
+  if (pathname === "/admin/login") {
+    return NextResponse.next();
+  }
+
+  // 1) 로그인 쿠키
+  const token = await adminSessionToken();
+  const cookie = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+  if (token && cookie && safeEqual(cookie, token)) {
+    return NextResponse.next();
+  }
+
+  // 2) Basic 헤더 (curl·기존 사용 호환)
+  const header = request.headers.get("authorization");
   if (header?.startsWith("Basic ")) {
     let decoded = "";
     try {
@@ -40,13 +56,11 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  return new NextResponse("인증이 필요합니다.", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": 'Basic realm="jiseongcleaning-admin", charset="UTF-8"',
-      "content-type": "text/plain; charset=utf-8",
-    },
-  });
+  // 3) 둘 다 없으면 로그인 화면으로 (팝업 대신)
+  const login = request.nextUrl.clone();
+  login.pathname = "/admin/login";
+  login.search = pathname === "/admin" ? "" : `?next=${encodeURIComponent(pathname)}`;
+  return NextResponse.redirect(login);
 }
 
 /** 길이가 달라도 조기 반환하지 않아 타이밍 차이를 줄인다 */
