@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #F4F8FC; color: #152238; font-family: "Pretendard Variable", Pretendard, "Segoe UI", "Malgun Gothic", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; line-height: 1.75; -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: break-word; }
+a { color: #176FC0; text-decoration: none; }
+a:hover { color: #125A9E; }
+::selection { background: #DEF1FD; color: #14306E; }
+@property --jcang { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes jcRise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes jcSpin { to { transform: rotate(360deg); } }
+@keyframes jcGlow { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-70px,40px,0) scale(1.12); } }
+@keyframes jcBub { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: 0.55; } 85% { opacity: 0.3; } 100% { transform: translateY(-680px); opacity: 0; } }
+@keyframes jcMq { to { transform: translateX(-50%); } }
+@keyframes jcWave { to { transform: translateX(-50%); } }
+@keyframes jcFloat { from { transform: translateY(0); } to { transform: translateY(-9px); } }
+@keyframes jcDot { 0% { left: 3%; } 42% { left: 93%; } 52% { left: 93%; } 94% { left: 3%; } 100% { left: 3%; } }
+@keyframes jcPing { 0% { box-shadow: 0 0 0 0 rgba(0,174,239,0.55); } 70% { box-shadow: 0 0 0 9px rgba(0,174,239,0); } 100% { box-shadow: 0 0 0 0 rgba(0,174,239,0); } }
+@keyframes jcStep { 0%, 30%, 100% { border-color: #DCE5F0; box-shadow: 0 1px 3px rgba(20,48,110,0.08); transform: translateY(0); } 9%, 19% { border-color: #A6D9FA; box-shadow: 0 18px 36px -14px rgba(20,48,110,0.28); transform: translateY(-5px); } }
+@keyframes jcAur { from { transform: translate(0,0) scale(1); } to { transform: translate(70px,-50px) scale(1.18); } }
+@keyframes jcSheen { 0% { background-position: 190% 0; } 100% { background-position: -90% 0; } }
+@keyframes jcRing { to { --jcang: 360deg; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="min-width:320px">
+
+<!-- ═══════ 헤더 ═══════ -->
+<header id="jc-header" style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);backdrop-filter:blur(12px) saturate(1.5);-webkit-backdrop-filter:blur(12px) saturate(1.5);box-shadow:0 1px 0 #DCE5F0;transition:box-shadow 0.2s cubic-bezier(0.2,0,0.2,1)">
+  <div style="max-width:72rem;margin:0 auto;padding:0 32px">
+    <div style="display:flex;align-items:center;gap:24px;height:76px">
+      <a href="#" aria-label="지성크리닝 홈" style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <img src="brand/jiseong-symbol.svg" alt="" style="width:29px;height:34px;display:block">
+        <span style="line-height:1">
+          <span style="display:block;font-size:1.3125rem;font-weight:800;letter-spacing:-0.045em;color:#14306E">지성크리닝</span>
+          <span style="display:block;margin-top:3px;font-size:0.625rem;font-weight:600;color:#69798F">(주)지성이엔지</span>
+        </span>
+      </a>
+      <nav id="jc-nav" aria-label="주 메뉴" style="margin-left:auto;display:flex;align-items:center;gap:4px">
+        <a href="#services" style="border-radius:6px;padding:8px 14px;font-size:0.9375rem;font-weight:600;color:#3A4C66;transition:background 0.15s,color 0.15s" style-hover="background:#DEF1FD;color:#14306E">서비스</a>
+        <a href="#process" style="border-radius:6px;padding:8px 14px;font-size:0.9375rem;font-weight:600;color:#3A4C66;transition:background 0.15s,color 0.15s" style-hover="background:#DEF1FD;color:#14306E">이용 절차</a>
+        <a href="#standard-workplace" style="border-radius:6px;padding:8px 14px;font-size:0.9375rem;font-weight:600;color:#3A4C66;transition:background 0.15s,color 0.15s" style-hover="background:#DEF1FD;color:#14306E">회사소개</a>
+        <a href="#cta" style="border-radius:6px;padding:8px 14px;font-size:0.9375rem;font-weight:600;color:#3A4C66;transition:background 0.15s,color 0.15s" style-hover="background:#DEF1FD;color:#14306E">견적 문의</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:14px">
+        <a id="jc-teltop" href="tel:+82546215002" style="display:block;line-height:1.2;border-radius:6px">
+          <span style="display:block;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;color:#69798F">상담 및 견적 문의</span>
+          <span style="display:block;font-size:1.1875rem;font-weight:800;letter-spacing:-0.02em;color:#14306E;font-variant-numeric:tabular-nums">054-621-5002</span>
+        </a>
+        <a id="jc-qbtn" href="#cta" style="display:inline-flex;align-items:center;gap:8px;border-radius:6px;background:#176FC0;color:#fff;padding:10px 16px;font-size:0.875rem;font-weight:700;letter-spacing:-0.01em;white-space:nowrap;transition:all 0.2s cubic-bezier(0.2,0,0.2,1)" style-hover="background:#125A9E;box-shadow:0 12px 32px -8px rgba(20,48,110,0.18);color:#fff">견적 문의</a>
+      </div>
+    </div>
+  </div>
+  <div id="jc-progress" style="position:absolute;left:0;bottom:-2px;height:2px;width:0%;background:linear-gradient(90deg,#2E3192,#00AEEF);border-radius:0 2px 2px 0"></div>
+</header>
+
+<!-- ═══════ 히어로 ═══════ -->
+<section style="position:relative;overflow:hidden;background:linear-gradient(150deg,#0E2450 0%,#14306E 42%,#1B4FA8 100%);color:#fff">
+  <div aria-hidden="true" data-loop="1" style="pointer-events:none;position:absolute;right:-8%;top:-22%;aspect-ratio:1;width:min(46rem,72vw);background:radial-gradient(circle at 50% 50%,rgba(0,174,239,0.3) 0%,rgba(0,174,239,0) 62%);animation:jcGlow 14s cubic-bezier(0.2,0,0.2,1) infinite alternate"></div>
+  <img src="brand/jiseong-symbol-ondark.svg" alt="" aria-hidden="true" data-loop="1" style="pointer-events:none;position:absolute;right:-4%;top:8%;width:min(34rem,80vw);opacity:0.14;animation:jcSpin 90s linear infinite">
+  <div aria-hidden="true" style="pointer-events:none;position:absolute;inset:0;overflow:hidden">
+    <span data-loop="1" style="position:absolute;left:9%;bottom:-40px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,0.35),rgba(255,255,255,0.06));animation:jcBub 17s linear -3s infinite"></span>
+    <span data-loop="1" style="position:absolute;left:22%;bottom:-40px;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,0.32),rgba(255,255,255,0.05));animation:jcBub 13s linear -9s infinite"></span>
+    <span data-loop="1" style="position:absolute;left:38%;bottom:-40px;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(166,217,250,0.3),rgba(166,217,250,0.04));animation:jcBub 21s linear -14s infinite"></span>
+    <span data-loop="1" style="position:absolute;left:55%;bottom:-40px;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,0.3),rgba(255,255,255,0.05));animation:jcBub 15s linear -6s infinite"></span>
+    <span data-loop="1" style="position:absolute;left:71%;bottom:-40px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(166,217,250,0.28),rgba(166,217,250,0.04));animation:jcBub 19s linear -11s infinite"></span>
+    <span data-loop="1" style="position:absolute;left:86%;bottom:-40px;width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,0.3),rgba(255,255,255,0.05));animation:jcBub 12s linear -1s infinite"></span>
+  </div>
+
+  <div style="position:relative;max-width:72rem;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:56px;padding:84px 0 56px">
+      <div style="flex:1 1 30rem;max-width:42rem;min-width:0">
+        <p style="margin:0 0 20px;display:inline-flex;align-items:center;gap:10px;font-size:0.78rem;font-weight:700;letter-spacing:0.13em;color:#A6D9FA;animation:jcRise 0.7s cubic-bezier(0.2,0,0.2,1) both">
+          <span aria-hidden="true" style="height:2px;width:24px;border-radius:99px;background:#00AEEF"></span>
+          기업 · 펜션 · 호텔 · 모텔 린넨 세탁 전문
+        </p>
+        <h1 style="margin:0;font-size:clamp(2.125rem,1.1rem + 2.7vw,3.375rem);line-height:1.22;letter-spacing:-0.04em;font-weight:800;text-wrap:balance;animation:jcRise 0.7s cubic-bezier(0.2,0,0.2,1) 0.07s both">
+          수거부터 납품까지
+          <br>
+          <span id="jc-rot" style="display:inline-grid;text-align:left;vertical-align:baseline;color:#6FD6FF">
+            <span style="grid-area:1/1;white-space:nowrap">사업장 린넨을</span>
+            <span style="grid-area:1/1;white-space:nowrap;opacity:0">호텔 시트를</span>
+            <span style="grid-area:1/1;white-space:nowrap;opacity:0">펜션 이불을</span>
+            <span style="grid-area:1/1;white-space:nowrap;opacity:0">식당 행주를</span>
+            <span style="grid-area:1/1;white-space:nowrap;opacity:0">급식소 앞치마를</span>
+          </span>
+          대신 관리합니다
+        </h1>
+        <p style="margin:20px 0 0;max-width:33em;font-size:1.0625rem;line-height:1.85;color:#C8DBF2;animation:jcRise 0.7s cubic-bezier(0.2,0,0.2,1) 0.14s both">
+          원하시는 요일에 수거하고, 고온 세탁 · 살균을 거쳐 납품합니다.
+          호텔 · 모텔 · 펜션 린넨과 식당 · 급식소 주방 리넨을 사업장 단위로 정기 처리합니다.
+        </p>
+        <div style="margin-top:32px;display:flex;flex-wrap:wrap;gap:12px;animation:jcRise 0.7s cubic-bezier(0.2,0,0.2,1) 0.21s both">
+          <a href="#cta" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;background:#fff;color:#14306E;padding:16px 28px;font-size:1rem;font-weight:700;letter-spacing:-0.01em;white-space:nowrap;transition:all 0.2s cubic-bezier(0.2,0,0.2,1)" style-hover="background:#DEF1FD;color:#14306E;transform:translateY(-2px)">
+            견적 문의하기
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
+          </a>
+          <a href="tel:+82546215002" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.55);padding:16px 28px;font-size:1rem;font-weight:700;white-space:nowrap;transition:all 0.2s cubic-bezier(0.2,0,0.2,1)" style-hover="background:rgba(255,255,255,0.12);color:#fff">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:17px;height:17px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"></path></svg>
+            <span style="font-variant-numeric:tabular-nums">054-621-5002</span>
+          </a>
+        </div>
+        <ul style="margin:36px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:10px;animation:jcRise 0.7s cubic-bezier(0.2,0,0.2,1) 0.28s both">
+          <li style="display:inline-flex;align-items:center;gap:8px;border-radius:99px;background:rgba(255,255,255,0.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.2);padding:8px 14px;font-size:0.75rem;font-weight:700;color:#A6D9FA">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#6FD6FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:14px;height:14px"><path d="M20 6 9 17l-5-5"></path></svg>
+            장애인 표준사업장
+          </li>
+          <li style="display:inline-flex;align-items:center;gap:8px;border-radius:99px;background:rgba(255,255,255,0.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.2);padding:8px 14px;font-size:0.75rem;font-weight:700;color:#A6D9FA">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#6FD6FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:14px;height:14px"><path d="M20 6 9 17l-5-5"></path></svg>
+            월 단위 정기 계약 가능
+          </li>
+          <li style="display:inline-flex;align-items:center;gap:8px;border-radius:99px;background:rgba(255,255,255,0.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.2);padding:8px 14px;font-size:0.75rem;font-weight:700;color:#A6D9FA">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#6FD6FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:14px;height:14px"><path d="M20 6 9 17l-5-5"></path></svg>
+            경주 천북면 자체 세탁 시설
+          </li>
+        </ul>
+      </div>
+
+      <sc-if value="{{ showPanel }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:0 1 25rem;min-width:19rem;animation:jcRise 0.7s cubic-bezier(0.2,0,0.2,1) 0.35s both">
+        <div data-loop="1" style="animation:jcFloat 4.5s ease-in-out infinite alternate">
+          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:6px;box-shadow:0 24px 48px -24px rgba(4,12,32,0.55);padding:22px 24px 20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <p style="margin:0;font-size:0.8125rem;font-weight:800;letter-spacing:0.06em;color:#fff">정기 수거 · 납품 일정</p>
+              <span style="border-radius:99px;background:rgba(255,255,255,0.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.18);padding:4px 10px;font-size:0.6875rem;font-weight:700;color:#A6D9FA;white-space:nowrap">주 2회 수거 예시</span>
+            </div>
+            <div style="margin-top:16px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+              <div style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#A6C5E8">월</span><span style="position:relative;display:block;margin:8px auto 0;width:34px;height:34px;border-radius:6px;background:rgba(0,174,239,0.18);box-shadow:inset 0 0 0 1px rgba(0,174,239,0.45)"><span data-loop="1" style="position:absolute;left:50%;top:50%;margin:-5px 0 0 -5px;width:10px;height:10px;border-radius:50%;background:#00AEEF;animation:jcPing 2.8s cubic-bezier(0.2,0,0.2,1) infinite"></span></span></div>
+              <div style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#A6C5E8">화</span><span style="display:block;margin:8px auto 0;width:34px;height:34px;border-radius:6px;background:rgba(255,255,255,0.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.1)"></span></div>
+              <div style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#A6C5E8">수</span><span style="position:relative;display:block;margin:8px auto 0;width:34px;height:34px;border-radius:6px;background:rgba(255,255,255,0.09);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35)"><span style="position:absolute;left:50%;top:50%;margin:-5px 0 0 -5px;width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 2.5px #fff"></span></span></div>
+              <div style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#A6C5E8">목</span><span style="position:relative;display:block;margin:8px auto 0;width:34px;height:34px;border-radius:6px;background:rgba(0,174,239,0.18);box-shadow:inset 0 0 0 1px rgba(0,174,239,0.45)"><span data-loop="1" style="position:absolute;left:50%;top:50%;margin:-5px 0 0 -5px;width:10px;height:10px;border-radius:50%;background:#00AEEF;animation:jcPing 2.8s cubic-bezier(0.2,0,0.2,1) 1.4s infinite"></span></span></div>
+              <div style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#A6C5E8">금</span><span style="display:block;margin:8px auto 0;width:34px;height:34px;border-radius:6px;background:rgba(255,255,255,0.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.1)"></span></div>
+              <div style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#A6C5E8">토</span><span style="position:relative;display:block;margin:8px auto 0;width:34px;height:34px;border-radius:6px;background:rgba(255,255,255,0.09);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35)"><span style="position:absolute;left:50%;top:50%;margin:-5px 0 0 -5px;width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 2.5px #fff"></span></span></div>
+              <div style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#7E93B5">일</span><span style="display:block;margin:8px auto 0;width:34px;height:34px;border-radius:6px;background:rgba(255,255,255,0.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.07)"></span></div>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:16px;font-size:0.6875rem;font-weight:600;color:#A6C5E8">
+              <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:#00AEEF"></span>수거</span>
+              <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 2px #fff"></span>납품</span>
+            </div>
+            <div style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.12);padding-top:18px">
+              <div style="position:relative;height:2px;background:linear-gradient(90deg,rgba(255,255,255,0.05),rgba(255,255,255,0.25) 20%,rgba(255,255,255,0.25) 80%,rgba(255,255,255,0.05))">
+                <span style="position:absolute;left:3%;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#6FD6FF"></span>
+                <span style="position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#6FD6FF"></span>
+                <span style="position:absolute;left:93%;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#6FD6FF"></span>
+                <span data-loop="1" aria-hidden="true" style="position:absolute;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:#fff;box-shadow:0 0 12px 2px rgba(111,214,255,0.8);animation:jcDot 9s ease-in-out infinite"></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:0.6875rem;font-weight:600;color:#A6C5E8">
+                <span>사업장 수거</span>
+                <span style="text-align:center">고온 세탁 · 살균</span>
+                <span style="text-align:right">사업장 납품</span>
+              </div>
+            </div>
+            <p style="margin:16px 0 0;font-size:0.6875rem;color:#8AA4C6">요일과 주기는 상담으로 정합니다 · 예시 화면</p>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <div style="position:relative;border-top:1px solid rgba(255,255,255,0.1);padding:13px 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)">
+    <div data-loop="1" style="display:flex;width:max-content;gap:44px;animation:jcMq 34s linear infinite">
+      <div style="display:flex;align-items:center;gap:44px">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">정기 수거</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">고온 세탁</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">살균 공정</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">건조 · 정리</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">정해진 요일 납품</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">월 단위 정기 계약</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">사업장 전용</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+      </div>
+      <div style="display:flex;align-items:center;gap:44px" aria-hidden="true">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">정기 수거</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">고온 세탁</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">살균 공정</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">건조 · 정리</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">정해진 요일 납품</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">월 단위 정기 계약</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+        <span style="font-size:0.8125rem;font-weight:700;letter-spacing:0.12em;color:rgba(200,219,242,0.75);white-space:nowrap">사업장 전용</span><img src="brand/jiseong-symbol-mono-white.svg" alt="" style="width:13px;height:15px;opacity:0.45">
+      </div>
+    </div>
+  </div>
+
+  <div aria-hidden="true" style="position:relative;height:64px;overflow:hidden">
+    <svg data-loop="1" viewBox="0 0 2880 80" preserveAspectRatio="none" style="position:absolute;left:0;bottom:-1px;width:200%;height:64px;animation:jcWave 26s linear infinite;opacity:0.35"><path fill="#FFFFFF" d="M0,46 C240,78 480,10 720,38 C960,66 1200,14 1440,46 C1680,78 1920,10 2160,38 C2400,66 2640,14 2880,46 L2880,80 L0,80 Z" opacity="0.4"></path></svg>
+    <svg data-loop="1" viewBox="0 0 2880 80" preserveAspectRatio="none" style="position:absolute;left:0;bottom:-1px;width:200%;height:64px;animation:jcWave 17s linear infinite reverse"><path fill="#FFFFFF" d="M0,52 C240,84 480,20 720,44 C960,68 1200,24 1440,52 C1680,84 1920,20 2160,44 C2400,68 2640,24 2880,52 L2880,80 L0,80 Z"></path></svg>
+  </div>
+</section>
+
+<!-- ═══════ 서비스 ═══════ -->
+<section id="services" style="background:#fff;padding:96px 0">
+  <div style="max-width:72rem;margin:0 auto;padding:0 32px">
+    <div data-rv="1" style="max-width:42rem">
+      <p style="margin:0 0 16px;display:flex;align-items:center;gap:12px;font-size:0.75rem;font-weight:700;letter-spacing:0.18em;color:#176FC0"><span aria-hidden="true" style="height:2px;width:24px;border-radius:99px;background:#0084D8"></span>서 비 스</p>
+      <h2 style="margin:0;font-size:clamp(1.625rem,1.2rem + 1.2vw,2.125rem);line-height:1.28;letter-spacing:-0.028em;font-weight:800;color:#14306E;text-wrap:balance">사업장 규모와 주기에 맞춰 세 가지로 운영합니다</h2>
+      <p style="margin:16px 0 0;font-size:1.0625rem;line-height:1.8;color:#3A4C66">품목과 물량, 수거 주기만 알려주시면 사업장에 맞는 방식으로 제안해 드립니다.</p>
+    </div>
+    <ul style="margin:44px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+      <li data-rv="1" style="min-width:0">
+        <div style="position:relative;overflow:hidden;display:flex;flex-direction:column;height:100%;box-sizing:border-box;border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;transition:all 0.25s cubic-bezier(0.2,0,0.2,1)" style-hover="transform:translateY(-5px);box-shadow:0 18px 40px -12px rgba(20,48,110,0.22);border-color:#A6D9FA">
+          <span aria-hidden="true" style="position:absolute;left:0;top:0;right:0;height:3px;background:linear-gradient(90deg,#2E3192,#00AEEF)"></span>
+          <span style="display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:50%;background:#DEF1FD;color:#176FC0;margin-bottom:20px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:24px;height:24px"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="12" cy="13.5" r="4"></circle><path d="M7 7h.01M11 7h.01"></path></svg>
+          </span>
+          <h3 style="margin:0;font-size:1.1875rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">숙박 린넨 세탁</h3>
+          <p style="margin:10px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">시트 · 이불 커버 · 수건 · 가운을 정해진 요일에 수거하고 납품합니다.</p>
+          <ul style="margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px">
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">호텔</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">모텔</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">펜션</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">숙박시설</li>
+          </ul>
+          <a href="#cta" style="margin-top:auto;display:inline-flex;align-items:center;gap:6px;padding-top:24px;font-size:0.875rem;font-weight:700;color:#176FC0;transition:gap 0.15s,color 0.15s" style-hover="gap:11px;color:#125A9E">
+            자세히 보기
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="m9 18 6-6-6-6"></path></svg>
+          </a>
+        </div>
+      </li>
+      <li data-rv="1" data-rvd="70" style="min-width:0">
+        <div style="position:relative;overflow:hidden;display:flex;flex-direction:column;height:100%;box-sizing:border-box;border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;transition:all 0.25s cubic-bezier(0.2,0,0.2,1)" style-hover="transform:translateY(-5px);box-shadow:0 18px 40px -12px rgba(20,48,110,0.22);border-color:#A6D9FA">
+          <span aria-hidden="true" style="position:absolute;left:0;top:0;right:0;height:3px;background:linear-gradient(90deg,#2E3192,#00AEEF)"></span>
+          <span style="display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:50%;background:#DEF1FD;color:#176FC0;margin-bottom:20px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:24px;height:24px"><path d="M5 3v8a3 3 0 0 0 6 0V3"></path><path d="M8 11v10"></path><path d="M17 3c-1.5 2-2 4-2 6.5V13h4V9.5C19 7 18.5 5 17 3Z"></path><path d="M17 13v8"></path></svg>
+          </span>
+          <h3 style="margin:0;font-size:1.1875rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">주방 · 식당 리넨</h3>
+          <p style="margin:10px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">행주 · 앞치마 · 조리복 · 식탁보를 위생 기준에 맞춰 세탁합니다.</p>
+          <ul style="margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px">
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">식당</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">급식소</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">카페</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">단체시설</li>
+          </ul>
+          <a href="#cta" style="margin-top:auto;display:inline-flex;align-items:center;gap:6px;padding-top:24px;font-size:0.875rem;font-weight:700;color:#176FC0;transition:gap 0.15s,color 0.15s" style-hover="gap:11px;color:#125A9E">
+            자세히 보기
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="m9 18 6-6-6-6"></path></svg>
+          </a>
+        </div>
+      </li>
+      <li data-rv="1" data-rvd="140" style="min-width:0">
+        <div style="position:relative;overflow:hidden;display:flex;flex-direction:column;height:100%;box-sizing:border-box;border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;transition:all 0.25s cubic-bezier(0.2,0,0.2,1)" style-hover="transform:translateY(-5px);box-shadow:0 18px 40px -12px rgba(20,48,110,0.22);border-color:#A6D9FA">
+          <span aria-hidden="true" style="position:absolute;left:0;top:0;right:0;height:3px;background:linear-gradient(90deg,#2E3192,#00AEEF)"></span>
+          <span style="display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:50%;background:#DEF1FD;color:#176FC0;margin-bottom:20px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:24px;height:24px"><rect x="3" y="4.5" width="18" height="16" rx="2"></rect><path d="M3 9.5h18M8 2.5v4M16 2.5v4"></path><path d="M8 14h2M14 14h2M8 17.5h2"></path></svg>
+          </span>
+          <h3 style="margin:0;font-size:1.1875rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">월세탁 정기 계약</h3>
+          <p style="margin:10px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">월 단위로 계약하고 고정 요일 · 고정 시간에 운영합니다.</p>
+          <ul style="margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px">
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">호텔</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">펜션</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">기업체</li>
+            <li style="border-radius:99px;background:#DEF1FD;padding:5px 13px;font-size:0.75rem;font-weight:600;color:#14306E">급식소 · 식당</li>
+          </ul>
+          <a href="#cta" style="margin-top:auto;display:inline-flex;align-items:center;gap:6px;padding-top:24px;font-size:0.875rem;font-weight:700;color:#176FC0;transition:gap 0.15s,color 0.15s" style-hover="gap:11px;color:#125A9E">
+            자세히 보기
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="m9 18 6-6-6-6"></path></svg>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════ 이용 절차 ═══════ -->
+<section id="process" style="background:#DEF1FD;padding:96px 0">
+  <div style="max-width:72rem;margin:0 auto;padding:0 32px">
+    <div data-rv="1" style="max-width:42rem">
+      <p style="margin:0 0 16px;display:flex;align-items:center;gap:12px;font-size:0.75rem;font-weight:700;letter-spacing:0.18em;color:#176FC0"><span aria-hidden="true" style="height:2px;width:24px;border-radius:99px;background:#0084D8"></span>이 용 절 차</p>
+      <h2 style="margin:0;font-size:clamp(1.625rem,1.2rem + 1.2vw,2.125rem);line-height:1.28;letter-spacing:-0.028em;font-weight:800;color:#14306E;text-wrap:balance">첫 통화부터 첫 납품까지 네 단계</h2>
+      <p style="margin:16px 0 0;font-size:1.0625rem;line-height:1.8;color:#3A4C66">주기를 정하고 나면 그 일정에 맞춰 수거와 납품이 이어집니다.</p>
+    </div>
+    <ol style="position:relative;margin:44px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+      <div aria-hidden="true" data-rv="1" data-grow="1" data-rvd="250" style="position:absolute;left:0;right:0;top:54px;height:2px;transform-origin:left;background:linear-gradient(90deg,transparent,#0084D8 12%,#0084D8 88%,transparent)"></div>
+      <li data-rv="1" style="position:relative;min-width:0">
+        <div data-loop="1" style="height:100%;box-sizing:border-box;border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:24px;animation:jcStep 8.8s cubic-bezier(0.2,0,0.2,1) infinite">
+          <span style="display:flex;width:36px;height:36px;align-items:center;justify-content:center;border-radius:50%;background:#14306E;color:#fff;font-size:0.875rem;font-weight:800;margin-bottom:16px;font-variant-numeric:tabular-nums">1</span>
+          <h3 style="margin:0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">문의 · 상담</h3>
+          <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.7;color:#69798F">전화 또는 견적 문의로 품목과 물량을 알려주시면 방식과 조건을 안내해 드립니다.</p>
+        </div>
+      </li>
+      <li data-rv="1" data-rvd="70" style="position:relative;min-width:0">
+        <div data-loop="1" style="height:100%;box-sizing:border-box;border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:24px;animation:jcStep 8.8s cubic-bezier(0.2,0,0.2,1) 2.2s infinite">
+          <span style="display:flex;width:36px;height:36px;align-items:center;justify-content:center;border-radius:50%;background:#14306E;color:#fff;font-size:0.875rem;font-weight:800;margin-bottom:16px;font-variant-numeric:tabular-nums">2</span>
+          <h3 style="margin:0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">수거</h3>
+          <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.7;color:#69798F">약속된 요일에 사업장을 방문해 세탁물을 수거합니다.</p>
+        </div>
+      </li>
+      <li data-rv="1" data-rvd="140" style="position:relative;min-width:0">
+        <div data-loop="1" style="height:100%;box-sizing:border-box;border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:24px;animation:jcStep 8.8s cubic-bezier(0.2,0,0.2,1) 4.4s infinite">
+          <span style="display:flex;width:36px;height:36px;align-items:center;justify-content:center;border-radius:50%;background:#14306E;color:#fff;font-size:0.875rem;font-weight:800;margin-bottom:16px;font-variant-numeric:tabular-nums">3</span>
+          <h3 style="margin:0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">검수 · 전문 세탁</h3>
+          <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.7;color:#69798F">품목과 수량을 검수한 뒤 업소용 설비로 고온 세탁 · 살균하고 건조 · 정리합니다.</p>
+        </div>
+      </li>
+      <li data-rv="1" data-rvd="210" style="position:relative;min-width:0">
+        <div data-loop="1" style="height:100%;box-sizing:border-box;border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:24px;animation:jcStep 8.8s cubic-bezier(0.2,0,0.2,1) 6.6s infinite">
+          <span style="display:flex;width:36px;height:36px;align-items:center;justify-content:center;border-radius:50%;background:#14306E;color:#fff;font-size:0.875rem;font-weight:800;margin-bottom:16px;font-variant-numeric:tabular-nums">4</span>
+          <h3 style="margin:0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">납품</h3>
+          <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.7;color:#69798F">정리된 세탁물을 정해진 요일에 사업장으로 납품합니다.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════ 강점 (벤토) ═══════ -->
+<section style="background:#fff;padding:96px 0">
+  <div style="max-width:72rem;margin:0 auto;padding:0 32px">
+    <div data-rv="1" style="max-width:42rem">
+      <p style="margin:0 0 16px;display:flex;align-items:center;gap:12px;font-size:0.75rem;font-weight:700;letter-spacing:0.18em;color:#176FC0"><span aria-hidden="true" style="height:2px;width:24px;border-radius:99px;background:#0084D8"></span>왜 지 성 크 리 닝 인 가</p>
+      <h2 style="margin:0;font-size:clamp(1.625rem,1.2rem + 1.2vw,2.125rem);line-height:1.28;letter-spacing:-0.028em;font-weight:800;color:#14306E;text-wrap:balance">정기 세탁에 필요한 것을 갖추고 있습니다</h2>
+      <p style="margin:16px 0 0;font-size:1.0625rem;line-height:1.8;color:#3A4C66">사업장 세탁물은 품목과 물량이 일정해서, 주기와 공정이 맞아야 운영이 편해집니다.</p>
+    </div>
+    <div style="margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+      <div data-rv="1" style="grid-column:span 2;border-radius:6px;border:1px solid #DCE5F0;background:linear-gradient(115deg,#FFFFFF 55%,#DEF1FD 100%);box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;transition:all 0.25s cubic-bezier(0.2,0,0.2,1);box-sizing:border-box;min-width:0" style-hover="border-color:#A6D9FA;box-shadow:0 12px 32px -8px rgba(20,48,110,0.18)">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:24px">
+          <div style="flex:1 1 16rem;min-width:0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0084D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:26px;height:26px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.2 1.9"></path></svg>
+            <h3 style="margin:12px 0 0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">원하는 주기에 맞춘 정기 세탁</h3>
+            <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">주 1회부터 3회 이상까지 사업장 운영에 맞춰 상담해 정합니다.</p>
+          </div>
+          <div style="flex:0 0 auto">
+            <div style="display:flex;gap:9px">
+              <span style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#69798F">월</span><span style="display:block;margin:6px auto 0;width:9px;height:9px;border-radius:50%;background:#176FC0"></span></span>
+              <span style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#93A2B6">화</span><span style="display:block;margin:6px auto 0;width:9px;height:9px;border-radius:50%;background:#DCE5F0"></span></span>
+              <span style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#69798F">수</span><span style="display:block;margin:6px auto 0;width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 2px #0084D8"></span></span>
+              <span style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#69798F">목</span><span style="display:block;margin:6px auto 0;width:9px;height:9px;border-radius:50%;background:#176FC0"></span></span>
+              <span style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#93A2B6">금</span><span style="display:block;margin:6px auto 0;width:9px;height:9px;border-radius:50%;background:#DCE5F0"></span></span>
+              <span style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#69798F">토</span><span style="display:block;margin:6px auto 0;width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 2px #0084D8"></span></span>
+              <span style="text-align:center"><span style="display:block;font-size:0.6875rem;font-weight:600;color:#93A2B6">일</span><span style="display:block;margin:6px auto 0;width:9px;height:9px;border-radius:50%;background:#DCE5F0"></span></span>
+            </div>
+            <p style="margin:10px 0 0;font-size:0.6875rem;color:#93A2B6">● 수거 · ○ 납품 — 요일은 상담으로</p>
+          </div>
+        </div>
+      </div>
+      <div data-rv="1" data-rvd="70" style="border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;transition:all 0.25s cubic-bezier(0.2,0,0.2,1);box-sizing:border-box;min-width:0" style-hover="border-color:#A6D9FA;box-shadow:0 12px 32px -8px rgba(20,48,110,0.18)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0084D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:26px;height:26px"><path d="M12 2.8 20 6v6c0 4.4-3.2 8-8 9.2C8 20 4.8 16.4 4.8 12V6Z"></path><path d="m9 12 2.2 2.2L15.4 10"></path></svg>
+        <h3 style="margin:12px 0 0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">고온 세탁 · 살균 공정</h3>
+        <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">업소용 설비로 고온 세탁과 살균을 거치고, 형광증백제 · 표백제는 쓰지 않습니다.</p>
+      </div>
+      <div data-rv="1" style="border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;transition:all 0.25s cubic-bezier(0.2,0,0.2,1);box-sizing:border-box;min-width:0" style-hover="border-color:#A6D9FA;box-shadow:0 12px 32px -8px rgba(20,48,110,0.18)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0084D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:26px;height:26px"><path d="M14 2.8H7a2 2 0 0 0-2 2v14.4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7.8Z"></path><path d="M14 2.8v5h5"></path><path d="m8.6 13.4 1.6 1.6 3.4-3.4"></path></svg>
+        <h3 style="margin:12px 0 0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">세탁일지 · 위생관리 기록</h3>
+        <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">원하실 경우 세탁일지와 위생관리 기록을 제공합니다.</p>
+      </div>
+      <div data-rv="1" data-rvd="70" style="border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;transition:all 0.25s cubic-bezier(0.2,0,0.2,1);box-sizing:border-box;min-width:0" style-hover="border-color:#A6D9FA;box-shadow:0 12px 32px -8px rgba(20,48,110,0.18)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0084D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:26px;height:26px"><path d="M3 8h11v9H3z"></path><path d="M14 11h4l3 3v3h-7z"></path><circle cx="7" cy="19" r="1.8"></circle><circle cx="17.5" cy="19" r="1.8"></circle></svg>
+        <h3 style="margin:12px 0 0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">수거 · 배달 전문</h3>
+        <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">정해진 일정에 맞춰 사업장을 방문해 수거하고 납품합니다.</p>
+      </div>
+      <div data-rv="1" data-rvd="140" style="border-radius:6px;border:1px solid #DCE5F0;background:#fff;box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;transition:all 0.25s cubic-bezier(0.2,0,0.2,1);box-sizing:border-box;min-width:0" style-hover="border-color:#A6D9FA;box-shadow:0 12px 32px -8px rgba(20,48,110,0.18)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0084D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:26px;height:26px"><ellipse cx="12" cy="6.5" rx="7.5" ry="3.2"></ellipse><path d="M4.5 6.5v5c0 1.8 3.4 3.2 7.5 3.2s7.5-1.4 7.5-3.2v-5"></path><path d="M4.5 11.5v5c0 1.8 3.4 3.2 7.5 3.2s7.5-1.4 7.5-3.2v-5"></path></svg>
+        <h3 style="margin:12px 0 0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">린넨 관리 부담 절감</h3>
+        <p style="margin:8px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">세탁 인력 · 설비 · 공간을 사업장에서 유지하지 않아도 됩니다.</p>
+      </div>
+      <div data-rv="1" style="position:relative;overflow:hidden;grid-column:1 / -1;border-radius:6px;border:1px solid #DCE5F0;background:linear-gradient(105deg,#FFFFFF 0%,#DEF1FD 100%);box-shadow:0 1px 3px rgba(20,48,110,0.08);padding:28px;box-sizing:border-box;min-width:0">
+        <img src="brand/jiseong-symbol.svg" alt="" aria-hidden="true" style="position:absolute;right:-30px;top:50%;width:190px;transform:translateY(-50%) rotate(-8deg);opacity:0.08;pointer-events:none">
+        <div style="position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:20px">
+          <span style="display:flex;width:48px;height:48px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;background:#fff;color:#176FC0;box-shadow:inset 0 0 0 1px #DCE5F0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:24px;height:24px"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18"></path><path d="M7.5 13.5h4M7.5 16.5h9"></path></svg>
+          </span>
+          <div style="flex:1 1 20rem;min-width:0">
+            <h3 style="margin:0;font-size:1.0625rem;line-height:1.32;letter-spacing:-0.028em;font-weight:800;color:#14306E">(주)지성이엔지가 운영합니다</h3>
+            <p style="margin:6px 0 0;font-size:0.875rem;line-height:1.75;color:#3A4C66">도로 안전 장비를 제조하는 법인의 세탁 사업 부문입니다. 계약과 정산이 법인 기준으로 처리됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 사회적 가치 ═══════ -->
+<section id="standard-workplace" style="position:relative;overflow:hidden;background:#14306E;color:#fff;padding:84px 0">
+  <div aria-hidden="true" data-loop="1" style="pointer-events:none;position:absolute;left:-10%;top:-40%;width:44rem;aspect-ratio:1;background:radial-gradient(circle at 50% 50%,rgba(0,174,239,0.22) 0%,rgba(0,174,239,0) 60%);animation:jcAur 16s ease-in-out infinite alternate"></div>
+  <div aria-hidden="true" data-loop="1" style="pointer-events:none;position:absolute;right:-14%;bottom:-50%;width:40rem;aspect-ratio:1;background:radial-gradient(circle at 50% 50%,rgba(46,49,146,0.5) 0%,rgba(46,49,146,0) 60%);animation:jcAur 21s ease-in-out infinite alternate-reverse"></div>
+  <img src="brand/jiseong-symbol-ondark.svg" alt="" aria-hidden="true" data-loop="1" style="pointer-events:none;position:absolute;left:-90px;bottom:-110px;width:330px;opacity:0.1;animation:jcSpin 110s linear infinite">
+  <div style="position:relative;max-width:72rem;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:40px">
+      <div data-rv="1" style="flex:1 1 26rem;min-width:0;max-width:42rem">
+        <p style="margin:0 0 16px;display:flex;align-items:center;gap:12px;font-size:0.75rem;font-weight:700;letter-spacing:0.18em;color:#A6D9FA"><span aria-hidden="true" style="height:2px;width:24px;border-radius:99px;background:#00AEEF"></span>사 회 적 가 치</p>
+        <h2 style="margin:0;font-size:clamp(1.625rem,1.2rem + 1.2vw,2.125rem);line-height:1.28;letter-spacing:-0.028em;font-weight:800;color:#fff;text-wrap:balance">장애인 표준사업장으로 운영합니다</h2>
+        <p style="margin:16px 0 0;font-size:1.0625rem;line-height:1.8;color:rgba(166,217,250,0.9)">지성크리닝은 장애인에게 안정적인 일자리를 제공하고 사회적 가치를 실현하기 위해 장애인 표준사업장으로 운영되고 있습니다.</p>
+      </div>
+      <div data-rv="1" data-rvd="100" style="flex-shrink:0">
+        <div style="position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:14px;border-radius:6px;background:rgba(255,255,255,0.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.22);padding:20px 24px">
+          <span aria-hidden="true" data-loop="1" style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,0.16) 50%,transparent 58%);background-size:220% 100%;animation:jcSheen 5.5s linear infinite;pointer-events:none"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6FD6FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:32px;height:32px;flex-shrink:0"><circle cx="12" cy="8.6" r="5.8"></circle><path d="m8.6 13.8-1.3 7.4 4.7-2.6 4.7 2.6-1.3-7.4"></path><path d="m9.7 8.6 1.7 1.7 3-3"></path></svg>
+          <span>
+            <strong style="display:block;font-size:1.0625rem;font-weight:800;letter-spacing:-0.02em;color:#fff">장애인 표준사업장</strong>
+            <span style="display:block;margin-top:2px;font-size:0.8125rem;color:#A6C5E8">고용노동부 · 한국장애인고용공단 · 제0000호</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 마무리 CTA ═══════ -->
+<section id="cta" style="background:#F4F8FC;padding:96px 0">
+  <div style="max-width:72rem;margin:0 auto;padding:0 32px">
+    <div data-rv="1" data-loop="1" style="border-radius:8px;padding:1.5px;background:conic-gradient(from var(--jcang) at 50% 50%,#2E3192,#00AEEF 28%,#A6D9FA 50%,#00AEEF 72%,#2E3192);animation:jcRing 9s linear infinite">
+      <div style="border-radius:6.5px;background:#fff;padding:56px 32px;text-align:center">
+        <div style="max-width:42rem;margin:0 auto">
+          <p style="margin:0 0 16px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:0.75rem;font-weight:700;letter-spacing:0.18em;color:#176FC0"><span aria-hidden="true" style="height:2px;width:24px;border-radius:99px;background:#0084D8"></span>견 적 · 상 담 문 의</p>
+          <h2 style="margin:0;font-size:clamp(1.625rem,1.2rem + 1.2vw,2.125rem);line-height:1.28;letter-spacing:-0.028em;font-weight:800;color:#14306E;text-wrap:balance">물량과 주기만 알려주시면 바로 견적을 드립니다</h2>
+          <p style="margin:16px 0 0;font-size:1.0625rem;line-height:1.8;color:#3A4C66">담당자가 확인 후 연락드립니다. 급하시면 전화가 가장 빠릅니다.</p>
+        </div>
+        <div style="margin-top:32px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px">
+          <a href="#cta" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;background:#176FC0;color:#fff;padding:16px 28px;font-size:1rem;font-weight:700;white-space:nowrap;transition:all 0.2s cubic-bezier(0.2,0,0.2,1)" style-hover="background:#125A9E;box-shadow:0 12px 32px -8px rgba(20,48,110,0.18);color:#fff;transform:translateY(-2px)">
+            견적 문의하기
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
+          </a>
+          <a href="tel:+82546215002" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;color:#176FC0;box-shadow:inset 0 0 0 1.5px #176FC0;padding:16px 28px;font-size:1rem;font-weight:700;white-space:nowrap;transition:all 0.2s cubic-bezier(0.2,0,0.2,1)" style-hover="background:rgba(23,111,192,0.07);color:#125A9E">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:17px;height:17px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"></path></svg>
+            <span style="font-variant-numeric:tabular-nums">054-621-5002</span>
+          </a>
+        </div>
+        <p style="margin:24px 0 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;font-size:0.875rem;color:#69798F">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0084D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="M20 10c0 5.5-8 12-8 12s-8-6.5-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="2.8"></circle></svg>
+          경상북도 경주시 천북면 모서안길 44
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 푸터 ═══════ -->
+<footer style="background:#0E2450;padding:56px 0 32px;font-size:0.875rem;color:#9FB6D4">
+  <div style="max-width:72rem;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;gap:40px;border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:36px">
+      <div style="flex:1 1 18rem;min-width:0">
+        <span style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <img src="brand/jiseong-symbol-ondark.svg" alt="" style="width:27px;height:32px;display:block">
+          <span style="font-size:1.3125rem;font-weight:800;letter-spacing:-0.045em;color:#fff;line-height:1">지성크리닝</span>
+        </span>
+        <address style="font-style:normal;line-height:1.85;margin:0">
+          경상북도 경주시 천북면 모서안길 44
+          <br>
+          대표전화 <a href="tel:+82546215002" style="color:#A6D9FA;font-variant-numeric:tabular-nums">054-621-5002</a>
+        </address>
+        <p style="margin:12px 0 0;line-height:1.85">지성크리닝은 <a href="http://jiseong.co.kr/" target="_blank" rel="noreferrer" style="color:#A6D9FA">(주)지성이엔지</a>가 운영하는 세탁 서비스입니다.</p>
+      </div>
+      <nav aria-label="서비스" style="min-width:9rem;flex-shrink:0">
+        <h2 style="margin:0 0 16px;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;color:#6E8CB4">서 비 스</h2>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
+          <li><a href="#services" style="font-size:0.9375rem;color:#C3D6EC">숙박 린넨 세탁</a></li>
+          <li><a href="#services" style="font-size:0.9375rem;color:#C3D6EC">주방 · 식당 리넨</a></li>
+          <li><a href="#services" style="font-size:0.9375rem;color:#C3D6EC">월세탁 정기 계약</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="안내" style="min-width:9rem;flex-shrink:0">
+        <h2 style="margin:0 0 16px;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;color:#6E8CB4">안 내</h2>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
+          <li><a href="#standard-workplace" style="font-size:0.9375rem;color:#C3D6EC">회사소개</a></li>
+          <li><a href="#standard-workplace" style="font-size:0.9375rem;color:#C3D6EC">장애인 표준사업장</a></li>
+          <li><a href="#cta" style="font-size:0.9375rem;color:#C3D6EC">견적 문의</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;column-gap:24px;row-gap:6px;padding-top:24px;font-size:0.8125rem;color:#8AA4C6">
+      <span>대표자 확인 필요</span>
+      <span style="font-variant-numeric:tabular-nums">사업자등록번호 000-00-00000</span>
+      <span style="font-variant-numeric:tabular-nums">통신판매업 제0000-경주-0000호</span>
+      <span style="font-variant-numeric:tabular-nums">팩스 054-000-0000</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;column-gap:24px;row-gap:10px;padding-top:12px;font-size:0.8125rem;color:#6E8CB4">
+      <span>© 2026 지성크리닝 · (주)지성이엔지</span>
+      <span style="color:#C08A4A">사업자 정보는 확인 전 임시값입니다</span>
+    </div>
+  </div>
+</footer>
+
+<!-- 모바일 하단 CTA 바 -->
+<div id="jc-mbar" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;gap:8px;border-top:1px solid #DCE5F0;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:10px 14px calc(10px + env(safe-area-inset-bottom))">
+  <a href="tel:+82546215002" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;background:#14306E;color:#fff;padding:13px 16px;font-size:0.875rem;font-weight:700;white-space:nowrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:17px;height:17px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"></path></svg>
+    전화 상담
+  </a>
+  <a href="#cta" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;background:#176FC0;color:#fff;padding:13px 16px;font-size:0.875rem;font-weight:700;white-space:nowrap">견적 문의</a>
+</div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;motion&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;동적&quot;, &quot;차분&quot;], &quot;default&quot;: &quot;동적&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;모션&quot; },
+  &quot;heroPanel&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;히어로&quot; }
+}">
+class Component extends DCLogic {
+  componentDidMount() {
+    this._c = [];
+    const ease = "cubic-bezier(0.2,0,0.2,1)";
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // 헤더 그림자 + 스크롤 진행 바
+    const onScroll = () => {
+      const h = document.getElementById("jc-header");
+      const p = document.getElementById("jc-progress");
+      const y = window.scrollY;
+      if (h) h.style.boxShadow = y > 8 ? "0 1px 0 #DCE5F0, 0 4px 16px -8px rgba(20,48,110,0.16)" : "0 1px 0 #DCE5F0";
+      if (p) {
+        const d = document.documentElement;
+        const max = d.scrollHeight - window.innerHeight;
+        p.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + "%";
+      }
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    this._c.push(() => window.removeEventListener("scroll", onScroll));
+
+    // 스크롤 등장 — JS가 숨기고 JS가 되살린다 (원본 reveal.tsx 와 같은 원칙)
+    if (!reduce) {
+      const els = Array.from(document.querySelectorAll("[data-rv]"));
+      const hid = [];
+      els.forEach((el) => {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return;
+        hid.push(el);
+        el.style.opacity = "0";
+        el.style.transform = el.hasAttribute("data-grow") ? "scaleX(0)" : "translateY(18px)";
+        el.style.transition = "none";
+      });
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        hid.forEach((el) => {
+          el.style.transition = "opacity 0.62s " + ease + ", transform 0.62s " + ease;
+          el.style.transitionDelay = (el.getAttribute("data-rvd") || "0") + "ms";
+        });
+      }));
+      const io = new IntersectionObserver((es) => {
+        es.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target;
+          el.style.opacity = "1";
+          el.style.transform = el.hasAttribute("data-grow") ? "scaleX(1)" : "none";
+          io.unobserve(el);
+        });
+      }, { rootMargin: "0px 0px -10% 0px", threshold: 0.05 });
+      hid.forEach((el) => io.observe(el));
+      this._c.push(() => io.disconnect());
+    }
+
+    // 히어로 단어 로테이션
+    const rot = document.getElementById("jc-rot");
+    if (rot && !reduce) {
+      const ws = Array.from(rot.children);
+      let i = 0;
+      // 컨테이너가 현재 단어 폭을 따라가게 한다 — 가장 긴 단어 기준으로 벌어지는 구멍 방지
+      const fit = () => {
+        const w = ws[i];
+        const prev = w.style.transform;
+        const prevT = w.style.transition;
+        w.style.transition = "none";
+        w.style.transform = "none";
+        rot.style.width = Math.ceil(w.getBoundingClientRect().width) + "px";
+        w.style.transform = prev;
+        w.style.transition = prevT;
+      };
+      ws.forEach((w, k) => {
+        w.style.transition = "opacity 0.5s " + ease + ", transform 0.5s " + ease;
+        if (k) { w.style.opacity = "0"; w.style.transform = "translateY(0.6em)"; }
+      });
+      rot.style.justifyItems = "start";
+      rot.style.overflow = "visible";
+      rot.style.transition = "width 0.35s " + ease;
+      fit();
+      window.addEventListener("resize", fit);
+      this._c.push(() => window.removeEventListener("resize", fit));
+      this._wt = setInterval(() => {
+        if (this._calm()) return;
+        const cur = ws[i];
+        i = (i + 1) % ws.length;
+        const nxt = ws[i];
+        cur.style.opacity = "0";
+        cur.style.transform = "translateY(-0.6em)";
+        fit();
+        nxt.style.transition = "none";
+        nxt.style.transform = "translateY(0.6em)";
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          nxt.style.transition = "opacity 0.5s " + ease + ", transform 0.5s " + ease;
+          nxt.style.opacity = "1";
+          nxt.style.transform = "translateY(0)";
+        }));
+      }, 2600);
+      this._c.push(() => clearInterval(this._wt));
+    }
+
+    // 모바일 전환 — 하단 CTA 바 표시, 상단 요소 정리
+    const mq = matchMedia("(max-width: 1023px)");
+    const applyMq = () => {
+      const m = mq.matches;
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.style.display = v; };
+      set("jc-mbar", m ? "flex" : "none");
+      set("jc-nav", m ? "none" : "flex");
+      set("jc-teltop", m ? "none" : "block");
+      set("jc-qbtn", m ? "none" : "inline-flex");
+    };
+    applyMq();
+    mq.addEventListener("change", applyMq);
+    this._c.push(() => mq.removeEventListener("change", applyMq));
+
+    this._applyMotion();
+  }
+  componentDidUpdate() { this._applyMotion(); }
+  componentWillUnmount() { (this._c || []).forEach((f) => f()); }
+  _calm() { return (this.props.motion ?? "동적") === "차분"; }
+  _applyMotion() {
+    const calm = this._calm();
+    document.querySelectorAll("[data-loop]").forEach((el) => {
+      el.style.animationPlayState = calm ? "paused" : "running";
+    });
+  }
+  renderVals() {
+    return { showPanel: this.props.heroPanel ?? true };
+  }
+}
+
+</script>
+</body>
+</html>
