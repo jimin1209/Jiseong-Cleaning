@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { T } from "./copy-text";
 import { Icon } from "./icons";
 import { slides } from "@/lib/sample";
 
@@ -73,15 +74,15 @@ export function AutoSlider() {
                     className="h-0.5 w-6 rounded-full bg-current opacity-70"
                     aria-hidden="true"
                   />
-                  {slide.eyebrow}
+                  <T k={`slides.${slide.id}.eyebrow`} />
                 </p>
               )}
               <p className="max-w-[26em] text-[1.25rem] font-extrabold leading-[1.35] tracking-[-0.02em] sm:text-[1.5rem]">
-                {slide.title}
+                <T k={`slides.${slide.id}.title`} />
               </p>
               {slide.body && (
                 <p className="mt-3 max-w-[34em] text-sm leading-[1.75] opacity-85 sm:text-[0.9375rem]">
-                  {slide.body}
+                  <T k={`slides.${slide.id}.body`} />
                 </p>
               )}
             </div>

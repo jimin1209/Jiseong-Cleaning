@@ -1,3 +1,5 @@
+import { T } from "./copy-text";
+
 /**
  * 지성이엔지 심볼마크.
  *
@@ -95,7 +97,7 @@ export function BrandLockup({
             onDark ? "text-white" : "text-navy"
           }`}
         >
-          지성크리닝
+          <T k="brand.name" />
         </span>
         {showParent && (
           <span
@@ -103,7 +105,7 @@ export function BrandLockup({
               onDark ? "text-pale" : "text-muted"
             }`}
           >
-            (주)지성이엔지
+            <T k="brand.parent" />
           </span>
         )}
       </span>

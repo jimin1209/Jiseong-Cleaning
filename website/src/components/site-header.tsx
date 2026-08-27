@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { BrandLockup } from "./brand-mark";
 import { ContactSplitLink } from "./contact-action";
 import { Icon } from "./icons";
+import { T } from "./copy-text";
 import { ButtonLink, Container } from "./ui";
 import { nav, site } from "@/lib/site";
 
@@ -70,7 +71,7 @@ export function SiteHeader() {
           </Link>
 
           <nav className="ml-auto hidden items-center gap-1 lg:flex" aria-label="주 메뉴">
-            {nav.map((item) => (
+            {nav.map((item, i) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -81,7 +82,7 @@ export function SiteHeader() {
                     : "text-ink-2 hover:bg-tint hover:text-navy"
                 }`}
               >
-                {item.label}
+                <T k={`nav.${i}.label`} />
               </Link>
             ))}
           </nav>
@@ -95,7 +96,7 @@ export function SiteHeader() {
               mobileClassName="hidden md:block"
             >
               <span className="block text-[0.65rem] font-bold tracking-[0.1em] text-muted">
-                전화 문의
+                <T k="header.telLabel" />
               </span>
               <span
                 className="block text-[1.1875rem] font-extrabold tracking-[-0.02em] text-navy"
@@ -106,7 +107,7 @@ export function SiteHeader() {
             </ContactSplitLink>
 
             <ButtonLink href="/quote" size="sm" className="hidden lg:inline-flex">
-              견적 문의
+              <T k="header.quoteCta" />
             </ButtonLink>
 
             <button
@@ -139,7 +140,7 @@ export function SiteHeader() {
         <Container>
           <nav className="py-2" aria-label="모바일 메뉴">
             <ul>
-              {nav.map((item) => (
+              {nav.map((item, i) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -149,7 +150,7 @@ export function SiteHeader() {
                       isActive(item.href) ? "text-brand" : "text-ink-2"
                     }`}
                   >
-                    {item.label}
+                    <T k={`nav.${i}.label`} />
                   </Link>
                 </li>
               ))}

@@ -1,3 +1,4 @@
+import { T } from "./copy-text";
 import { Card } from "./ui";
 import { reviews } from "@/lib/sample";
 
@@ -27,12 +28,13 @@ export function ReviewMarquee() {
             aria-hidden={i >= items.length || undefined}
             className="mr-4 w-[16.5rem] shrink-0"
           >
+            {/* 이음새 복제분(뒤 절반)도 같은 키를 읽는다 — 편집 시 함께 바뀐다 */}
             <Card className="h-full p-6">
               <p className="text-[0.9375rem] font-semibold leading-[1.7] text-ink-2">
-                “{review.quote}”
+                “<T k={`reviews.${i % items.length}.quote`} />”
               </p>
               <p className="mt-3 text-[0.8125rem] font-bold text-muted">
-                {review.name} · {review.biz}
+                <T k={`reviews.${i % items.length}.name`} /> · <T k={`reviews.${i % items.length}.biz`} />
               </p>
             </Card>
           </li>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { DeviceSplit, smsHref } from "./contact-action";
+import { T } from "./copy-text";
 import { Icon } from "./icons";
 import { ButtonLink } from "./ui";
 import { site } from "@/lib/site";
@@ -50,14 +51,14 @@ export function FloatingContact() {
     return () => window.removeEventListener("keydown", onKey);
   }, [notice]);
 
-  // 미개설 채널 안내 — 잠시 보여주고 스스로 사라진다
-  const showNotice = (message: string) => {
-    setNotice(message);
+  // 미개설 채널 안내 — 잠시 보여주고 스스로 사라진다. 문구는 copy 키로 가리킨다
+  const showNotice = (messageKey: string) => {
+    setNotice(messageKey);
     window.clearTimeout(noticeTimer.current);
     noticeTimer.current = window.setTimeout(() => setNotice(null), 6000);
   };
 
-  const item = (glyph: ReactNode, label: string) => (
+  const item = (glyph: ReactNode, label: ReactNode) => (
     <>
       <span className="flex size-8 items-center justify-center rounded-full bg-tint text-brand transition-colors duration-150 group-hover:bg-brand group-hover:text-white">
         {glyph}
@@ -77,7 +78,7 @@ export function FloatingContact() {
           role="status"
           className="absolute bottom-0 right-[calc(100%+0.625rem)] w-60 rounded-brand border border-line bg-white px-3.5 py-3 text-[0.8125rem] font-semibold leading-relaxed text-navy shadow-raised lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2"
         >
-          {notice}
+          <T k={notice} />
           <ButtonLink
             href="/quote"
             size="sm"
@@ -85,7 +86,7 @@ export function FloatingContact() {
             className="mt-2.5"
             onClick={() => setNotice(null)}
           >
-            견적 문의로 이동
+            <T k="floating.noticeCta" />
           </ButtonLink>
         </div>
       )}
@@ -95,42 +96,42 @@ export function FloatingContact() {
         <DeviceSplit
           pc={
             <Link href="/quote" className={itemClass} title={site.tel}>
-              {item(<Icon.phone className="size-4" />, "전화 문의")}
+              {item(<Icon.phone className="size-4" />, <T k="floating.tel" />)}
             </Link>
           }
           mobile={
             <a href={site.telHref} className={itemClass}>
-              {item(<Icon.phone className="size-4" />, "전화 문의")}
+              {item(<Icon.phone className="size-4" />, <T k="floating.tel" />)}
             </a>
           }
         />
 
         {/* ② 견적 문의 폼 */}
         <Link href="/quote" className={itemClass}>
-          {item(<Icon.doc className="size-4" />, "견적 문의")}
+          {item(<Icon.doc className="size-4" />, <T k="floating.quote" />)}
         </Link>
 
         {/* ③ SMS — 모바일 전용(문자 자동 작성). PC 에는 표시하지 않는다 */}
         <a href={smsHref} className={`${itemClass} lg:hidden`}>
-          {item(<Icon.sms className="size-4" />, "문자 문의")}
+          {item(<Icon.sms className="size-4" />, <T k="floating.sms" />)}
         </a>
 
         {/* ④·⑤ 카카오톡 채널·챗봇 — 미개설, 탭만 먼저 노출 */}
         <button
           type="button"
-          onClick={() => showNotice("카카오톡 채널은 준비 중입니다. 견적 문의를 이용해 주세요.")}
+          onClick={() => showNotice("floating.kakao.notice")}
           className={itemClass}
         >
           <PendingDot />
-          {item(<Icon.chat className="size-4" />, "카카오톡")}
+          {item(<Icon.chat className="size-4" />, <T k="floating.kakao" />)}
         </button>
         <button
           type="button"
-          onClick={() => showNotice("챗봇 상담은 준비 중입니다. 견적 문의를 이용해 주세요.")}
+          onClick={() => showNotice("floating.bot.notice")}
           className={itemClass}
         >
           <PendingDot />
-          {item(<Icon.bot className="size-4" />, "챗봇 상담")}
+          {item(<Icon.bot className="size-4" />, <T k="floating.bot" />)}
         </button>
       </div>
     </nav>
