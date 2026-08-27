@@ -15,7 +15,7 @@ import {
 } from "@/components/ui";
 import { faqs } from "@/lib/faq";
 import { processSteps, reasons, services } from "@/lib/services";
-import { certification } from "@/lib/sample";
+import { certificationIssuer } from "@/lib/business";
 import { site, targetIndustries, trustPoints } from "@/lib/site";
 
 export default function HomePage() {
@@ -243,7 +243,7 @@ export default function HomePage() {
                     장애인 표준사업장
                   </strong>
                   <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
-                    {certification?.issuer ?? "인증기관"}
+                    {certificationIssuer}
                   </span>
                 </span>
               </div>

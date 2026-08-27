@@ -11,7 +11,7 @@ import {
   Section,
   SectionHead,
 } from "@/components/ui";
-import { businessInfo, certification } from "@/lib/sample";
+import { businessInfo, certificationIssuer } from "@/lib/business";
 import { site, targetIndustries } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -151,7 +151,7 @@ export default function AboutPage() {
                     장애인 표준사업장
                   </strong>
                   <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">
-                    {certification?.issuer ?? "인증기관"}
+                    {certificationIssuer}
                   </span>
                 </span>
               </div>

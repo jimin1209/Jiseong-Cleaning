@@ -5,7 +5,6 @@ import { MapEmbeds } from "@/components/map-embeds";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { ButtonAnchor, Card, Container, Section, SectionHead } from "@/components/ui";
-import { businessHours } from "@/lib/sample";
 import { processSteps } from "@/lib/services";
 import { site } from "@/lib/site";
 
@@ -43,13 +42,6 @@ export default function QuotePage() {
                 <p className="mx-auto mt-4 max-w-xl text-base leading-[1.8] text-[#C7D9ED]">
                   전화로 물량과 희망 날짜를 알려 주시면 담당자가 상담 후 견적을 안내해 드립니다.
                 </p>
-                {businessHours && (
-                  <div className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-[#A6C5E8]">
-                    <p data-numeric>{businessHours.weekday}</p>
-                    <p data-numeric>{businessHours.saturday}</p>
-                    <p>{businessHours.holiday}</p>
-                  </div>
-                )}
                 <ButtonAnchor href={site.telHref} className="mt-8" size="lg">
                   전화로 견적 문의하기
                 </ButtonAnchor>

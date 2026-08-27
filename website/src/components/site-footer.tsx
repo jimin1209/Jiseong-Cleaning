@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrandLockup } from "./brand-mark";
 import { Container } from "./ui";
-import { businessInfo } from "@/lib/sample";
+import { businessInfo } from "@/lib/business";
 import { nav, site } from "@/lib/site";
 
 export function SiteFooter() {

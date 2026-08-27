@@ -12,7 +12,6 @@ import {
   Section,
   SectionHead,
 } from "@/components/ui";
-import { businessHours, capacity, serviceAreas } from "@/lib/sample";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -99,29 +98,6 @@ export default function FacilityPage() {
               lede="전문 세탁기와 건조기, 프레스, 분류·적재 공간으로 이루어져 있습니다."
             />
           </Reveal>
-
-          {capacity && (
-            <Reveal delay={60}>
-              <dl className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {capacity.map((c) => (
-                  <div
-                    key={c.label}
-                    className="rounded-brand border border-line bg-white px-5 py-4 shadow-card"
-                  >
-                    <dt className="text-[0.75rem] font-bold tracking-[0.08em] text-faint">
-                      {c.label}
-                    </dt>
-                    <dd className="m-0 mt-1.5 text-[1.5rem] font-extrabold tracking-[-0.03em] text-navy">
-                      <span data-numeric>{c.value}</span>
-                      <span className="ml-1 text-[0.875rem] font-bold text-muted">
-                        {c.unit}
-                      </span>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </Reveal>
-          )}
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {(
@@ -232,79 +208,6 @@ export default function FacilityPage() {
             })}
           </ul>
 
-
-          {/* 운영 시간 · 서비스 권역 */}
-          {(businessHours || serviceAreas) && (
-            <Reveal delay={180}>
-              <div className="mt-10 grid gap-5 sm:grid-cols-2">
-                {businessHours && (
-                  <Card className="p-6">
-                    <h3 className="text-[0.6875rem] font-bold tracking-[0.16em] text-faint">
-                      운 영 시 간
-                    </h3>
-                    <dl className="mt-4 flex flex-col gap-2.5 text-[0.9375rem]">
-                      {[
-                        ["평일", businessHours.weekday],
-                        ["토요일", businessHours.saturday],
-                        ["휴무", businessHours.holiday],
-                      ].map(([k, v]) => (
-                        <div key={k} className="flex gap-3">
-                          <dt className="w-14 shrink-0 text-[0.8125rem] font-bold text-muted">
-                            {k}
-                          </dt>
-                          <dd className="m-0 text-ink-2" data-numeric>
-                            {v}
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                    <p className="mt-4 border-t border-line pt-3.5 text-[0.8125rem] leading-[1.7] text-muted">
-                      수거 · 배달(납품) 시간은 사업장 일정에 맞춰 상담 시 정합니다.
-                    </p>
-                  </Card>
-                )}
-
-                {serviceAreas && (
-                  <Card className="p-6">
-                    <h3 className="text-[0.6875rem] font-bold tracking-[0.16em] text-faint">
-                      수 거 · 납 품 권 역
-                    </h3>
-                    <div className="mt-4 flex flex-col gap-3.5">
-                      <div>
-                        <span className="text-[0.75rem] font-bold text-sky">주 권역</span>
-                        <ul className="mt-1.5 flex flex-wrap gap-1.5">
-                          {serviceAreas.primary.map((a) => (
-                            <li key={a}>
-                              <span className="inline-flex rounded-full bg-navy px-3 py-1 text-xs font-bold text-white">
-                                {a}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <span className="text-[0.75rem] font-bold text-muted">
-                          협의 가능
-                        </span>
-                        <ul className="mt-1.5 flex flex-wrap gap-1.5">
-                          {serviceAreas.secondary.map((a) => (
-                            <li key={a}>
-                              <span className="inline-flex rounded-full bg-tint px-3 py-1 text-xs font-semibold text-navy">
-                                {a}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                    <p className="mt-4 border-t border-line pt-3.5 text-[0.8125rem] leading-[1.7] text-muted">
-                      사업장 지역을 알려 주시면 가능 여부를 확인해 드립니다.
-                    </p>
-                  </Card>
-                )}
-              </div>
-            </Reveal>
-          )}
         </Container>
       </Section>
 
