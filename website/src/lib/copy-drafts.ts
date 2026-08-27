@@ -36,6 +36,16 @@ export type CopyDraftInput = Pick<CopyDraft, "title" | "page" | "edits">;
 
 /** Netlify 빌드·런타임에서 자동으로 설정되는 환경변수 */
 const onNetlify = Boolean(process.env.NETLIFY || process.env.NETLIFY_LOCAL);
+/**
+ * Netlify 런타임(Next.js 서버 핸들러)에는 NETLIFY 변수가 없을 수 있다 —
+ * 실측(2026-08-28): 프로덕션이 SQLite 분기로 빠져 읽기 전용 FS 에서 실패했다.
+ * 수동 Blobs 자격증명(NETLIFY_BLOBS_TOKEN + SITE_ID)이 있으면 무조건 Blobs 를 쓴다.
+ */
+const hasManualBlobs = Boolean(
+  process.env.NETLIFY_BLOBS_TOKEN &&
+    (process.env.SITE_ID ?? process.env.NETLIFY_SITE_ID),
+);
+const useBlobs = onNetlify || hasManualBlobs;
 
 const STORE_NAME = "jiseong-cleaning-copy-drafts";
 /** 다음 번호를 담아두는 키. Blobs 에는 자동 증가가 없어 직접 센다 */
@@ -232,11 +242,11 @@ async function countFromSqlite(): Promise<number> {
 /* ═══════════════ 공개 인터페이스 ═══════════════ */
 
 export async function saveCopyDraft(input: CopyDraftInput): Promise<number> {
-  return onNetlify ? saveToBlobs(input) : saveToSqlite(input);
+  return useBlobs ? saveToBlobs(input) : saveToSqlite(input);
 }
 
 export async function getCopyDraft(id: number): Promise<CopyDraft | null> {
-  return onNetlify ? getFromBlobs(id) : getFromSqlite(id);
+  return useBlobs ? getFromBlobs(id) : getFromSqlite(id);
 }
 
 /** 기존 안을 이어서 수정("덮어쓰기 저장") — 상태는 유지하고 내용·시각만 갱신 */
@@ -252,7 +262,7 @@ export async function updateCopyDraft(
     ...input,
     updatedAt: new Date().toISOString(),
   };
-  await (onNetlify ? putToBlobs(next) : putToSqlite(next));
+  await (useBlobs ? putToBlobs(next) : putToSqlite(next));
   return true;
 }
 
@@ -263,20 +273,20 @@ export async function setCopyDraftStatus(
   const draft = await getCopyDraft(id);
   if (!draft) return false;
 
-  await (onNetlify
+  await (useBlobs
     ? putToBlobs({ ...draft, status })
     : putToSqlite({ ...draft, status }));
   return true;
 }
 
 export async function listCopyDrafts(limit = 200): Promise<CopyDraft[]> {
-  return onNetlify ? listFromBlobs(limit) : listFromSqlite(limit);
+  return useBlobs ? listFromBlobs(limit) : listFromSqlite(limit);
 }
 
 /** 지금까지 발급된 안 번호 — 새 안의 기본 제목("N안") 번호를 만드는 데 쓴다 */
 export async function countCopyDrafts(): Promise<number> {
-  return onNetlify ? countFromBlobs() : countFromSqlite();
+  return useBlobs ? countFromBlobs() : countFromSqlite();
 }
 
 /** 관리자 화면에 어디에 저장되는지 알려준다 */
-export const copyDraftBackend = onNetlify ? "Netlify Blobs" : "SQLite 파일";
+export const copyDraftBackend = useBlobs ? "Netlify Blobs" : "SQLite 파일";
