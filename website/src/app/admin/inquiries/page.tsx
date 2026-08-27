@@ -57,18 +57,10 @@ export default async function AdminInquiriesPage() {
           </div>
         ) : (
           <div className="overflow-x-auto rounded-brand border border-line bg-white shadow-card">
-            <table className="w-full min-w-[62rem] border-collapse text-sm">
+            <table className="w-full min-w-[48rem] border-collapse text-sm">
               <thead>
                 <tr>
-                  {[
-                    "접수",
-                    "업체 · 업종",
-                    "담당자 · 연락처",
-                    "지역",
-                    "품목",
-                    "물량 · 주기",
-                    "문의 내용",
-                  ].map((h) => (
+                  {["접수", "업체명", "성함 · 연락처", "주소", "문의 내용"].map((h) => (
                     <th
                       key={h}
                       className="border-b border-line bg-tint px-4 py-3 text-left text-[0.6875rem] font-bold tracking-[0.08em] whitespace-nowrap text-navy"
@@ -91,7 +83,6 @@ export default async function AdminInquiriesPage() {
                     </td>
                     <td className="border-b border-line px-4 py-3.5">
                       <span className="block font-bold text-ink">{q.company}</span>
-                      <span className="text-[0.78rem] text-muted">{q.industry}</span>
                     </td>
                     <td className="border-b border-line px-4 py-3.5 whitespace-nowrap">
                       <span className="block text-ink-2">{q.contactName}</span>
@@ -113,13 +104,6 @@ export default async function AdminInquiriesPage() {
                     </td>
                     <td className="border-b border-line px-4 py-3.5 text-ink-2">
                       {q.region}
-                    </td>
-                    <td className="border-b border-line px-4 py-3.5 text-ink-2">
-                      {q.itemsText || "—"}
-                    </td>
-                    <td className="border-b border-line px-4 py-3.5 text-ink-2">
-                      <span className="block">{q.volume || "—"}</span>
-                      <span className="text-[0.78rem] text-muted">{q.cycle || "—"}</span>
                     </td>
                     <td className="border-b border-line px-4 py-3.5 text-ink-2">
                       <span className="block max-w-[22rem] whitespace-pre-wrap">
