@@ -148,8 +148,9 @@ export const slides: Slide[] = [
     id: "cleaning",
     tone: "navy",
     eyebrow: site.name,
-    title: site.tagline,
-    body: "약속한 날짜에 수거하고, 세탁·살균을 거쳐 배송합니다.",
+    // 히어로 h1(tagline)과 중복되지 않게 확정 서비스 문구를 쓴다
+    title: "안전한 세탁·살균을 거쳐 약속된 날짜에 수거, 배송해 드립니다.",
+    body: "호텔 · 모텔 · 펜션 · 사우나 · 헬스장 · 단체시설",
     image: null,
   },
   {

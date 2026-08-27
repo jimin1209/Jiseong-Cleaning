@@ -23,7 +23,6 @@ export default function QuotePage() {
       <PageHero
         eyebrow="견 적 · 상 담 문 의"
         title="확인 후 연락드립니다."
-        lede="급하시면 전화가 가장 빠릅니다."
       />
 
       <Section tone="white">
@@ -149,7 +148,7 @@ export default function QuotePage() {
         <Section tone="tint" className="!py-14 sm:!py-16">
           <Container>
             <Reveal>
-              <SectionHead eyebrow="이 용 후 기" title="이용 후기" />
+              <SectionHead eyebrow="이 용 후 기" title="먼저 이용하신 사업장의 후기입니다" />
             </Reveal>
           </Container>
           <div className="mt-9">
@@ -168,8 +167,7 @@ export default function QuotePage() {
             <div className="flex flex-wrap items-center gap-4 text-[0.9375rem] text-ink-2">
               <Icon.pin className="size-5 shrink-0 text-sky" />
               <span>
-                <strong className="font-bold text-navy">{site.address}</strong> ·
-                사업장 고객과 거래합니다.
+                <strong className="font-bold text-navy">{site.address}</strong>
               </span>
             </div>
           </Reveal>
