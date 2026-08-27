@@ -30,6 +30,14 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // 페이지 전환이 끝난 뒤 최상단을 다시 확정해 브라우저의 스크롤 복원을 덮는다.
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [pathname]);
+
   // 메뉴가 열린 동안 배경 스크롤을 막는다
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
