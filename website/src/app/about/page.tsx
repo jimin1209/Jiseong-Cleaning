@@ -11,7 +11,7 @@ import {
   Section,
   SectionHead,
 } from "@/components/ui";
-import { businessInfo, certification, SAMPLE_CONTENT } from "@/lib/sample";
+import { businessInfo, certification } from "@/lib/sample";
 import { site, targetIndustries } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -70,13 +70,6 @@ export default function AboutPage() {
                   <dt className="text-[0.8125rem] font-bold text-muted">운영</dt>
                   <dd className="m-0 text-ink-2">{site.parent}</dd>
 
-                  {businessInfo.representative && (
-                    <>
-                      <dt className="text-[0.8125rem] font-bold text-muted">대표자</dt>
-                      <dd className="m-0 text-ink-2">{businessInfo.representative}</dd>
-                    </>
-                  )}
-
                   {businessInfo.registrationNumber && (
                     <>
                       <dt className="text-[0.8125rem] font-bold text-muted">
@@ -112,12 +105,6 @@ export default function AboutPage() {
                     숙박 세탁물 · 주방 세탁물 · 월 세탁 정기 계약
                   </dd>
                 </dl>
-
-                {SAMPLE_CONTENT && (
-                  <p className="mt-4 rounded-brand bg-warn-bg px-3.5 py-2.5 text-[0.75rem] leading-[1.6] font-semibold text-warn">
-                    대표자 · 팩스는 확인 전 임시값입니다.
-                  </p>
-                )}
 
                 <p className="mt-5 border-t border-line pt-5 text-[0.8125rem] leading-[1.8] text-muted">
                   모회사 본사

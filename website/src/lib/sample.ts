@@ -19,17 +19,13 @@ export const SAMPLE_CONTENT = process.env.NEXT_PUBLIC_SAMPLE_CONTENT !== "off";
  * 사업자 정보.
  *
  * 사업자등록번호는 확인된 실제 값을 사용한다.
- * 나머지 번호와 담당자 정보는 확정 전이므로 샘플 모드에서만 표시한다.
+ * 나머지 인증 정보는 확정 전이므로 샘플 모드에서만 표시한다.
  */
 export const businessInfo = {
   /** 사업자등록번호 — 확인된 실제 값 */
   registrationNumber: "505-81-64376",
-  /** 대표자 — 확정 필요. 사람 이름을 지어내지 않는다 */
-  representative: SAMPLE_CONTENT ? "확인 필요" : null,
-  /** 통신판매업 신고번호 — 온라인 판매를 하지 않으면 해당 없음일 수 있다 */
-  mailOrderNumber: SAMPLE_CONTENT ? "제0000-경주-0000호" : null,
-  /** 팩스 — 확정 필요 */
-  fax: SAMPLE_CONTENT ? "054-000-0000" : null,
+  /** 팩스 — 확인된 실제 값 */
+  fax: "054-774-5002",
 } as const;
 
 /**

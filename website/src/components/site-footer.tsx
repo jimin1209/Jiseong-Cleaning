@@ -52,19 +52,11 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        {/* 사업자 정보 — 사업자등록번호는 확정값, 나머지는 샘플 모드에서만 표시 */}
+        {/* 확인된 사업자 정보 */}
         <div className="flex flex-wrap gap-x-6 gap-y-1.5 pt-6 text-[0.8125rem] text-[#8AA4C6]">
-          {businessInfo.representative && (
-            <span>대표자 {businessInfo.representative}</span>
-          )}
           {businessInfo.registrationNumber && (
             <span data-numeric>
               사업자등록번호 {businessInfo.registrationNumber}
-            </span>
-          )}
-          {businessInfo.mailOrderNumber && (
-            <span data-numeric>
-              통신판매업 {businessInfo.mailOrderNumber}
             </span>
           )}
           {businessInfo.fax && <span data-numeric>팩스 {businessInfo.fax}</span>}
