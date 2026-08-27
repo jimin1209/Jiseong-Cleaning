@@ -103,19 +103,10 @@ export function FloatingContact() {
             {rowBody(<Icon.doc className="size-5 shrink-0 text-brand" />, "견적 문의 폼")}
           </Link>
 
-          {/* ③ SMS — PC /quote · 모바일 문자 자동 작성 */}
-          <DeviceSplit
-            pc={
-              <Link href="/quote" onClick={close} className={rowClass}>
-                {rowBody(<Icon.sms className="size-5 shrink-0 text-brand" />, "문자 문의")}
-              </Link>
-            }
-            mobile={
-              <a href={smsHref} className={rowClass}>
-                {rowBody(<Icon.sms className="size-5 shrink-0 text-brand" />, "문자 문의")}
-              </a>
-            }
-          />
+          {/* ③ SMS — 모바일 전용(문자 자동 작성). PC 에는 표시하지 않는다 */}
+          <a href={smsHref} className={`${rowClass} lg:hidden`}>
+            {rowBody(<Icon.sms className="size-5 shrink-0 text-brand" />, "문자 문의")}
+          </a>
 
           {/* ④·⑤ 카카오톡 채널·챗봇 — 미개설, 버튼만 먼저 노출 */}
           <button
