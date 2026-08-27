@@ -120,9 +120,6 @@ export default function FacilityPage() {
                   </div>
                 ))}
               </dl>
-              <p className="mt-3 text-[0.78rem] text-warn">
-                설비 사양 확인 전 임시값입니다.
-              </p>
             </Reveal>
           )}
 
@@ -264,9 +261,6 @@ export default function FacilityPage() {
                     <p className="mt-4 border-t border-line pt-3.5 text-[0.8125rem] leading-[1.7] text-muted">
                       수거 · 배달(납품) 시간은 사업장 일정에 맞춰 상담 시 정합니다.
                     </p>
-                    <p className="mt-2 text-[0.75rem] font-semibold text-warn">
-                      운영 시간은 확인 전 임시값입니다.
-                    </p>
                   </Card>
                 )}
 
@@ -305,9 +299,6 @@ export default function FacilityPage() {
                     </div>
                     <p className="mt-4 border-t border-line pt-3.5 text-[0.8125rem] leading-[1.7] text-muted">
                       사업장 지역을 알려 주시면 가능 여부를 확인해 드립니다.
-                    </p>
-                    <p className="mt-2 text-[0.75rem] font-semibold text-warn">
-                      권역은 확인 전 임시값입니다.
                     </p>
                   </Card>
                 )}

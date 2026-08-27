@@ -157,9 +157,6 @@ export default function AboutPage() {
                       <span data-numeric>
                         {certification.number} · {certification.date}
                       </span>
-                      <span className="mt-1 block text-[0.6875rem] text-[#C08A4A]">
-                        인증번호 · 인증일은 확인 전 임시값
-                      </span>
                     </span>
                   ) : (
                     <span className="mt-0.5 block text-[0.8125rem] text-[#A6C5E8]">

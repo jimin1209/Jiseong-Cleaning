@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrandLockup } from "./brand-mark";
 import { Container } from "./ui";
-import { businessInfo, SAMPLE_CONTENT } from "@/lib/sample";
+import { businessInfo } from "@/lib/sample";
 import { nav, site } from "@/lib/site";
 
 export function SiteFooter() {
@@ -64,11 +64,6 @@ export function SiteFooter() {
 
         <div className="flex flex-wrap gap-x-6 gap-y-2.5 pt-3 text-[0.8125rem] text-[#6E8CB4]">
           <span>© {new Date().getFullYear()} 지성크리닝 · {site.parent}</span>
-          {SAMPLE_CONTENT && (
-            <span className="text-[#C08A4A]">
-              사업자 정보는 확인 전 임시값입니다
-            </span>
-          )}
         </div>
       </Container>
     </footer>
