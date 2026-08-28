@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { setDraftStatusAction } from "./actions";
+import { applyDraftAction, setDraftStatusAction } from "./actions";
 import { Container } from "@/components/ui";
 import {
   copyDraftBackend,
@@ -14,8 +14,8 @@ import {
  * 문구 제안 게시판 (명세 9-2).
  *
  * /admin/edit 에서 저장한 "안" 세트의 목록·상세.
- * 상태(제안/채택/반영)는 회의 결과를 표시하는 라벨이다 — "반영" 실행 버튼은
- * 만들지 않는다(수동 반영 원칙). 표 스타일은 admin/inquiries 와 같다.
+ * 상태(제안/채택/반영)는 진행 상황 라벨이고, 상세의 「이 안을 사이트에 반영」이
+ * 실제 게시다 — 누르면 방문자 화면 문구가 바뀐다. 표 스타일은 admin/inquiries 와 같다.
  */
 
 export const metadata: Metadata = {
@@ -31,6 +31,7 @@ const PAGE_LABELS: Record<string, string> = {
   about: "회사소개",
   services: "서비스",
   quote: "견적",
+  notfound: "404",
 };
 
 function formatDate(iso: string) {
@@ -87,26 +88,39 @@ function DraftDetail({ draft }: { draft: CopyDraft }) {
           </p>
         </div>
 
-        {/* 상태 토글 — 라벨 표시일 뿐, 어느 상태도 실서비스 문구를 바꾸지 않는다 */}
-        <form action={setDraftStatusAction} className="flex items-center gap-1.5">
-          <input type="hidden" name="id" value={draft.id} />
-          {(["제안", "채택", "반영"] as const).map((s) => (
+        <div className="flex flex-wrap items-center gap-2">
+          {/* 실제 게시 — 이 버튼만 방문자 화면을 바꾼다 */}
+          <form action={applyDraftAction}>
+            <input type="hidden" name="id" value={draft.id} />
             <button
-              key={s}
               type="submit"
-              name="status"
-              value={s}
-              disabled={s === draft.status}
-              className={`rounded-full px-3.5 py-1.5 text-[0.78rem] font-bold transition-colors ${
-                s === draft.status
-                  ? statusStyles[s]
-                  : "text-muted hover:bg-tint hover:text-navy"
-              }`}
+              className="rounded-brand bg-brand px-4 py-2 text-[0.8125rem] font-bold text-white transition-colors duration-150 hover:bg-navy"
             >
-              {s}
+              이 안을 사이트에 반영
             </button>
-          ))}
-        </form>
+          </form>
+
+          {/* 상태 토글 — 진행 상황 라벨. 이것만으로는 화면이 바뀌지 않는다 */}
+          <form action={setDraftStatusAction} className="flex items-center gap-1.5">
+            <input type="hidden" name="id" value={draft.id} />
+            {(["제안", "채택", "반영"] as const).map((s) => (
+              <button
+                key={s}
+                type="submit"
+                name="status"
+                value={s}
+                disabled={s === draft.status}
+                className={`rounded-full px-3.5 py-1.5 text-[0.78rem] font-bold transition-colors ${
+                  s === draft.status
+                    ? statusStyles[s]
+                    : "text-muted hover:bg-tint hover:text-navy"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </form>
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-brand border border-line bg-white shadow-card">
@@ -236,8 +250,8 @@ export default async function AdminProposalsPage({
             </p>
             <h1 className="mt-1.5 text-[1.625rem] text-navy">문구 제안 게시판</h1>
             <p className="mt-2 text-sm text-muted">
-              편집 화면에서 저장한 안의 목록입니다. 채택 표시까지만 하며, 실제
-              반영은 개발자가 수동으로 합니다.
+              편집 화면에서 저장한 안의 목록입니다. 안을 열어 「이 안을 사이트에
+              반영」을 누르면 방문자 화면 문구가 바로 바뀝니다.
             </p>
           </div>
           <Link href="/admin/edit" className="text-sm font-bold text-brand">

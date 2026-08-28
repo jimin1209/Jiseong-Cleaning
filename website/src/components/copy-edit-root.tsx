@@ -19,16 +19,17 @@ import { CopyProvider, type CopyRuntime } from "./copy-text";
  * 레이아웃이 렌더하는 공용 컴포넌트까지 편집 대상에 넣으려면 프로바이더가
  * 페이지가 아니라 레이아웃 수준에 있어야 하기 때문이다.
  *
- * 실서비스 경로에서는 기본 런타임(copy.ts 그대로, 래퍼 없음)을 내려보내는
- * 패스스루라 화면 결과가 데이터화 전과 동일하다. /admin/edit 에서만
- * 오버라이드 맵과 클릭 래퍼를 주입해 모든 <T> 텍스트가 편집 가능해진다.
+ * 문구는 세 겹으로 쌓인다 (아래가 우선):
+ *   1. copy.ts            코드 원문
+ *   2. published          편집자가 「사이트에 반영」한 게시본 (copy-live.ts)
+ *   3. overrides          지금 편집 중인 미저장 수정 — /admin/edit 에서만
  *
- * 오버라이드는 아직 저장되지 않은 "미리보기" 로컬 상태다 — 저장은
- * 편집 패널(copy-editor-panel.tsx)이 서버 액션으로 "안" 세트를 만들 때 일어난다.
+ * 실서비스 경로에서는 1+2 만 쓰고 클릭 래퍼가 붙지 않는다.
+ * /admin/edit 에서만 3번과 래퍼가 얹혀 모든 <T> 텍스트가 편집 가능해진다.
  */
 
 type EditStore = {
-  /** 키 → 수정안. 원문과 같아지면 키가 제거된다 */
+  /** 키 → 수정안. 지금 사이트에 떠 있는 문구와 같아지면 키가 제거된다 */
   overrides: Record<string, string>;
   setOverride: (key: string, value: string) => void;
   /** 안 불러오기·새 안 시작 — 오버라이드 전체를 갈아끼운다 */
@@ -36,6 +37,10 @@ type EditStore = {
   /** 지금 팝오버로 편집 중인 키 */
   editingKey: string | null;
   setEditingKey: (key: string | null) => void;
+  /** 지금 사이트에 반영돼 있는 문구 (게시본) */
+  published: Record<string, string>;
+  /** 편집 전 기준값 — 게시본이 있으면 게시본, 없으면 코드 원문 */
+  baseOf: (key: string) => string;
 };
 
 const EditStoreContext = createContext<EditStore | null>(null);
@@ -82,26 +87,38 @@ function EditWrap({ k, text }: { k: string; text: string }) {
   );
 }
 
-/** 실서비스 경로용 기본 런타임 — copy-text.tsx 의 기본 컨텍스트와 같은 동작 */
-const passthrough: CopyRuntime = { get: (key) => copy[key] ?? "" };
-
-export function CopyEditRoot({ children }: { children: ReactNode }) {
+export function CopyEditRoot({
+  children,
+  published = {},
+}: {
+  children: ReactNode;
+  /** 서버(레이아웃)가 읽어 넘긴 게시본 — 실서비스 화면도 이 값을 쓴다 */
+  published?: Record<string, string>;
+}) {
   const editing = usePathname() === "/admin/edit";
 
   const [overrides, setOverrides] = useState<Record<string, string>>({});
   const [editingKey, setEditingKey] = useState<string | null>(null);
 
-  const setOverride = useCallback((key: string, value: string) => {
-    setOverrides((prev) => {
-      if (value === (copy[key] ?? "")) {
-        if (prev[key] === undefined) return prev;
-        const rest = { ...prev };
-        delete rest[key];
-        return rest;
-      }
-      return { ...prev, [key]: value };
-    });
-  }, []);
+  const baseOf = useCallback(
+    (key: string) => published[key] ?? copy[key] ?? "",
+    [published],
+  );
+
+  const setOverride = useCallback(
+    (key: string, value: string) => {
+      setOverrides((prev) => {
+        if (value === baseOf(key)) {
+          if (prev[key] === undefined) return prev;
+          const rest = { ...prev };
+          delete rest[key];
+          return rest;
+        }
+        return { ...prev, [key]: value };
+      });
+    },
+    [baseOf],
+  );
 
   const resetOverrides = useCallback((next: Record<string, string>) => {
     setOverrides(next);
@@ -109,16 +126,24 @@ export function CopyEditRoot({ children }: { children: ReactNode }) {
   }, []);
 
   const store = useMemo<EditStore>(
-    () => ({ overrides, setOverride, resetOverrides, editingKey, setEditingKey }),
-    [overrides, setOverride, resetOverrides, editingKey],
+    () => ({
+      overrides,
+      setOverride,
+      resetOverrides,
+      editingKey,
+      setEditingKey,
+      published,
+      baseOf,
+    }),
+    [overrides, setOverride, resetOverrides, editingKey, published, baseOf],
   );
 
   const runtime = useMemo<CopyRuntime>(
     () =>
       editing
-        ? { get: (key) => overrides[key] ?? copy[key] ?? "", Wrap: EditWrap }
-        : passthrough,
-    [editing, overrides],
+        ? { get: (key) => overrides[key] ?? baseOf(key), Wrap: EditWrap }
+        : { get: baseOf },
+    [editing, overrides, baseOf],
   );
 
   return (

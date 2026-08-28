@@ -102,7 +102,7 @@ export function SiteHeader() {
                 className="block text-[1.1875rem] font-extrabold tracking-[-0.02em] text-navy"
                 data-numeric
               >
-                {site.tel}
+                <T k="site.tel" />
               </span>
             </ContactSplitLink>
 

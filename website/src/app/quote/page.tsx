@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DeviceSplit } from "@/components/contact-action";
+import { MapButtonAnchor, TelAnchor } from "@/components/contact-links";
 import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
@@ -7,16 +8,20 @@ import { QuoteForm } from "@/components/quote-form";
 import { ReviewMarquee } from "@/components/review-marquee";
 import { Reveal } from "@/components/reveal";
 import { SnsButtons } from "@/components/sns-buttons";
-import { ButtonAnchor, Card, Container, Section, SectionHead } from "@/components/ui";
+import { Card, Container, Section, SectionHead } from "@/components/ui";
 import { reviews, SAMPLE_CONTENT } from "@/lib/sample";
 import { processSteps } from "@/lib/services";
-import { site } from "@/lib/site";
+import { siteValues } from "@/lib/site-live";
 
-export const metadata: Metadata = {
-  title: "견적 · 상담 문의",
-  description: `업체명과 연락처를 남겨주시면 담당자가 확인 후 연락드립니다. 전화 ${site.tel}.`,
-  alternates: { canonical: "/quote" },
-};
+/* 검색 결과에 옛 번호가 남지 않도록 편집된 번호를 그대로 쓴다 */
+export async function generateMetadata(): Promise<Metadata> {
+  const { tel } = await siteValues();
+  return {
+    title: "견적 · 상담 문의",
+    description: `업체명과 연락처를 남겨주시면 담당자가 확인 후 연락드립니다. 전화 ${tel}.`,
+    alternates: { canonical: "/quote" },
+  };
+}
 
 export default function QuotePage() {
   return (
@@ -47,17 +52,16 @@ export default function QuotePage() {
                       className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
                       data-numeric
                     >
-                      {site.tel}
+                      <T k="site.tel" />
                     </span>
                   }
                   mobile={
-                    <a
-                      href={site.telHref}
+                    <TelAnchor
                       className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
                       data-numeric
                     >
-                      {site.tel}
-                    </a>
+                      <T k="site.tel" />
+                    </TelAnchor>
                   }
                 />
                 {/* 운영시간은 실값 확정 전 — 임시값 노출 대신 폼 안내로 단순화 */}
@@ -72,11 +76,17 @@ export default function QuotePage() {
                 </h2>
                 <dl className="mt-4 grid grid-cols-[4rem_minmax(0,1fr)] gap-x-3.5 gap-y-3 text-[0.875rem]">
                   <dt className="text-[0.78rem] font-bold text-muted"><T k="quote.bizCard.name" /></dt>
-                  <dd className="m-0 text-ink-2">{site.name}</dd>
+                  <dd className="m-0 text-ink-2">
+                    <T k="brand.name" />
+                  </dd>
                   <dt className="text-[0.78rem] font-bold text-muted"><T k="quote.bizCard.operator" /></dt>
-                  <dd className="m-0 text-ink-2">{site.parent}</dd>
+                  <dd className="m-0 text-ink-2">
+                    <T k="brand.parent" />
+                  </dd>
                   <dt className="text-[0.78rem] font-bold text-muted"><T k="quote.bizCard.address" /></dt>
-                  <dd className="m-0 text-ink-2">{site.address}</dd>
+                  <dd className="m-0 text-ink-2">
+                    <T k="site.address" />
+                  </dd>
                 </dl>
               </Card>
 
@@ -107,11 +117,11 @@ export default function QuotePage() {
                   <T k="quote.mapCard.heading" />
                 </h2>
                 <p className="mt-3 text-[0.9375rem] leading-[1.7] text-ink-2">
-                  {site.address}
+                  <T k="site.address" />
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <ButtonAnchor
-                    href={site.mapLinks.naver}
+                  <MapButtonAnchor
+                    provider="naver"
                     target="_blank"
                     rel="noreferrer"
                     variant="ghost"
@@ -119,9 +129,9 @@ export default function QuotePage() {
                   >
                     <Icon.pin className="size-4" />
                     <T k="quote.mapCard.naver" />
-                  </ButtonAnchor>
-                  <ButtonAnchor
-                    href={site.mapLinks.kakao}
+                  </MapButtonAnchor>
+                  <MapButtonAnchor
+                    provider="kakao"
                     target="_blank"
                     rel="noreferrer"
                     variant="ghost"
@@ -129,7 +139,7 @@ export default function QuotePage() {
                   >
                     <Icon.pin className="size-4" />
                     <T k="quote.mapCard.kakao" />
-                  </ButtonAnchor>
+                  </MapButtonAnchor>
                 </div>
                 {/* 내부 안내이므로 샘플 모드에서만 보인다 */}
                 {SAMPLE_CONTENT && (
@@ -171,7 +181,9 @@ export default function QuotePage() {
             <div className="flex flex-wrap items-center gap-4 text-[0.9375rem] text-ink-2">
               <Icon.pin className="size-5 shrink-0 text-sky" />
               <span>
-                <strong className="font-bold text-navy">{site.address}</strong>
+                <strong className="font-bold text-navy">
+                  <T k="site.address" />
+                </strong>
               </span>
             </div>
           </Reveal>

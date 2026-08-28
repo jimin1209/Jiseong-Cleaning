@@ -16,7 +16,7 @@ import {
 } from "@/components/ui";
 import { industryNotes } from "@/lib/sample";
 import { services } from "@/lib/services";
-import { site, targetIndustries } from "@/lib/site";
+import { targetIndustries } from "@/lib/site";
 import { PageHero } from "@/components/page-hero";
 
 export const metadata: Metadata = {
@@ -187,7 +187,9 @@ export default function ServicesPage() {
                 </ButtonLink>
                 <ContactAction kind="tel" variant="ghost" size="lg">
                   <Icon.phone className="size-[1.0625rem]" />
-                  <span data-numeric>{site.tel}</span>
+                  <span data-numeric>
+                    <T k="site.tel" />
+                  </span>
                 </ContactAction>
               </div>
             </div>

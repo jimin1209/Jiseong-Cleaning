@@ -3,11 +3,11 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { T, useCopy } from "./copy-text";
+import { TelAnchor } from "./contact-links";
 import { Icon } from "./icons";
 import { Alert, Button } from "./ui";
 import { submitQuote } from "@/app/quote/actions";
 import { initialQuoteState, type QuoteState } from "@/lib/quote-state";
-import { site } from "@/lib/site";
 
 /* ── 필드 ─────────────────────────────────────────────── */
 
@@ -112,9 +112,9 @@ export function QuoteForm() {
         </p>
         <p className="mt-5 text-sm text-muted">
           <T k="quoteForm.success.callNote" />{" "}
-          <a href={site.telHref} className="font-bold text-brand" data-numeric>
-            {site.tel}
-          </a>
+          <TelAnchor className="font-bold text-brand" data-numeric>
+            <T k="site.tel" />
+          </TelAnchor>
         </p>
       </div>
     );

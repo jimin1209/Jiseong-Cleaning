@@ -8,7 +8,9 @@
  * ⚠️ 값 단일 출처 원칙:
  *   - 상호·전화·주소·업종은 site.ts, 더미는 sample.ts, 서비스 데이터는 services.ts 가
  *     원본이다. 여기서는 그 값을 **참조**해 키에 매핑할 뿐 복제하지 않는다.
- *   - 전화번호·주소 같은 "값"({site.tel} 등)은 문구가 아니므로 키로 만들지 않는다.
+ *   - 전화번호·주소·사업자 정보 같은 "값"도 키로 만든다. 관리자 편집 화면에서는
+ *     화면에 보이는 글자가 하나도 빠짐없이 클릭 편집돼야 하기 때문이다(2026-08-28).
+ *     편집 결과는 "제안"일 뿐이므로, 실제 운영 값은 여전히 원본 파일에서 고친다.
  *   - 문구를 고칠 때: 리터럴은 이 파일에서, 참조 값은 원본 파일에서 고친다.
  *
  * ⚠️ 용어 규칙(RULES.md 3항)은 이 파일의 값에도 그대로 적용된다 — 원문 이동만, 변형 금지.
@@ -18,7 +20,7 @@
  * JSX 공백 축약 결과(줄바꿈 → 공백 1개)와 글자 단위로 같아야 한다.
  */
 
-import { industryNotes, reviews, slides } from "./sample";
+import { businessInfo, industryNotes, reviews, slides } from "./sample";
 import { processSteps, services } from "./services";
 import { nav, site, targetIndustries, trustPoints } from "./site";
 
@@ -46,6 +48,14 @@ const literals: Record<string, string> = {
   "footer.biz.mailOrder": "통신판매업",
   "footer.biz.fax": "팩스",
   "footer.sampleNotice": "사업자 정보는 확인 전 임시값입니다",
+  "footer.adminLink": "관리자",
+
+  /* ── 404 (app/not-found.tsx) ── */
+  "notFound.code": "4 0 4",
+  "notFound.title": "요청하신 페이지를 찾을 수 없습니다",
+  "notFound.body":
+    "주소가 바뀌었거나 삭제된 페이지일 수 있습니다. 찾으시는 내용이 있으시면 전화로 문의해 주세요.",
+  "notFound.homeCta": "홈으로",
 
   /* ── 모바일 하단 CTA 바 (mobile-cta-bar.tsx) ── */
   "mobileCta.telLabel": "전화 문의",
@@ -230,6 +240,23 @@ derived["brand.name"] = site.name;
 derived["brand.parent"] = site.parent;
 derived["footer.operator.parent"] = site.parent;
 derived["footer.copyright"] = `${site.name} · ${site.parent}`;
+
+/* 사업 정보 "값" — 전화·주소·사업자 정보까지 화면 글자는 전부 키를 갖는다.
+   원본은 site.ts·sample.ts 이고 여기서는 키에 매핑만 한다(복제 아님).
+   상호·모회사명은 brand.name·brand.parent 를 그대로 재사용한다 —
+   한 곳에서 고치면 락업·푸터·회사소개·견적이 함께 바뀌어야 하기 때문이다. */
+derived["site.tel"] = site.tel;
+derived["site.address"] = site.address;
+derived["site.parentAddress"] = site.parentAddress;
+
+/* 사업자 정보 — 더미가 꺼지면(null) 화면에서 빠지므로 키도 만들지 않는다 */
+if (businessInfo.representative)
+  derived["biz.representative"] = businessInfo.representative;
+if (businessInfo.registrationNumber)
+  derived["biz.registration"] = businessInfo.registrationNumber;
+if (businessInfo.mailOrderNumber)
+  derived["biz.mailOrder"] = businessInfo.mailOrderNumber;
+if (businessInfo.fax) derived["biz.fax"] = businessInfo.fax;
 
 /* 내비게이션 라벨 — 헤더 데스크톱·모바일 메뉴 공용 */
 nav.forEach((item, i) => {

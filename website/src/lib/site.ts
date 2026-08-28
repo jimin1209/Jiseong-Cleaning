@@ -83,6 +83,35 @@ export const site = {
   url: resolveSiteUrl(),
 } as const;
 
+/**
+ * 편집자가 고친 전화번호·주소를 링크에도 그대로 따라가게 하는 변환기.
+ *
+ * 화면에 보이는 번호만 바뀌고 tel: 링크는 옛 번호로 남으면, 눌러서 거는
+ * 사람은 엉뚱한 곳에 전화한다 — 표시값과 링크는 반드시 같은 값에서 나와야 한다.
+ * 문구가 고쳐지지 않았을 때는 아래 site 의 기존 상수를 그대로 쓴다.
+ */
+export function telHrefOf(tel: string): string {
+  const digits = tel.replace(/[^0-9]/g, "");
+  if (!digits) return site.telHref;
+  // 010-… 처럼 0 으로 시작하는 국내 번호는 국가번호 +82 로 바꿔 건다
+  return digits.startsWith("0") ? `tel:+82${digits.slice(1)}` : `tel:${digits}`;
+}
+
+/** SMS 링크 — 번호는 표시값에서, 본문은 sample.ts 더미에서 온다 */
+export function smsHrefOf(tel: string, body: string): string {
+  const digits = tel.replace(/[^0-9]/g, "");
+  return `sms:${digits}${body ? `?body=${encodeURIComponent(body)}` : ""}`;
+}
+
+/** 지도 길찾기 — API 키가 필요 없는 검색 링크를 주소로 만든다 */
+export function mapLinksOf(address: string) {
+  const q = encodeURIComponent(address);
+  return {
+    naver: `https://map.naver.com/p/search/${q}`,
+    kakao: `https://map.kakao.com/?q=${q}`,
+  };
+}
+
 /** 상단·하단 공통 내비게이션 */
 export const nav = [
   { href: "/about", label: "회사소개" },

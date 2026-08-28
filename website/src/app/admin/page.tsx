@@ -16,12 +16,14 @@ const MENUS = [
   {
     href: "/admin/edit",
     title: "문구 편집",
-    description: "홈페이지 화면 그대로 보면서 텍스트를 클릭해 고치고, 1안·2안으로 저장합니다.",
+    description:
+      "홈페이지 화면 그대로 보면서 텍스트를 클릭해 고칩니다. 「사이트에 반영」을 누르면 방문자 화면이 바로 바뀌고, 회의용으로만 남기려면 안으로 저장합니다.",
   },
   {
     href: "/admin/proposals",
     title: "제안 게시판",
-    description: "저장해 둔 문구 안들을 모아 보고 비교합니다.",
+    description:
+      "저장해 둔 문구 안들을 모아 보고 비교합니다. 안을 열어 사이트에 반영할 수도 있습니다.",
     countKey: "drafts" as const,
   },
   {

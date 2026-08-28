@@ -1,8 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useSiteTel } from "./site-links";
 import { ButtonAnchor, ButtonLink, type ButtonLook } from "./ui";
-import { smsBody } from "@/lib/sample";
-import { site } from "@/lib/site";
 
 /**
  * 기기별 문의 동작 분기 (명세 9-3~9-5 동작 매트릭스).
@@ -14,10 +15,10 @@ import { site } from "@/lib/site";
  * 판별은 UA 스니핑 대신 CSS 분기 — 두 요소를 모두 렌더하고 뷰포트에 맞는 쪽만 보인다.
  */
 
-/** sms: 링크 — 번호는 site.tel 에서 만들고, 문구는 sample.ts 더미(확정 대기)를 쓴다 */
-export const smsHref = `sms:${site.tel.replace(/-/g, "")}${
-  smsBody ? `?body=${encodeURIComponent(smsBody)}` : ""
-}`;
+/*
+ * tel:·sms: 주소는 상수로 굳히지 않고 useSiteTel() 로 그때그때 만든다 —
+ * 편집자가 고친 번호가 표시 문구와 링크에 동시에 반영돼야 하기 때문이다.
+ */
 
 /**
  * PC(lg 이상)와 모바일에 서로 다른 요소를 렌더한다.
@@ -46,7 +47,8 @@ export function ContactAction({
   children: ReactNode;
   className?: string;
 } & ButtonLook) {
-  const mobileHref = kind === "tel" ? site.telHref : smsHref;
+  const { telHref, smsHref } = useSiteTel();
+  const mobileHref = kind === "tel" ? telHref : smsHref;
   return (
     <DeviceSplit
       pc={
@@ -78,7 +80,8 @@ export function ContactSplitLink({
   mobileClassName?: string;
   children: ReactNode;
 }) {
-  const mobileHref = kind === "tel" ? site.telHref : smsHref;
+  const { telHref, smsHref } = useSiteTel();
+  const mobileHref = kind === "tel" ? telHref : smsHref;
   return (
     <DeviceSplit
       pc={

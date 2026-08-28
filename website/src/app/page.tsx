@@ -19,7 +19,7 @@ import {
   SectionHead,
 } from "@/components/ui";
 import { processSteps, services } from "@/lib/services";
-import { site, targetIndustries, trustPoints } from "@/lib/site";
+import { targetIndustries, trustPoints } from "@/lib/site";
 
 /* ── 디자인 보강(D4·D5·D7) 데이터 — 문구는 병합 방안 표의 교체 목록 그대로 ── */
 
@@ -117,7 +117,9 @@ export default function HomePage() {
               {/* 전화 버튼 기기별 분기 — PC 는 /quote, 모바일은 즉시 발신 (명세 9-3·9-4) */}
               <ContactAction kind="tel" variant="onNavyGhost" size="lg">
                 <Icon.phone className="size-[1.0625rem]" />
-                <span data-numeric>{site.tel}</span>
+                <span data-numeric>
+                  <T k="site.tel" />
+                </span>
               </ContactAction>
             </div>
 
@@ -372,12 +374,14 @@ export default function HomePage() {
                 </ButtonLink>
                 <ContactAction kind="tel" variant="ghost" size="lg">
                   <Icon.phone className="size-[1.0625rem]" />
-                  <span data-numeric>{site.tel}</span>
+                  <span data-numeric>
+                    <T k="site.tel" />
+                  </span>
                 </ContactAction>
               </div>
               <p className="mt-6 flex flex-wrap items-center justify-center gap-2 text-sm text-muted">
                 <Icon.pin className="size-4 text-sky" />
-                {site.address}
+                <T k="site.address" />
               </p>
             </Card>
           </Reveal>

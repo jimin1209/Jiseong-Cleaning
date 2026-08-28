@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { DeviceSplit, smsHref } from "./contact-action";
+import { DeviceSplit } from "./contact-action";
 import { T } from "./copy-text";
 import { Icon } from "./icons";
+import { useSiteTel } from "./site-links";
 import { ButtonLink } from "./ui";
-import { site } from "@/lib/site";
 
 /**
  * 우측 고정 문의 채널 도크 (명세 9-8).
@@ -36,6 +36,7 @@ function PendingDot() {
 }
 
 export function FloatingContact() {
+  const { tel, telHref, smsHref } = useSiteTel();
   const [notice, setNotice] = useState<string | null>(null);
   const noticeTimer = useRef<number | undefined>(undefined);
 
@@ -95,12 +96,12 @@ export function FloatingContact() {
         {/* ① 전화 — PC /quote · 모바일 즉시 발신 */}
         <DeviceSplit
           pc={
-            <Link href="/quote" className={itemClass} title={site.tel}>
+            <Link href="/quote" className={itemClass} title={tel}>
               {item(<Icon.phone className="size-4" />, <T k="floating.tel" />)}
             </Link>
           }
           mobile={
-            <a href={site.telHref} className={itemClass}>
+            <a href={telHref} className={itemClass}>
               {item(<Icon.phone className="size-4" />, <T k="floating.tel" />)}
             </a>
           }

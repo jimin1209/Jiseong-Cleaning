@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MobileCtaBar } from "@/components/mobile-cta-bar";
 import { FloatingContact } from "@/components/floating-contact";
+import { readLiveCopySafe } from "@/lib/copy-live";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -39,6 +40,14 @@ export const metadata: Metadata = {
   formatDetection: { telephone: true },
 };
 
+/**
+ * 편집자가 「사이트에 반영」을 누르면 다음 접속부터 바로 새 문구가 보여야 한다.
+ * 정적 생성(빌드 시점 고정)으로 두면 배포를 다시 하기 전까지 반영이 안 되므로
+ * 레이아웃을 요청 시 렌더로 돌린다 — 게시본 조회 1회가 늘어나는 대신
+ * "눌렀는데 안 바뀐다" 가 구조적으로 생기지 않는다.
+ */
+export const dynamic = "force-dynamic";
+
 export const viewport: Viewport = {
   themeColor: "#14306E",
   width: "device-width",
@@ -50,14 +59,14 @@ export const viewport: Viewport = {
  * 사업자등록번호·영업시간은 확정 전이라 넣지 않았다 —
  * 확인되지 않은 값을 스키마에 넣으면 검색 결과에 잘못된 정보가 노출된다.
  */
-function LocalBusinessJsonLd() {
+function LocalBusinessJsonLd({ tel }: { tel: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: site.name,
     description: site.description,
     url: site.url,
-    telephone: site.tel,
+    telephone: tel,
     parentOrganization: { "@type": "Organization", name: site.parent },
     address: {
       "@type": "PostalAddress",
@@ -85,13 +94,16 @@ function LocalBusinessJsonLd() {
   );
 }
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // 저장소가 죽어도 화면은 코드 원문으로 정상 렌더된다(readLiveCopySafe)
+  const { overrides } = await readLiveCopySafe();
+
   return (
     <html lang="ko">
       <body className="pb-[4.75rem] lg:pb-0">
         {/* 편집 모드 뿌리 — /admin/edit 밖에서는 패스스루라 화면 결과가 동일하다.
             헤더·푸터·플로팅까지 편집 대상이라 페이지가 아닌 레이아웃 수준에서 감싼다 */}
-        <CopyEditRoot>
+        <CopyEditRoot published={overrides}>
           <a
             href="#main"
             className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-brand focus:bg-white focus:px-4 focus:py-2.5 focus:font-bold focus:text-navy focus:shadow-raised"
@@ -106,7 +118,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {/* 어느 페이지에서든 스크롤 위치와 무관하게 문의 경로가 보이게 한다 */}
           <FloatingContact />
         </CopyEditRoot>
-        <LocalBusinessJsonLd />
+        <LocalBusinessJsonLd tel={overrides["site.tel"] || site.tel} />
       </body>
     </html>
   );

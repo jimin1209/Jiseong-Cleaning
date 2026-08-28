@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactAction, DeviceSplit } from "@/components/contact-action";
+import { TelAnchor } from "@/components/contact-links";
 import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
@@ -57,15 +58,21 @@ export default function AboutPage() {
                 </h2>
                 <dl className="mt-5 grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-4 gap-y-3.5 text-[0.9375rem]">
                   <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.name" /></dt>
-                  <dd className="m-0 text-ink-2">{site.name}</dd>
+                  <dd className="m-0 text-ink-2">
+                    <T k="brand.name" />
+                  </dd>
 
                   <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.operator" /></dt>
-                  <dd className="m-0 text-ink-2">{site.parent}</dd>
+                  <dd className="m-0 text-ink-2">
+                    <T k="brand.parent" />
+                  </dd>
 
                   {businessInfo.representative && (
                     <>
                       <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.representative" /></dt>
-                      <dd className="m-0 text-ink-2">{businessInfo.representative}</dd>
+                      <dd className="m-0 text-ink-2">
+                        <T k="biz.representative" />
+                      </dd>
                     </>
                   )}
 
@@ -75,13 +82,15 @@ export default function AboutPage() {
                         <T k="about.info.registration" />
                       </dt>
                       <dd className="m-0 text-ink-2" data-numeric>
-                        {businessInfo.registrationNumber}
+                        <T k="biz.registration" />
                       </dd>
                     </>
                   )}
 
                   <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.address" /></dt>
-                  <dd className="m-0 text-ink-2">{site.address}</dd>
+                  <dd className="m-0 text-ink-2">
+                    <T k="site.address" />
+                  </dd>
 
                   <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.tel" /></dt>
                   <dd className="m-0">
@@ -89,13 +98,13 @@ export default function AboutPage() {
                     <DeviceSplit
                       pc={
                         <span className="font-bold text-brand" data-numeric>
-                          {site.tel}
+                          <T k="site.tel" />
                         </span>
                       }
                       mobile={
-                        <a href={site.telHref} className="font-bold text-brand" data-numeric>
-                          {site.tel}
-                        </a>
+                        <TelAnchor className="font-bold text-brand" data-numeric>
+                          <T k="site.tel" />
+                        </TelAnchor>
                       }
                     />
                   </dd>
@@ -104,7 +113,7 @@ export default function AboutPage() {
                     <>
                       <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.fax" /></dt>
                       <dd className="m-0 text-ink-2" data-numeric>
-                        {businessInfo.fax}
+                        <T k="biz.fax" />
                       </dd>
                     </>
                   )}
@@ -124,7 +133,7 @@ export default function AboutPage() {
                 <p className="mt-5 border-t border-line pt-5 text-[0.8125rem] leading-[1.8] text-muted">
                   <T k="about.info.parentHq" />
                   <br />
-                  {site.parentAddress}
+                  <T k="site.parentAddress" />
                   <br />
                   <a
                     href={site.parentUrl}
@@ -230,7 +239,9 @@ export default function AboutPage() {
                   </ButtonLink>
                   <ContactAction kind="tel" variant="ghost" size="lg">
                     <Icon.phone className="size-[1.0625rem]" />
-                    <span data-numeric>{site.tel}</span>
+                    <span data-numeric>
+                      <T k="site.tel" />
+                    </span>
                   </ContactAction>
                 </div>
               </div>

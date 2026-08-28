@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { saveCopyDraftAction } from "./actions";
+import {
+  publishCopyAction,
+  revertAllCopyAction,
+  saveCopyDraftAction,
+} from "./actions";
 import { useCopyEditStore } from "@/components/copy-edit-root";
 import { Button } from "@/components/ui";
 import { copy } from "@/lib/copy";
@@ -15,7 +19,10 @@ import type { CopyDraft } from "@/lib/copy-drafts";
  * 페이지는 실제 모습 그대로 뒤에 렌더되고, 이 패널만 화면 왼쪽 아래에 뜬다.
  * 텍스트를 클릭하면(copy-edit-root.tsx 의 래퍼) 여기 팝오버가 열리고,
  * 입력하는 즉시 화면에 미리보기가 반영된다(로컬 오버라이드).
- * "제안 저장"을 눌러야 안(draft) 세트로 저장된다 — 실서비스 자동 반영 없음.
+ *
+ * 두 갈래로 끝낼 수 있다:
+ *   「사이트에 반영」 편집자가 직접 게시 — 방문자 화면이 바로 바뀐다
+ *   「제안 저장」     회의용 안으로만 저장 — 사이트는 그대로
  *
  * z-[110]: 플로팅 도크·CTA 바(z-50)와 헤더 위, 스킵 링크(z-100)보다 위.
  */
@@ -25,20 +32,25 @@ const PAGE_TABS = [
   { key: "about", label: "회사소개" },
   { key: "services", label: "서비스" },
   { key: "quote", label: "견적" },
+  { key: "notfound", label: "404" },
 ] as const;
 
 /** 클릭한 키 하나의 팝오버 — 입력 즉시 오버라이드에 반영(미리보기) */
 function KeyEditor({ k, onClose }: { k: string; onClose: () => void }) {
-  const { overrides, setOverride } = useCopyEditStore();
-  const original = copy[k] ?? "";
-  const value = overrides[k] ?? original;
+  const { overrides, setOverride, baseOf, published } = useCopyEditStore();
+  /** 지금 사이트에 떠 있는 문구 — 게시본이 있으면 게시본 */
+  const current = baseOf(k);
+  /** 코드 원문 — 게시본을 지웠을 때 돌아가는 값 */
+  const source = copy[k] ?? "";
+  const value = overrides[k] ?? current;
   const edited = overrides[k] !== undefined;
+  const isPublished = published[k] !== undefined;
 
   return (
     <div className="border-b border-line px-4 py-3.5">
       <p className="break-all font-mono text-[0.6875rem] text-faint">{k}</p>
       <p className="mt-2 whitespace-pre-wrap rounded-[6px] bg-tint px-2.5 py-2 text-[0.8125rem] leading-[1.6] text-ink-2">
-        {original}
+        {current}
       </p>
       <textarea
         value={value}
@@ -51,14 +63,27 @@ function KeyEditor({ k, onClose }: { k: string; onClose: () => void }) {
         className="mt-2 w-full rounded-[6px] border border-line px-2.5 py-2 text-[0.875rem] leading-[1.6] text-ink focus:border-brand focus:outline-none"
       />
       <div className="mt-2 flex items-center justify-between gap-2">
-        <button
-          type="button"
-          onClick={() => setOverride(k, original)}
-          disabled={!edited}
-          className="text-[0.78rem] font-bold text-muted hover:text-navy disabled:opacity-40"
-        >
-          원문으로 되돌리기
-        </button>
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => setOverride(k, current)}
+            disabled={!edited}
+            className="text-[0.78rem] font-bold text-muted hover:text-navy disabled:opacity-40"
+          >
+            되돌리기
+          </button>
+          {/* 이미 반영된 문구는 코드 원문으로도 되돌릴 수 있어야 한다 */}
+          {isPublished && source !== value && (
+            <button
+              type="button"
+              onClick={() => setOverride(k, source)}
+              className="text-[0.78rem] font-bold text-muted hover:text-navy"
+              title={source}
+            >
+              처음 문구로
+            </button>
+          )}
+        </div>
         <button
           type="button"
           onClick={onClose}
@@ -75,11 +100,17 @@ export function EditorPanel({
   page,
   drafts,
   total,
+  liveCount,
+  liveUpdatedAt,
 }: {
   page: string;
   drafts: CopyDraft[];
   /** 지금까지 발급된 안 수 — 새 안 기본 제목("N안")의 번호 */
   total: number;
+  /** 지금 사이트에 반영돼 있는 수정 개수 */
+  liveCount: number;
+  /** 마지막 반영 시각 — 한 번도 없으면 null */
+  liveUpdatedAt: string | null;
 }) {
   const router = useRouter();
   const { overrides, resetOverrides, editingKey, setEditingKey } = useCopyEditStore();
@@ -119,7 +150,51 @@ export function EditorPanel({
       });
       if (result.ok) {
         setDraftId(result.id);
-        setMessage(`저장되었습니다 — #${result.id} ${title || ""}`.trim());
+        setMessage(`제안으로 저장했습니다 — #${result.id} ${title || ""}`.trim());
+        router.refresh();
+      } else {
+        setMessage(result.error);
+      }
+    });
+  };
+
+  /** 편집자가 직접 게시 — 방문자 화면이 곧바로 바뀐다 */
+  const publish = () => {
+    if (
+      !window.confirm(
+        `수정 ${editCount}건을 지금 사이트에 반영합니다.\n방문자에게 바로 보입니다. 계속할까요?`,
+      )
+    ) {
+      return;
+    }
+    startSaving(async () => {
+      const result = await publishCopyAction({ page, overrides, title });
+      if (result.ok) {
+        // 반영된 문구가 새 기준이 되므로 편집 중 수정은 비운다
+        resetOverrides({});
+        setDraftId(null);
+        setMessage(`사이트에 반영했습니다 — ${result.count}건`);
+        router.refresh();
+      } else {
+        setMessage(result.error);
+      }
+    });
+  };
+
+  /** 게시본 전체 삭제 — 코드 원문 상태로 되돌린다 */
+  const revertAll = () => {
+    if (
+      !window.confirm(
+        `사이트에 반영된 수정 ${liveCount}건을 모두 되돌립니다.\n문구가 처음 상태로 돌아갑니다. 계속할까요?`,
+      )
+    ) {
+      return;
+    }
+    startSaving(async () => {
+      const result = await revertAllCopyAction();
+      if (result.ok) {
+        resetOverrides({});
+        setMessage(`처음 문구로 되돌렸습니다 — ${result.count}건 해제`);
         router.refresh();
       } else {
         setMessage(result.error);
@@ -164,6 +239,23 @@ export function EditorPanel({
       )}
 
       <div className="flex flex-col gap-2.5 px-4 py-3.5">
+        {/* 반영 — 편집자가 개발자 없이 사이트를 고치는 주 경로 */}
+        <div className="flex items-center gap-2">
+          <Button size="sm" disabled={saving || editCount === 0} onClick={publish}>
+            {saving ? "처리 중…" : "사이트에 반영"}
+          </Button>
+          <span className="text-[0.78rem] font-bold text-ink-2" data-numeric>
+            수정 {editCount}건
+          </span>
+        </div>
+
+        <p className="text-[0.72rem] leading-[1.6] text-muted">
+          반영하면 방문자 화면이 바로 바뀝니다. 회의용으로만 남기려면 아래
+          「제안 저장」을 쓰세요.
+        </p>
+
+        <hr className="border-line" />
+
         {/* 안 선택 바 — 새 안 또는 기존 안을 불러와 이어서 수정 */}
         <div className="flex items-center gap-2">
           <select
@@ -223,14 +315,11 @@ export function EditorPanel({
         <div className="flex items-center gap-2 pt-0.5">
           <Button
             size="sm"
+            variant="ghost"
             disabled={saving || editCount === 0}
             onClick={() => save(true)}
           >
-            {saving
-              ? "저장 중…"
-              : draftId !== null
-                ? `#${draftId} 에 덮어쓰기`
-                : "제안 저장"}
+            {draftId !== null ? `#${draftId} 에 덮어쓰기` : "제안 저장"}
           </Button>
           {draftId !== null && (
             <Button
@@ -242,9 +331,32 @@ export function EditorPanel({
               새 안으로 저장
             </Button>
           )}
-          <span className="ml-auto text-[0.78rem] font-bold text-ink-2" data-numeric>
-            수정 {editCount}건
-          </span>
+        </div>
+
+        {/* 지금 사이트에 반영돼 있는 상태 + 원문 복구 */}
+        <div className="flex items-start justify-between gap-2 border-t border-line pt-2.5">
+          <p className="text-[0.72rem] leading-[1.6] text-muted">
+            사이트 반영{" "}
+            <strong className="font-bold text-ink" data-numeric>
+              {liveCount}건
+            </strong>
+            {liveUpdatedAt && (
+              <>
+                <br />
+                <span data-numeric>{formatWhen(liveUpdatedAt)}</span>
+              </>
+            )}
+          </p>
+          {liveCount > 0 && (
+            <button
+              type="button"
+              onClick={revertAll}
+              disabled={saving}
+              className="shrink-0 text-[0.72rem] font-bold text-warn hover:underline disabled:opacity-40"
+            >
+              전체 되돌리기
+            </button>
+          )}
         </div>
 
         {message && (
@@ -255,4 +367,14 @@ export function EditorPanel({
       </div>
     </aside>
   );
+}
+
+function formatWhen(iso: string) {
+  return new Date(iso).toLocaleString("ko-KR", {
+    timeZone: "Asia/Seoul",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
