@@ -11,6 +11,9 @@ import { ButtonAnchor, ButtonLink, type ButtonLook } from "./ui";
  *   전화류      PC → /quote 이동   모바일 → tel: 즉시 발신
  *   문의(SMS)류 PC → /quote 이동   모바일 → sms: 자동 작성
  *
+ * 전화류는 대표전화(tel)와 휴대전화(telMobile) 두 가지다 — 두 번호를 나란히
+ * 보여주므로 각 버튼은 자기 번호로 걸려야 한다.
+ *
  * PC 에서 tel:/sms: 링크는 대부분 동작하지 않으므로 lg 이상은 견적 문의로 보낸다.
  * 판별은 UA 스니핑 대신 CSS 분기 — 두 요소를 모두 렌더하고 뷰포트에 맞는 쪽만 보인다.
  */
@@ -19,6 +22,16 @@ import { ButtonAnchor, ButtonLink, type ButtonLook } from "./ui";
  * tel:·sms: 주소는 상수로 굳히지 않고 useSiteTel() 로 그때그때 만든다 —
  * 편집자가 고친 번호가 표시 문구와 링크에 동시에 반영돼야 하기 때문이다.
  */
+
+export type ContactKind = "tel" | "telMobile" | "sms";
+
+/** 종류별 모바일 링크 — 보이는 번호와 걸리는 번호를 한 곳에서 맞춘다 */
+function useContactHref(kind: ContactKind): string {
+  const { telHref, telMobileHref, smsHref } = useSiteTel();
+  if (kind === "tel") return telHref;
+  if (kind === "telMobile") return telMobileHref;
+  return smsHref;
+}
 
 /**
  * PC(lg 이상)와 모바일에 서로 다른 요소를 렌더한다.
@@ -42,13 +55,12 @@ export function ContactAction({
   block,
   className,
 }: {
-  /** tel = 전화류, sms = 문의(SMS)류 */
-  kind: "tel" | "sms";
+  /** tel = 대표전화, telMobile = 휴대전화, sms = 문의(SMS)류 */
+  kind: ContactKind;
   children: ReactNode;
   className?: string;
 } & ButtonLook) {
-  const { telHref, smsHref } = useSiteTel();
-  const mobileHref = kind === "tel" ? telHref : smsHref;
+  const mobileHref = useContactHref(kind);
   return (
     <DeviceSplit
       pc={
@@ -73,15 +85,14 @@ export function ContactSplitLink({
   mobileClassName = "",
   children,
 }: {
-  kind: "tel" | "sms";
+  kind: ContactKind;
   className?: string;
   /** 반응형 표시 클래스가 서로 달라야 할 때만 쓴다 */
   pcClassName?: string;
   mobileClassName?: string;
   children: ReactNode;
 }) {
-  const { telHref, smsHref } = useSiteTel();
-  const mobileHref = kind === "tel" ? telHref : smsHref;
+  const mobileHref = useContactHref(kind);
   return (
     <DeviceSplit
       pc={

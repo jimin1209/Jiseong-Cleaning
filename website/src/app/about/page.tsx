@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ContactAction, DeviceSplit } from "@/components/contact-action";
-import { TelAnchor } from "@/components/contact-links";
+import { TelAnchor, TelMobileAnchor } from "@/components/contact-links";
 import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
@@ -105,6 +105,23 @@ export default function AboutPage() {
                         <TelAnchor className="font-bold text-brand" data-numeric>
                           <T k="site.tel" />
                         </TelAnchor>
+                      }
+                    />
+                  </dd>
+
+                  <dt className="text-[0.8125rem] font-bold text-muted"><T k="about.info.telMobile" /></dt>
+                  <dd className="m-0">
+                    {/* 대표전화와 같은 규칙 — PC 는 표기만, 모바일만 발신 (명세 9-3·9-4) */}
+                    <DeviceSplit
+                      pc={
+                        <span className="font-bold text-brand" data-numeric>
+                          <T k="site.telMobile" />
+                        </span>
+                      }
+                      mobile={
+                        <TelMobileAnchor className="font-bold text-brand" data-numeric>
+                          <T k="site.telMobile" />
+                        </TelMobileAnchor>
                       }
                     />
                   </dd>
@@ -241,6 +258,13 @@ export default function AboutPage() {
                     <Icon.phone className="size-[1.0625rem]" />
                     <span data-numeric>
                       <T k="site.tel" />
+                    </span>
+                  </ContactAction>
+                  {/* 휴대전화 — 대표전화와 나란히 두고, 각 버튼은 자기 번호로 건다 */}
+                  <ContactAction kind="telMobile" variant="ghost" size="lg">
+                    <Icon.smartphone className="size-[1.0625rem]" />
+                    <span data-numeric>
+                      <T k="site.telMobile" />
                     </span>
                   </ContactAction>
                 </div>

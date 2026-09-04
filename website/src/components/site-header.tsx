@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BrandLockup } from "./brand-mark";
-import { ContactSplitLink } from "./contact-action";
 import { Icon } from "./icons";
 import { T } from "./copy-text";
+import { TelPair } from "./tel-pair";
 import { ButtonLink, Container } from "./ui";
 import { nav, site } from "@/lib/site";
 
@@ -88,23 +88,9 @@ export function SiteHeader() {
           </nav>
 
           <div className="ml-auto flex items-center gap-3 lg:ml-0">
-            {/* 전화 영역 기기별 분기 — PC 는 /quote, 태블릿 이하는 즉시 발신 (명세 9-3·9-4) */}
-            <ContactSplitLink
-              kind="tel"
-              className="rounded-brand leading-tight"
-              pcClassName="block"
-              mobileClassName="hidden md:block"
-            >
-              <span className="block text-[0.65rem] font-bold tracking-[0.1em] text-muted">
-                <T k="header.telLabel" />
-              </span>
-              <span
-                className="block text-[1.1875rem] font-extrabold tracking-[-0.02em] text-navy"
-                data-numeric
-              >
-                <T k="site.tel" />
-              </span>
-            </ContactSplitLink>
+            {/* 전화 영역 — 두 번호를 같은 서식으로 세운다 (tel-pair.tsx).
+                기기별 분기(PC → /quote, 태블릿 이하 즉시 발신)는 그 안에 있다 */}
+            <TelPair size="sm" className="hidden md:inline-grid" />
 
             <ButtonLink href="/quote" size="sm" className="hidden lg:inline-flex">
               <T k="header.quoteCta" />

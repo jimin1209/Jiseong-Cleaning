@@ -121,6 +121,13 @@ export default function HomePage() {
                   <T k="site.tel" />
                 </span>
               </ContactAction>
+              {/* 휴대전화 — 대표전화와 나란히 두고, 각 버튼은 자기 번호로 건다 */}
+              <ContactAction kind="telMobile" variant="onNavyGhost" size="lg">
+                <Icon.smartphone className="size-[1.0625rem]" />
+                <span data-numeric>
+                  <T k="site.telMobile" />
+                </span>
+              </ContactAction>
             </div>
 
             <ul className="mt-9 flex flex-wrap gap-2.5">
@@ -376,6 +383,13 @@ export default function HomePage() {
                   <Icon.phone className="size-[1.0625rem]" />
                   <span data-numeric>
                     <T k="site.tel" />
+                  </span>
+                </ContactAction>
+                {/* 휴대전화 — 대표전화와 나란히 두고, 각 버튼은 자기 번호로 건다 */}
+                <ContactAction kind="telMobile" variant="ghost" size="lg">
+                  <Icon.smartphone className="size-[1.0625rem]" />
+                  <span data-numeric>
+                    <T k="site.telMobile" />
                   </span>
                 </ContactAction>
               </div>

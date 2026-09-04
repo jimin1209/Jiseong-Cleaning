@@ -59,14 +59,15 @@ export const viewport: Viewport = {
  * 사업자등록번호·영업시간은 확정 전이라 넣지 않았다 —
  * 확인되지 않은 값을 스키마에 넣으면 검색 결과에 잘못된 정보가 노출된다.
  */
-function LocalBusinessJsonLd({ tel }: { tel: string }) {
+function LocalBusinessJsonLd({ tel, telMobile }: { tel: string; telMobile: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: site.name,
     description: site.description,
     url: site.url,
-    telephone: tel,
+    // 두 번호를 모두 노출한다. 대표전화가 첫 값이라 검색 결과의 대표 표기가 된다
+    telephone: [tel, telMobile],
     parentOrganization: { "@type": "Organization", name: site.parent },
     address: {
       "@type": "PostalAddress",
@@ -118,7 +119,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           {/* 어느 페이지에서든 스크롤 위치와 무관하게 문의 경로가 보이게 한다 */}
           <FloatingContact />
         </CopyEditRoot>
-        <LocalBusinessJsonLd tel={overrides["site.tel"] || site.tel} />
+        <LocalBusinessJsonLd
+          tel={overrides["site.tel"] || site.tel}
+          telMobile={overrides["site.telMobile"] || site.telMobile}
+        />
       </body>
     </html>
   );

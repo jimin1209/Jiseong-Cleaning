@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { T, useCopy } from "./copy-text";
-import { TelAnchor } from "./contact-links";
+import { TelPair } from "./tel-pair";
 import { Icon } from "./icons";
 import { Alert, Button } from "./ui";
 import { submitQuote } from "@/app/quote/actions";
@@ -111,11 +111,10 @@ export function QuoteForm() {
           )}
         </p>
         <p className="mt-5 text-sm text-muted">
-          <T k="quoteForm.success.callNote" />{" "}
-          <TelAnchor className="font-bold text-brand" data-numeric>
-            <T k="site.tel" />
-          </TelAnchor>
+          <T k="quoteForm.success.callNote" />
         </p>
+        {/* 두 번호는 사이트 공통 서식으로 (tel-pair.tsx) */}
+        <TelPair size="sm" className="mt-2.5" />
       </div>
     );
   }

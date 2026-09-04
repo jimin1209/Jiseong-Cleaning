@@ -27,11 +27,16 @@ export function useSiteAddress() {
 export function useSiteTel() {
   const { get } = useCopy();
   const tel = get("site.tel") || site.tel;
+  const telMobile = get("site.telMobile") || site.telMobile;
 
   return {
     tel,
     // 고쳐진 적이 없으면 site.ts 의 기존 상수를 그대로 쓴다(동작 동일)
     telHref: tel === site.tel ? site.telHref : telHrefOf(tel),
-    smsHref: smsHrefOf(tel, smsBody),
+    // 문자는 휴대전화로 보낸다 — 070 인터넷전화는 SMS 를 못 받는 경우가 있다
+    smsHref: smsHrefOf(telMobile, smsBody),
+    telMobile,
+    telMobileHref:
+      telMobile === site.telMobile ? site.telMobileHref : telHrefOf(telMobile),
   };
 }

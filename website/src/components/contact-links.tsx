@@ -25,6 +25,25 @@ export function TelAnchor({
   );
 }
 
+/**
+ * 휴대전화 tel: 링크.
+ *
+ * 「전화 문의」 버튼은 대표전화로 걸지만(ContactAction), 화면에 나란히 적은
+ * 휴대전화 번호는 그 번호 자체로 걸려야 한다 — 보이는 번호와 걸리는 번호가
+ * 다르면 누른 사람이 엉뚱한 곳에 전화한다.
+ */
+export function TelMobileAnchor({
+  children,
+  ...rest
+}: Omit<ComponentProps<"a">, "href">) {
+  const { telMobileHref } = useSiteTel();
+  return (
+    <a href={telMobileHref} {...rest}>
+      {children}
+    </a>
+  );
+}
+
 /** 버튼 모양의 tel: 링크 */
 export function TelButtonAnchor({
   children,
@@ -33,6 +52,19 @@ export function TelButtonAnchor({
   const { telHref } = useSiteTel();
   return (
     <ButtonAnchor href={telHref} {...rest}>
+      {children}
+    </ButtonAnchor>
+  );
+}
+
+/** 버튼 모양의 휴대전화 tel: 링크 */
+export function TelMobileButtonAnchor({
+  children,
+  ...rest
+}: ButtonLook & Omit<ComponentProps<"a">, "href">) {
+  const { telMobileHref } = useSiteTel();
+  return (
+    <ButtonAnchor href={telMobileHref} {...rest}>
       {children}
     </ButtonAnchor>
   );

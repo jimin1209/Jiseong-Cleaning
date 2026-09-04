@@ -18,12 +18,17 @@ export const siteValues = cache(async () => {
   const { overrides } = await readLiveCopySafe();
 
   const tel = overrides["site.tel"] || site.tel;
+  const telMobile = overrides["site.telMobile"] || site.telMobile;
   const address = overrides["site.address"] || site.address;
 
   return {
     tel,
     telHref: tel === site.tel ? site.telHref : telHrefOf(tel),
-    smsHref: smsHrefOf(tel, smsBody),
+    // 문자는 휴대전화로 보낸다 — 070 인터넷전화는 SMS 를 못 받는 경우가 있다
+    smsHref: smsHrefOf(telMobile, smsBody),
+    telMobile,
+    telMobileHref:
+      telMobile === site.telMobile ? site.telMobileHref : telHrefOf(telMobile),
     address,
     mapLinks: address === site.address ? site.mapLinks : mapLinksOf(address),
   };

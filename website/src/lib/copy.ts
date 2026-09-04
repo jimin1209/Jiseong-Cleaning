@@ -30,12 +30,14 @@ const literals: Record<string, string> = {
   /* ── 전역 레이아웃 ── */
   "layout.skip": "본문으로 건너뛰기",
 
+  /* ── 전화번호 라벨 (tel-pair.tsx) — 번호가 보이는 자리는 전부 이 두 키를 쓴다 ── */
+  "tel.label.main": "대표전화",
+  "tel.label.mobile": "휴대전화",
+
   /* ── 헤더 (site-header.tsx) ── */
-  "header.telLabel": "전화 문의",
   "header.quoteCta": "견적 문의",
 
   /* ── 푸터 (site-footer.tsx) ── */
-  "footer.telLabel": "대표전화",
   "footer.operator.pre": "지성크리닝은 우수조달업체",
   "footer.operator.post": "에서 운영하는 세탁 서비스입니다.",
   "footer.services.heading": "서 비 스",
@@ -145,6 +147,7 @@ const literals: Record<string, string> = {
   "about.info.registration": "사업자번호",
   "about.info.address": "소재지",
   "about.info.tel": "대표전화",
+  "about.info.telMobile": "휴대전화",
   "about.info.fax": "팩스",
   "about.info.handlingLabel": "취급",
   "about.info.handling": "사업장 세탁물 정기 수거 · 세탁 · 배송",
@@ -246,6 +249,7 @@ derived["footer.copyright"] = `${site.name} · ${site.parent}`;
    상호·모회사명은 brand.name·brand.parent 를 그대로 재사용한다 —
    한 곳에서 고치면 락업·푸터·회사소개·견적이 함께 바뀌어야 하기 때문이다. */
 derived["site.tel"] = site.tel;
+derived["site.telMobile"] = site.telMobile;
 derived["site.address"] = site.address;
 derived["site.parentAddress"] = site.parentAddress;
 

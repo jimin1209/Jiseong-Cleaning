@@ -1,4 +1,4 @@
-import { TelButtonAnchor } from "@/components/contact-links";
+import { TelButtonAnchor, TelMobileButtonAnchor } from "@/components/contact-links";
 import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { ButtonLink, Container } from "@/components/ui";
@@ -31,6 +31,13 @@ export default function NotFound() {
                 <T k="site.tel" />
               </span>
             </TelButtonAnchor>
+            {/* 휴대전화 — 대표전화와 나란히 두고, 각 버튼은 자기 번호로 건다 */}
+            <TelMobileButtonAnchor variant="ghost" size="lg">
+              <Icon.smartphone className="size-[1.0625rem]" />
+              <span data-numeric>
+                <T k="site.telMobile" />
+              </span>
+            </TelMobileButtonAnchor>
           </div>
         </div>
       </Container>

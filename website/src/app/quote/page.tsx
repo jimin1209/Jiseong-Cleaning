@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { DeviceSplit } from "@/components/contact-action";
-import { MapButtonAnchor, TelAnchor } from "@/components/contact-links";
+import { MapButtonAnchor } from "@/components/contact-links";
 import { T } from "@/components/copy-text";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
@@ -11,6 +10,7 @@ import { SnsButtons } from "@/components/sns-buttons";
 import { Card, Container, Section, SectionHead } from "@/components/ui";
 import { reviews, SAMPLE_CONTENT } from "@/lib/sample";
 import { processSteps } from "@/lib/services";
+import { TelPair } from "@/components/tel-pair";
 import { siteValues } from "@/lib/site-live";
 
 /* 검색 결과에 옛 번호가 남지 않도록 편집된 번호를 그대로 쓴다 */
@@ -45,25 +45,8 @@ export default function QuotePage() {
                 <p className="text-[0.6875rem] font-bold tracking-[0.16em] text-pale">
                   <T k="quote.telCard.heading" />
                 </p>
-                {/* 기기별 분기(명세 9-3·9-4) — 이미 견적 페이지라 PC 는 링크 없이 번호만 보여준다 */}
-                <DeviceSplit
-                  pc={
-                    <span
-                      className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
-                      data-numeric
-                    >
-                      <T k="site.tel" />
-                    </span>
-                  }
-                  mobile={
-                    <TelAnchor
-                      className="mt-2 block text-[2rem] font-extrabold tracking-[-0.03em] text-white"
-                      data-numeric
-                    >
-                      <T k="site.tel" />
-                    </TelAnchor>
-                  }
-                />
+                {/* 두 번호는 사이트 공통 서식으로 (tel-pair.tsx) */}
+                <TelPair tone="onNavy" size="lg" className="mt-3" />
                 {/* 운영시간은 실값 확정 전 — 임시값 노출 대신 폼 안내로 단순화 */}
                 <p className="mt-3.5 text-sm leading-[1.7] text-[#A6C5E8]">
                   <T k="quote.telCard.note" />

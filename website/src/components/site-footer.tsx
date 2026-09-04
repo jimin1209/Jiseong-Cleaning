@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrandLockup } from "./brand-mark";
 import { T } from "./copy-text";
-import { ContactSplitLink } from "./contact-action";
+import { TelPair } from "./tel-pair";
 import { SnsButtons } from "./sns-buttons";
 import { Container } from "./ui";
 import { businessInfo, SAMPLE_CONTENT } from "@/lib/sample";
@@ -17,15 +17,9 @@ export function SiteFooter() {
             <BrandLockup tone="dark" showParent={false} className="mb-4" />
             <address className="not-italic leading-[1.85]">
               <T k="site.address" />
-              <br />
-              <T k="footer.telLabel" />{" "}
-              {/* 기기별 분기 — PC 는 /quote, 모바일은 즉시 발신 (명세 9-3·9-4) */}
-              <ContactSplitLink kind="tel" className="text-pale hover:text-white">
-                <span data-numeric>
-                  <T k="site.tel" />
-                </span>
-              </ContactSplitLink>
             </address>
+            {/* 두 번호는 사이트 공통 서식으로 (tel-pair.tsx) */}
+            <TelPair tone="dark" size="sm" className="mt-2.5" />
             <p className="mt-3 leading-[1.85]">
               <T k="footer.operator.pre" />{" "}
               <a
